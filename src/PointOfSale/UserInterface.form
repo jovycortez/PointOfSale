@@ -2624,14 +2624,13 @@
                                                           <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                                                               <Group type="102" alignment="1" attributes="0">
                                                                   <Component id="PhoneNumber" min="-2" max="-2" attributes="0"/>
-                                                                  <EmptySpace min="-2" pref="248" max="-2" attributes="0"/>
-                                                                  <Component id="Employee_SNN" min="-2" max="-2" attributes="0"/>
+                                                                  <EmptySpace min="-2" pref="418" max="-2" attributes="0"/>
                                                               </Group>
                                                               <Group type="102" alignment="1" attributes="0">
-                                                                  <Component id="jTextField6_City" min="-2" pref="139" max="-2" attributes="0"/>
+                                                                  <Component id="txtCity" min="-2" pref="139" max="-2" attributes="0"/>
                                                                   <EmptySpace max="32767" attributes="0"/>
                                                                   <Group type="103" groupAlignment="0" attributes="0">
-                                                                      <Component id="State_Choice" alignment="0" min="-2" pref="121" max="-2" attributes="0"/>
+                                                                      <Component id="cbState" alignment="0" min="-2" pref="121" max="-2" attributes="0"/>
                                                                       <Component id="State" alignment="0" min="-2" max="-2" attributes="0"/>
                                                                       <Group type="102" alignment="0" attributes="0">
                                                                           <Component id="jButton1" min="-2" max="-2" attributes="0"/>
@@ -2653,16 +2652,11 @@
                                                               <EmptySpace max="32767" attributes="0"/>
                                                               <Group type="103" groupAlignment="0" attributes="0">
                                                                   <Component id="Zip_Postal" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                                  <Component id="jTextField7_Postal" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                                  <Component id="txtZipCode" alignment="0" min="-2" max="-2" attributes="0"/>
                                                               </Group>
                                                               <EmptySpace min="-2" pref="652" max="-2" attributes="0"/>
                                                           </Group>
                                                       </Group>
-                                                  </Group>
-                                                  <Group type="102" alignment="0" attributes="0">
-                                                      <EmptySpace min="-2" pref="279" max="-2" attributes="0"/>
-                                                      <Component id="jTextField9_EmplyeeSNN" min="-2" pref="191" max="-2" attributes="0"/>
-                                                      <EmptySpace max="32767" attributes="0"/>
                                                   </Group>
                                                   <Group type="102" alignment="1" attributes="0">
                                                       <Group type="103" groupAlignment="0" attributes="0">
@@ -2671,9 +2665,9 @@
                                                               <Group type="103" groupAlignment="0" attributes="0">
                                                                   <Group type="102" alignment="0" attributes="0">
                                                                       <EmptySpace min="-2" pref="211" max="-2" attributes="0"/>
-                                                                      <Component id="jTextField2_LastName" min="-2" pref="171" max="-2" attributes="0"/>
+                                                                      <Component id="txtLastName" min="-2" pref="171" max="-2" attributes="0"/>
                                                                   </Group>
-                                                                  <Component id="jTextField1_FirstName" alignment="0" min="-2" pref="187" max="-2" attributes="0"/>
+                                                                  <Component id="txtFirstName" alignment="0" min="-2" pref="187" max="-2" attributes="0"/>
                                                                   <Group type="102" alignment="0" attributes="0">
                                                                       <Component id="NameFirst" min="-2" max="-2" attributes="0"/>
                                                                       <EmptySpace min="-2" pref="160" max="-2" attributes="0"/>
@@ -2683,20 +2677,28 @@
                                                               <EmptySpace max="32767" attributes="0"/>
                                                               <Group type="103" groupAlignment="0" attributes="0">
                                                                   <Component id="NameMiddle" alignment="1" min="-2" max="-2" attributes="0"/>
-                                                                  <Component id="jTextField3_MiddleI" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                                  <Component id="txtMiddleInitial" alignment="1" min="-2" max="-2" attributes="0"/>
                                                               </Group>
                                                           </Group>
-                                                          <Component id="jTextField5_Address2" alignment="0" max="32767" attributes="0"/>
-                                                          <Component id="jTextField4_Address1" alignment="0" max="32767" attributes="0"/>
+                                                          <Component id="txtAddress2" alignment="0" max="32767" attributes="0"/>
+                                                          <Component id="txtAddress1" alignment="0" max="32767" attributes="0"/>
                                                           <Group type="102" alignment="0" attributes="0">
                                                               <Group type="103" groupAlignment="1" attributes="0">
                                                                   <Component id="Address1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                                  <Component id="jTextField8_Phone" alignment="0" min="-2" pref="139" max="-2" attributes="0"/>
+                                                                  <Component id="txtPhone" alignment="0" min="-2" pref="139" max="-2" attributes="0"/>
                                                               </Group>
                                                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                                           </Group>
                                                       </Group>
                                                       <EmptySpace min="578" pref="578" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <Group type="102" alignment="0" attributes="0">
+                                                      <EmptySpace min="-2" pref="279" max="-2" attributes="0"/>
+                                                      <Group type="103" groupAlignment="0" attributes="0">
+                                                          <Component id="Employee_SNN" min="-2" max="-2" attributes="0"/>
+                                                          <Component id="txtSSN" min="-2" pref="191" max="-2" attributes="0"/>
+                                                      </Group>
+                                                      <EmptySpace max="32767" attributes="0"/>
                                                   </Group>
                                               </Group>
                                           </Group>
@@ -2713,18 +2715,18 @@
                                               </Group>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="3" attributes="0">
-                                                  <Component id="jTextField1_FirstName" alignment="3" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="jTextField2_LastName" alignment="3" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="jTextField3_MiddleI" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="txtFirstName" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="txtLastName" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="txtMiddleInitial" alignment="3" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                               <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                                               <Component id="Address1" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                              <Component id="jTextField4_Address1" min="-2" max="-2" attributes="0"/>
+                                              <Component id="txtAddress1" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                                               <Component id="Address2" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                                              <Component id="jTextField5_Address2" min="-2" max="-2" attributes="0"/>
+                                              <Component id="txtAddress2" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                                               <Component id="Zip_Postal" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
@@ -2734,9 +2736,9 @@
                                               </Group>
                                               <EmptySpace type="separate" max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="1" attributes="0">
-                                                  <Component id="jTextField6_City" alignment="1" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="State_Choice" alignment="1" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="jTextField7_Postal" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="txtCity" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="cbState" alignment="1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="txtZipCode" alignment="1" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                               <EmptySpace pref="39" max="32767" attributes="0"/>
                                               <Group type="103" groupAlignment="3" attributes="0">
@@ -2745,8 +2747,8 @@
                                               </Group>
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="3" attributes="0">
-                                                  <Component id="jTextField8_Phone" alignment="3" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="jTextField9_EmplyeeSNN" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="txtPhone" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="txtSSN" alignment="3" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                               <EmptySpace min="-2" pref="228" max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="3" attributes="0">
@@ -2772,7 +2774,7 @@
                                     </Component>
                                     <Component class="javax.swing.JLabel" name="NameMiddle">
                                       <Properties>
-                                        <Property name="text" type="java.lang.String" value="Middle Initail"/>
+                                        <Property name="text" type="java.lang.String" value="Middle Initial"/>
                                       </Properties>
                                     </Component>
                                     <Component class="javax.swing.JLabel" name="Address1">
@@ -2807,10 +2809,10 @@
                                     </Component>
                                     <Component class="javax.swing.JLabel" name="Employee_SNN">
                                       <Properties>
-                                        <Property name="text" type="java.lang.String" value="SNN"/>
+                                        <Property name="text" type="java.lang.String" value="Social Security Number:"/>
                                       </Properties>
                                     </Component>
-                                    <Component class="java.awt.Choice" name="State_Choice">
+                                    <Component class="java.awt.Choice" name="cbState">
                                     </Component>
                                     <Component class="javax.swing.JButton" name="jButton1">
                                       <Properties>
@@ -2827,53 +2829,53 @@
                                         <Property name="text" type="java.lang.String" value="jButton3"/>
                                       </Properties>
                                     </Component>
-                                    <Component class="javax.swing.JTextField" name="jTextField1_FirstName">
+                                    <Component class="javax.swing.JTextField" name="txtFirstName">
                                       <Properties>
                                         <Property name="text" type="java.lang.String" value="jTextField1"/>
                                       </Properties>
                                     </Component>
-                                    <Component class="javax.swing.JTextField" name="jTextField2_LastName">
+                                    <Component class="javax.swing.JTextField" name="txtLastName">
                                       <Properties>
                                         <Property name="text" type="java.lang.String" value="jTextField2"/>
                                       </Properties>
                                     </Component>
-                                    <Component class="javax.swing.JTextField" name="jTextField3_MiddleI">
+                                    <Component class="javax.swing.JTextField" name="txtMiddleInitial">
                                       <Properties>
                                         <Property name="text" type="java.lang.String" value="jTextField3"/>
                                       </Properties>
                                     </Component>
-                                    <Component class="javax.swing.JTextField" name="jTextField4_Address1">
+                                    <Component class="javax.swing.JTextField" name="txtAddress1">
                                       <Properties>
                                         <Property name="text" type="java.lang.String" value="jTextField4"/>
                                       </Properties>
                                       <Events>
-                                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField4_Address1ActionPerformed"/>
+                                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtAddress1ActionPerformed"/>
                                       </Events>
                                     </Component>
-                                    <Component class="javax.swing.JTextField" name="jTextField5_Address2">
+                                    <Component class="javax.swing.JTextField" name="txtAddress2">
                                       <Properties>
                                         <Property name="text" type="java.lang.String" value="jTextField5"/>
                                       </Properties>
                                     </Component>
-                                    <Component class="javax.swing.JTextField" name="jTextField6_City">
+                                    <Component class="javax.swing.JTextField" name="txtCity">
                                       <Properties>
                                         <Property name="text" type="java.lang.String" value="jTextField6"/>
                                       </Properties>
                                     </Component>
-                                    <Component class="javax.swing.JTextField" name="jTextField7_Postal">
+                                    <Component class="javax.swing.JTextField" name="txtZipCode">
                                       <Properties>
                                         <Property name="text" type="java.lang.String" value="jTextField7"/>
                                       </Properties>
                                       <Events>
-                                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField7_PostalActionPerformed"/>
+                                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtZipCodeActionPerformed"/>
                                       </Events>
                                     </Component>
-                                    <Component class="javax.swing.JTextField" name="jTextField8_Phone">
+                                    <Component class="javax.swing.JTextField" name="txtPhone">
                                       <Properties>
                                         <Property name="text" type="java.lang.String" value="jTextField8"/>
                                       </Properties>
                                     </Component>
-                                    <Component class="javax.swing.JTextField" name="jTextField9_EmplyeeSNN">
+                                    <Component class="javax.swing.JTextField" name="txtSSN">
                                       <Properties>
                                         <Property name="text" type="java.lang.String" value="jTextField9"/>
                                       </Properties>

@@ -235,19 +235,19 @@ public class UserInterface extends javax.swing.JFrame {
         Zip_Postal = new javax.swing.JLabel();
         PhoneNumber = new javax.swing.JLabel();
         Employee_SNN = new javax.swing.JLabel();
-        State_Choice = new java.awt.Choice();
+        cbState = new java.awt.Choice();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jTextField1_FirstName = new javax.swing.JTextField();
-        jTextField2_LastName = new javax.swing.JTextField();
-        jTextField3_MiddleI = new javax.swing.JTextField();
-        jTextField4_Address1 = new javax.swing.JTextField();
-        jTextField5_Address2 = new javax.swing.JTextField();
-        jTextField6_City = new javax.swing.JTextField();
-        jTextField7_Postal = new javax.swing.JTextField();
-        jTextField8_Phone = new javax.swing.JTextField();
-        jTextField9_EmplyeeSNN = new javax.swing.JTextField();
+        txtFirstName = new javax.swing.JTextField();
+        txtLastName = new javax.swing.JTextField();
+        txtMiddleInitial = new javax.swing.JTextField();
+        txtAddress1 = new javax.swing.JTextField();
+        txtAddress2 = new javax.swing.JTextField();
+        txtCity = new javax.swing.JTextField();
+        txtZipCode = new javax.swing.JTextField();
+        txtPhone = new javax.swing.JTextField();
+        txtSSN = new javax.swing.JTextField();
         Employee_Schedule = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -1977,7 +1977,7 @@ public class UserInterface extends javax.swing.JFrame {
 
         NameLast.setText("Last Name");
 
-        NameMiddle.setText("Middle Initail");
+        NameMiddle.setText("Middle Initial");
 
         Address1.setText("Address");
 
@@ -1991,7 +1991,7 @@ public class UserInterface extends javax.swing.JFrame {
 
         PhoneNumber.setText("Phone");
 
-        Employee_SNN.setText("SNN");
+        Employee_SNN.setText("Social Security Number:");
 
         jButton1.setText("Edit");
 
@@ -1999,33 +1999,33 @@ public class UserInterface extends javax.swing.JFrame {
 
         jButton3.setText("jButton3");
 
-        jTextField1_FirstName.setText("jTextField1");
+        txtFirstName.setText("jTextField1");
 
-        jTextField2_LastName.setText("jTextField2");
+        txtLastName.setText("jTextField2");
 
-        jTextField3_MiddleI.setText("jTextField3");
+        txtMiddleInitial.setText("jTextField3");
 
-        jTextField4_Address1.setText("jTextField4");
-        jTextField4_Address1.addActionListener(new java.awt.event.ActionListener() {
+        txtAddress1.setText("jTextField4");
+        txtAddress1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4_Address1ActionPerformed(evt);
+                txtAddress1ActionPerformed(evt);
             }
         });
 
-        jTextField5_Address2.setText("jTextField5");
+        txtAddress2.setText("jTextField5");
 
-        jTextField6_City.setText("jTextField6");
+        txtCity.setText("jTextField6");
 
-        jTextField7_Postal.setText("jTextField7");
-        jTextField7_Postal.addActionListener(new java.awt.event.ActionListener() {
+        txtZipCode.setText("jTextField7");
+        txtZipCode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7_PostalActionPerformed(evt);
+                txtZipCodeActionPerformed(evt);
             }
         });
 
-        jTextField8_Phone.setText("jTextField8");
+        txtPhone.setText("jTextField8");
 
-        jTextField9_EmplyeeSNN.setText("jTextField9");
+        txtSSN.setText("jTextField9");
 
         javax.swing.GroupLayout Employee_GeneralViewLayout = new javax.swing.GroupLayout(Employee_GeneralView);
         Employee_GeneralView.setLayout(Employee_GeneralViewLayout);
@@ -2044,13 +2044,12 @@ public class UserInterface extends javax.swing.JFrame {
                             .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
                                     .addComponent(PhoneNumber)
-                                    .addGap(248, 248, 248)
-                                    .addComponent(Employee_SNN))
+                                    .addGap(418, 418, 418))
                                 .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
-                                    .addComponent(jTextField6_City, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCity, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(State_Choice, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cbState, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(State)
                                         .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
                                             .addComponent(jButton1)
@@ -2066,12 +2065,8 @@ public class UserInterface extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(Zip_Postal)
-                                    .addComponent(jTextField7_Postal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtZipCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(652, 652, 652))))
-                    .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
-                        .addGap(279, 279, 279)
-                        .addComponent(jTextField9_EmplyeeSNN, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Employee_GeneralViewLayout.createSequentialGroup()
                         .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Employee_GeneralViewLayout.createSequentialGroup()
@@ -2079,8 +2074,8 @@ public class UserInterface extends javax.swing.JFrame {
                                 .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
                                         .addGap(211, 211, 211)
-                                        .addComponent(jTextField2_LastName, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jTextField1_FirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
                                         .addComponent(NameFirst)
                                         .addGap(160, 160, 160)
@@ -2088,15 +2083,21 @@ public class UserInterface extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(NameMiddle, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jTextField3_MiddleI, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jTextField5_Address2)
-                            .addComponent(jTextField4_Address1)
+                                    .addComponent(txtMiddleInitial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtAddress2)
+                            .addComponent(txtAddress1)
                             .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
                                 .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(Address1, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField8_Phone, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtPhone, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(578, 578, 578))))
+                        .addGap(578, 578, 578))
+                    .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
+                        .addGap(279, 279, 279)
+                        .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Employee_SNN)
+                            .addComponent(txtSSN, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())))
         );
         Employee_GeneralViewLayout.setVerticalGroup(
             Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2108,17 +2109,17 @@ public class UserInterface extends javax.swing.JFrame {
                     .addComponent(NameMiddle))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1_FirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2_LastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3_MiddleI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMiddleInitial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(43, 43, 43)
                 .addComponent(Address1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField4_Address1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtAddress1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
                 .addComponent(Address2)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField5_Address2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtAddress2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(Zip_Postal)
                 .addGap(9, 9, 9)
@@ -2127,17 +2128,17 @@ public class UserInterface extends javax.swing.JFrame {
                     .addComponent(State))
                 .addGap(18, 18, 18)
                 .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField6_City, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(State_Choice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField7_Postal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbState, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtZipCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(PhoneNumber)
                     .addComponent(Employee_SNN))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField8_Phone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField9_EmplyeeSNN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSSN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(228, 228, 228)
                 .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -3691,13 +3692,13 @@ public class UserInterface extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbOpenOrderActionPerformed
 
-    private void jTextField4_Address1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4_Address1ActionPerformed
+    private void txtAddress1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAddress1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4_Address1ActionPerformed
+    }//GEN-LAST:event_txtAddress1ActionPerformed
 
-    private void jTextField7_PostalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7_PostalActionPerformed
+    private void txtZipCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtZipCodeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7_PostalActionPerformed
+    }//GEN-LAST:event_txtZipCodeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -3784,7 +3785,6 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JPanel Panel_OrderLabel;
     private javax.swing.JLabel PhoneNumber;
     private javax.swing.JLabel State;
-    private java.awt.Choice State_Choice;
     private javax.swing.JPanel ViewManager;
     private javax.swing.JPanel ViewOpenOrders;
     private javax.swing.JPanel ViewPOS;
@@ -3885,6 +3885,7 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JButton btnTiramisu;
     private javax.swing.JButton btnWings;
     private javax.swing.JComboBox cbOpenOrder;
+    private java.awt.Choice cbState;
     private javax.swing.JComboBox cboxWaiter;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -3906,15 +3907,6 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1_FirstName;
-    private javax.swing.JTextField jTextField2_LastName;
-    private javax.swing.JTextField jTextField3_MiddleI;
-    private javax.swing.JTextField jTextField4_Address1;
-    private javax.swing.JTextField jTextField5_Address2;
-    private javax.swing.JTextField jTextField6_City;
-    private javax.swing.JTextField jTextField7_Postal;
-    private javax.swing.JTextField jTextField8_Phone;
-    private javax.swing.JTextField jTextField9_EmplyeeSNN;
     private javax.swing.JLabel lblAppetizers;
     private javax.swing.JLabel lblBar;
     private javax.swing.JLabel lblBooth;
@@ -3945,7 +3937,16 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JLabel lblTotalAmount;
     private javax.swing.JLabel lblWings;
     private javax.swing.JTable tblOrder;
+    private javax.swing.JTextField txtAddress1;
+    private javax.swing.JTextField txtAddress2;
+    private javax.swing.JTextField txtCity;
     private javax.swing.JTextField txtEmpId;
+    private javax.swing.JTextField txtFirstName;
     private javax.swing.JTextField txtKeypad;
+    private javax.swing.JTextField txtLastName;
+    private javax.swing.JTextField txtMiddleInitial;
+    private javax.swing.JTextField txtPhone;
+    private javax.swing.JTextField txtSSN;
+    private javax.swing.JTextField txtZipCode;
     // End of variables declaration//GEN-END:variables
 }
