@@ -5,6 +5,8 @@
  */
 package PointOfSale;
 
+import java.awt.Color;
+import java.sql.*;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.math.BigDecimal;
@@ -14,7 +16,8 @@ import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
+import javax.swing.*;
+import net.proteanit.sql.DbUtils;
 /**
  *
  * @author Jovy
@@ -36,8 +39,16 @@ public class UserInterface extends javax.swing.JFrame {
     StringBuilder paymentType = new StringBuilder();
     int[] numberOrder = dbconn.viewSavedOrderNumberFromDB();
     boolean isNewOrder = true;
-
+    Connection conn = null;
+    ResultSet rs = null;
+    PreparedStatement pst = null;
+    boolean isShown = true;
+    
+    
+    
     //receipt.setOrderList(r);
+    
+    
     public UserInterface() {
         initComponents();
         //lblTempOrderNumber.setText(dbconn.getSavedOrderNumberFromDB(NORMAL));
@@ -60,6 +71,41 @@ public class UserInterface extends javax.swing.JFrame {
             }
         }.start();
         txtKeypad.setVisible(false);
+        
+        conn= Database.ConnecttoDB();
+        updateOpenOrderTable();
+        updatePaidOrderTable();
+        
+    }
+    
+private void updateOpenOrderTable(){
+        
+        try {
+            String sql = "SELECT OrderNumber, TableNumber, ServerName from Revenue WHERE PaymentMethod = \"null\"";
+            pst = conn.prepareStatement(sql);
+            rs = pst.executeQuery();
+            tblOpenOrders.setModel(DbUtils.resultSetToTableModel(rs));
+           
+            
+        } catch (Exception e) {
+            System.out.println("updateOpenOrderTable: " + e);
+        }
+
+    }
+private void updatePaidOrderTable(){
+        
+        try {
+            String sql = "SELECT OrderNumber, TableNumber, Total, ServerName from Revenue WHERE PaymentMethod = \"DebitCard\"";
+            pst = conn.prepareStatement(sql);
+            rs = pst.executeQuery();
+            tblPaidOrders.setModel(DbUtils.resultSetToTableModel(rs));
+           
+            
+        } catch (Exception e) {
+            System.out.println("updateOpenOrderTable: " + e);
+        }
+        
+
     }
 
     /**
@@ -77,7 +123,7 @@ public class UserInterface extends javax.swing.JFrame {
         btnTables = new javax.swing.JButton();
         btnTimeCard = new javax.swing.JButton();
         btnManager = new javax.swing.JButton();
-        btnOpenOrders = new javax.swing.JButton();
+        btnViewOrders = new javax.swing.JButton();
         lblSystemClock = new javax.swing.JLabel();
         lblSystemDate = new javax.swing.JLabel();
         PanelCardView = new javax.swing.JPanel();
@@ -188,7 +234,7 @@ public class UserInterface extends javax.swing.JFrame {
         lblTableNum = new javax.swing.JLabel();
         lblParty = new javax.swing.JLabel();
         lblPartyNum = new javax.swing.JLabel();
-        cboxWaiter = new javax.swing.JComboBox();
+        lblWaiter = new javax.swing.JLabel();
         PanelAmount = new javax.swing.JPanel();
         lblSubtotal = new javax.swing.JLabel();
         lblTax = new javax.swing.JLabel();
@@ -259,9 +305,15 @@ public class UserInterface extends javax.swing.JFrame {
         jTable2 = new javax.swing.JTable();
         BackOffice_CostOfSales = new javax.swing.JPanel();
         BackOffice_Reports = new javax.swing.JPanel();
-        ViewOpenOrders = new javax.swing.JPanel();
-        cbOpenOrder = new javax.swing.JComboBox();
-        btnSelectOrderNumber = new javax.swing.JButton();
+        ViewOrders = new javax.swing.JPanel();
+        PanelOrders = new javax.swing.JPanel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        scrollOpenOrders = new javax.swing.JScrollPane();
+        tblOpenOrders = new javax.swing.JTable();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblPaidOrders = new javax.swing.JTable();
+        btnViewOrder = new javax.swing.JButton();
+        btnDeleteOrder = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         PanelTransaction = new javax.swing.JPanel();
         PanelKeypad = new javax.swing.JPanel();
@@ -312,10 +364,10 @@ public class UserInterface extends javax.swing.JFrame {
             }
         });
 
-        btnOpenOrders.setText("Open Orders");
-        btnOpenOrders.addActionListener(new java.awt.event.ActionListener() {
+        btnViewOrders.setText("View Orders");
+        btnViewOrders.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOpenOrdersActionPerformed(evt);
+                btnViewOrdersActionPerformed(evt);
             }
         });
 
@@ -341,11 +393,11 @@ public class UserInterface extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnManager)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnOpenOrders)
+                .addComponent(btnViewOrders)
                 .addGap(37, 37, 37))
         );
 
-        PanelHeaderLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnManager, btnOpenOrders, btnTables, btnTimeCard});
+        PanelHeaderLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnManager, btnTables, btnTimeCard, btnViewOrders});
 
         PanelHeaderLayout.setVerticalGroup(
             PanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -362,11 +414,11 @@ public class UserInterface extends javax.swing.JFrame {
                                 .addComponent(btnTimeCard)
                                 .addComponent(btnTables))
                             .addComponent(btnManager)
-                            .addComponent(btnOpenOrders))))
+                            .addComponent(btnViewOrders))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        PanelHeaderLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnManager, btnOpenOrders, btnTables, btnTimeCard});
+        PanelHeaderLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnManager, btnTables, btnTimeCard, btnViewOrders});
 
         javax.swing.GroupLayout Panel_NavigationLayout = new javax.swing.GroupLayout(Panel_Navigation);
         Panel_Navigation.setLayout(Panel_NavigationLayout);
@@ -689,7 +741,7 @@ public class UserInterface extends javax.swing.JFrame {
                         .addComponent(btnFourWay)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCalamari)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(250, Short.MAX_VALUE))
         );
 
         PanelAppetizersLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCalamari, btnChipsSalsa, btnFourWay, btnMozarellaSticks, btnSantaFeChicQue, btnSpinachArtiDip});
@@ -1577,7 +1629,7 @@ public class UserInterface extends javax.swing.JFrame {
         lblPartyNum.setFont(new java.awt.Font("Century Gothic", 0, 16)); // NOI18N
         lblPartyNum.setText("party");
 
-        cboxWaiter.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "---------", "Amanda", "Brandon", "Bryan", "Caleb", "Dana", "Hannah", "Matthew", "Pam", "Trina", "Vicky", "Zack", " " }));
+        lblWaiter.setText("Waiter Name");
 
         javax.swing.GroupLayout Panel_OrderLabelLayout = new javax.swing.GroupLayout(Panel_OrderLabel);
         Panel_OrderLabel.setLayout(Panel_OrderLabelLayout);
@@ -1593,8 +1645,8 @@ public class UserInterface extends javax.swing.JFrame {
                     .addGroup(Panel_OrderLabelLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(cboxWaiter, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(48, 48, 48)
+                        .addComponent(lblWaiter, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(49, 49, 49)
                 .addGroup(Panel_OrderLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Panel_OrderLabelLayout.createSequentialGroup()
                         .addComponent(lblParty)
@@ -1621,10 +1673,10 @@ public class UserInterface extends javax.swing.JFrame {
                         .addGroup(Panel_OrderLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblParty)
                             .addComponent(lblPartyNum))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 2, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_OrderLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cboxWaiter)
-                        .addComponent(jLabel1)))
+                        .addComponent(jLabel1)
+                        .addComponent(lblWaiter)))
                 .addContainerGap())
         );
 
@@ -2322,48 +2374,135 @@ public class UserInterface extends javax.swing.JFrame {
 
         PanelCardView.add(ViewManager, "card4");
 
-        ViewOpenOrders.setBackground(new java.awt.Color(223, 223, 246));
+        ViewOrders.setBackground(new java.awt.Color(223, 223, 246));
 
-        cbOpenOrder.addActionListener(new java.awt.event.ActionListener() {
+        tblOpenOrders.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Order No.", "Table No.", "Waiter"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblOpenOrders.setColumnSelectionAllowed(true);
+        tblOpenOrders.getTableHeader().setReorderingAllowed(false);
+        scrollOpenOrders.setViewportView(tblOpenOrders);
+        tblOpenOrders.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        jTabbedPane1.addTab("OPEN", scrollOpenOrders);
+
+        tblPaidOrders.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Order No.", "Table No.", "Waiter"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblPaidOrders.setColumnSelectionAllowed(true);
+        jScrollPane1.setViewportView(tblPaidOrders);
+        tblPaidOrders.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        jTabbedPane1.addTab("PAID", jScrollPane1);
+
+        btnViewOrder.setText("View");
+        btnViewOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbOpenOrderActionPerformed(evt);
+                btnViewOrderActionPerformed(evt);
             }
         });
 
-        btnSelectOrderNumber.setText("Select");
-        btnSelectOrderNumber.addActionListener(new java.awt.event.ActionListener() {
+        btnDeleteOrder.setText("Delete");
+        btnDeleteOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSelectOrderNumberActionPerformed(evt);
+                btnDeleteOrderActionPerformed(evt);
             }
         });
 
-        jLabel2.setText("Order Number");
+        jLabel2.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
+        jLabel2.setText("ORDERS");
 
-        javax.swing.GroupLayout ViewOpenOrdersLayout = new javax.swing.GroupLayout(ViewOpenOrders);
-        ViewOpenOrders.setLayout(ViewOpenOrdersLayout);
-        ViewOpenOrdersLayout.setHorizontalGroup(
-            ViewOpenOrdersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ViewOpenOrdersLayout.createSequentialGroup()
-                .addGap(288, 288, 288)
-                .addComponent(jLabel2)
-                .addGap(39, 39, 39)
-                .addComponent(cbOpenOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnSelectOrderNumber)
-                .addContainerGap(821, Short.MAX_VALUE))
-        );
-        ViewOpenOrdersLayout.setVerticalGroup(
-            ViewOpenOrdersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ViewOpenOrdersLayout.createSequentialGroup()
-                .addGap(217, 217, 217)
-                .addGroup(ViewOpenOrdersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbOpenOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSelectOrderNumber)
+        javax.swing.GroupLayout PanelOrdersLayout = new javax.swing.GroupLayout(PanelOrders);
+        PanelOrders.setLayout(PanelOrdersLayout);
+        PanelOrdersLayout.setHorizontalGroup(
+            PanelOrdersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelOrdersLayout.createSequentialGroup()
+                .addGroup(PanelOrdersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelOrdersLayout.createSequentialGroup()
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 602, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(PanelOrdersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnViewOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnDeleteOrder, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)))
                     .addComponent(jLabel2))
-                .addContainerGap(855, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        PanelOrdersLayout.setVerticalGroup(
+            PanelOrdersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(PanelOrdersLayout.createSequentialGroup()
+                .addGap(99, 99, 99)
+                .addComponent(btnViewOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDeleteOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(PanelOrdersLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 647, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        PanelCardView.add(ViewOpenOrders, "card5");
+        PanelOrdersLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnDeleteOrder, btnViewOrder});
+
+        javax.swing.GroupLayout ViewOrdersLayout = new javax.swing.GroupLayout(ViewOrders);
+        ViewOrders.setLayout(ViewOrdersLayout);
+        ViewOrdersLayout.setHorizontalGroup(
+            ViewOrdersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ViewOrdersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(PanelOrders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(654, Short.MAX_VALUE))
+        );
+        ViewOrdersLayout.setVerticalGroup(
+            ViewOrdersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ViewOrdersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(PanelOrders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(349, Short.MAX_VALUE))
+        );
+
+        PanelCardView.add(ViewOrders, "card5");
 
         PanelTransaction.setBackground(new java.awt.Color(255, 204, 204));
 
@@ -2688,6 +2827,13 @@ public class UserInterface extends javax.swing.JFrame {
         return subtotal;
     }
     
+    private void viewOrders(){
+         PanelCardView.removeAll();
+        PanelCardView.add(ViewOrders);
+        PanelCardView.repaint();
+        PanelCardView.revalidate();
+        
+    }
     private void viewTables() {
         PanelCardView.removeAll();
         PanelCardView.add(ViewTables);
@@ -3409,7 +3555,7 @@ public class UserInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPrintCheckActionPerformed
 
     private void btnCreditDebitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreditDebitActionPerformed
-        
+        dbconn.updatePaymentMethodtoDB("Credit/Debit", Integer.parseInt(lblOrderNumberObtained.toString()));
         paymentType.append(transaction.payByCreditCard(BigDecimal.valueOf(Double.parseDouble(txtKeypad.getText()))));
         txtKeypad.setText(null);
         keypadTransaction.delete(0, keypadTransaction.length());
@@ -3417,13 +3563,14 @@ public class UserInterface extends javax.swing.JFrame {
 
     private void btnGiftCardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGiftCardActionPerformed
         // TODO add your handling code here:
+        dbconn.updatePaymentMethodtoDB("Gift Card", Integer.parseInt(lblOrderNumberObtained.toString()));
         paymentType.append(transaction.payByGiftCard(BigDecimal.valueOf(Double.parseDouble(txtKeypad.getText())), receipt.getTotal()));
         txtKeypad.setText(null);
         keypadTransaction.delete(0, keypadTransaction.length());
     }//GEN-LAST:event_btnGiftCardActionPerformed
 
     private void btnCashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCashActionPerformed
-         dbconn.insertPaymentMethodtoDB("Cash", 81239);
+         dbconn.updatePaymentMethodtoDB("Cash", Integer.parseInt(lblOrderNumberObtained.toString()));
         lblCashPaidAmount.setVisible(true);
         lblChangeAmount.setVisible(true);
         double change = transaction.getChange(txtKeypad.getText(), lblTotalAmount.getText());
@@ -3444,6 +3591,7 @@ public class UserInterface extends javax.swing.JFrame {
 
     private void btnDoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoneActionPerformed
         // TODO add your handling code here:
+        
         if (isNewOrder) {
             DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
             
@@ -3519,6 +3667,12 @@ public class UserInterface extends javax.swing.JFrame {
 
         //cbOpenOrder.addItem(receipt.getOrderNumber());
         //cbOpenOrder.setVisible(true);
+        try{
+            conn.close();
+        }
+        catch(Exception e){
+            System.out.println("SQLite Connection NOT CLOSED!" + e);
+        }
     }//GEN-LAST:event_btnDoneActionPerformed
 
     private void btnTable4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTable4ActionPerformed
@@ -3647,50 +3801,34 @@ public class UserInterface extends javax.swing.JFrame {
         lblTableNum.setText("13");
     }//GEN-LAST:event_btnTable13ActionPerformed
 
-    private void btnOpenOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenOrdersActionPerformed
+    private void btnViewOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrdersActionPerformed
 
 // TODO add your handling code here:
+        tblOpenOrders.setColumnSelectionAllowed(false);
+        tblOpenOrders.setRowSelectionAllowed(isShown);
+        tblOpenOrders.setSelectionForeground(Color.lightGray);
+        tblOpenOrders.setSelectionBackground(Color.blue);
+        tblOpenOrders.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
+        
         PanelCardView.removeAll();
-        PanelCardView.add(ViewOpenOrders);
+        PanelCardView.add(ViewOrders);
         PanelCardView.repaint();
         PanelCardView.revalidate();
-        
-        int n = 0;
-        
-        for (int i = 0; i < numberOrder.length; i++) {
-            n = numberOrder[i];
-            cbOpenOrder.addItem(n);
-        }
-        //
-        cbOpenOrder.setVisible(true);
-        numberOrder = null;
+        conn = Database.ConnecttoDB();
+        updateOpenOrderTable();
+        updatePaidOrderTable();
+//        int n = 0;
+//       
+//        for (int i = 0; i < numberOrder.length; i++) {
+//            n = numberOrder[i];
+//            cbOpenOrder.addItem(n);
+//        }
+//        //
+//        cbOpenOrder.setVisible(true);
+//        numberOrder = null;
 
-    }//GEN-LAST:event_btnOpenOrdersActionPerformed
-
-    private void btnSelectOrderNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectOrderNumberActionPerformed
-
-        // TODO add your handling code here:
-        isNewOrder = false;
-        viewPOS();
-        Object[] savedItemName = dbconn.retrieveItemNameFromSalesLog(Integer.parseInt(cbOpenOrder.getSelectedItem().toString()));
-        Object[] savedItemPrice = dbconn.retrieveItemPriceFromSalesLog(Integer.parseInt(cbOpenOrder.getSelectedItem().toString()));
-        Object mn = "dfdfsdf";
-        DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
-        // Item and price
-        for (int i = 0; i < savedItemPrice.length; i++) {
-            
-            Object[] row = {savedItemName[i], savedItemPrice[i]};
-            model.addRow(row);
-            runningTotal();
-        }
-        
-        lblOrderNumberObtained.setText("" + dbconn.getSavedOrderNumberFromDB(Integer.parseInt(cbOpenOrder.getSelectedItem().toString())));
-
-    }//GEN-LAST:event_btnSelectOrderNumberActionPerformed
-
-    private void cbOpenOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbOpenOrderActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbOpenOrderActionPerformed
+    }//GEN-LAST:event_btnViewOrdersActionPerformed
 
     private void txtAddress1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAddress1ActionPerformed
         // TODO add your handling code here:
@@ -3699,6 +3837,57 @@ public class UserInterface extends javax.swing.JFrame {
     private void txtZipCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtZipCodeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtZipCodeActionPerformed
+
+    private void btnViewOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrderActionPerformed
+        // TODO add your handling code here:
+        
+        
+        isNewOrder = false;
+        PanelCardView.removeAll();
+        PanelCardView.add(ViewPOS);
+        PanelCardView.repaint();
+        PanelCardView.revalidate();
+        btnDone.setEnabled(true);
+        btnPrintCheck.setEnabled(true);
+        
+        
+        DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
+       model.setRowCount(0);
+        int selectedData = 0;
+        int [] selectedRow = tblOpenOrders.getSelectedRows();
+        int [] selectedColumn = tblOpenOrders.getSelectedColumns();
+        for (int i = 0; i < selectedRow.length; i++){
+            for (int j = 0; j < selectedColumn.length; j++){
+                    selectedData = Integer.parseInt(tblOpenOrders.getValueAt(selectedRow[i], selectedColumn[j]).toString());
+            } 
+        }
+       
+        Object[] savedItemName = dbconn.retrieveItemNameFromSalesLog(selectedData);
+        Object[] savedItemPrice = dbconn.retrieveItemPriceFromSalesLog(selectedData);
+        Object mn = "dfdfsdf";
+        
+        // Item and price
+        for (int i = 0; i < savedItemPrice.length; i++) {
+            
+            Object[] row = {savedItemName[i], savedItemPrice[i]};
+            model.addRow(row);
+          
+            runningTotal();
+        }
+        lblWaiter.setText(""+dbconn.getWaiterNameFromDB(selectedData));
+        lblTableNum.setText(""+dbconn.getSavedTableNumberFromDB(selectedData));
+        lblOrderNumberObtained.setText("" + dbconn.getSavedOrderNumberFromDB(selectedData));
+        btnCash.setEnabled(true);
+        btnCreditDebit.setEnabled(true);
+        btnGiftCard.setEnabled(true);
+    }//GEN-LAST:event_btnViewOrderActionPerformed
+
+    private void btnDeleteOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteOrderActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
+        model.removeRow(tblOrder.getSelectedRow());
+        runningTotal();
+    }//GEN-LAST:event_btnDeleteOrderActionPerformed
 
     /**
      * @param args the command line arguments
@@ -3777,6 +3966,7 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JPanel PanelLogin;
     private javax.swing.JPanel PanelMenu;
     private javax.swing.JPanel PanelOrder;
+    private javax.swing.JPanel PanelOrders;
     private javax.swing.JPanel PanelSalads;
     private javax.swing.JPanel PanelTextEntry;
     private javax.swing.JPanel PanelTransaction;
@@ -3786,7 +3976,7 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JLabel PhoneNumber;
     private javax.swing.JLabel State;
     private javax.swing.JPanel ViewManager;
-    private javax.swing.JPanel ViewOpenOrders;
+    private javax.swing.JPanel ViewOrders;
     private javax.swing.JPanel ViewPOS;
     private javax.swing.JPanel ViewTables;
     private javax.swing.JPanel ViewTimeCard;
@@ -3825,6 +4015,7 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JButton btnCorn;
     private javax.swing.JButton btnCreditDebit;
     private javax.swing.JButton btnDecimalPoint;
+    private javax.swing.JButton btnDeleteOrder;
     private javax.swing.JButton btnDesserts;
     private javax.swing.JButton btnDietCoke;
     private javax.swing.JButton btnDone;
@@ -3843,7 +4034,6 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JButton btnMashedPotatoes;
     private javax.swing.JButton btnMilkshake;
     private javax.swing.JButton btnMozarellaSticks;
-    private javax.swing.JButton btnOpenOrders;
     private javax.swing.JButton btnOriginal;
     private javax.swing.JButton btnPotatoWedges;
     private javax.swing.JButton btnPrintCheck;
@@ -3853,7 +4043,6 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JButton btnRemove;
     private javax.swing.JButton btnSalads;
     private javax.swing.JButton btnSantaFeChicQue;
-    private javax.swing.JButton btnSelectOrderNumber;
     private javax.swing.JButton btnSouthwest;
     private javax.swing.JButton btnSpinachArtiDip;
     private javax.swing.JButton btnSprite;
@@ -3883,10 +4072,10 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JButton btnThreeCheese;
     private javax.swing.JButton btnTimeCard;
     private javax.swing.JButton btnTiramisu;
+    private javax.swing.JButton btnViewOrder;
+    private javax.swing.JButton btnViewOrders;
     private javax.swing.JButton btnWings;
-    private javax.swing.JComboBox cbOpenOrder;
     private java.awt.Choice cbState;
-    private javax.swing.JComboBox cboxWaiter;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -3902,9 +4091,11 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JLabel lblAppetizers;
@@ -3935,8 +4126,12 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JLabel lblTaxAmount;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JLabel lblTotalAmount;
+    private javax.swing.JLabel lblWaiter;
     private javax.swing.JLabel lblWings;
+    private javax.swing.JScrollPane scrollOpenOrders;
+    private javax.swing.JTable tblOpenOrders;
     private javax.swing.JTable tblOrder;
+    private javax.swing.JTable tblPaidOrders;
     private javax.swing.JTextField txtAddress1;
     private javax.swing.JTextField txtAddress2;
     private javax.swing.JTextField txtCity;

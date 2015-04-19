@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import net.proteanit.sql.DbUtils;
 
 /**
  *
@@ -14,6 +15,8 @@ public class Database {
     Connection dbconn = null;
     java.util.Date date = new java.util.Date();
     String[] time = date.toString().split(" ");
+//This was public static Connection ConnecttoDB() as of 4/17 8:40PM
+//This has been modified for Initializing database in the UI (another class)
 
     public static Connection ConnecttoDB() {
         try {
@@ -93,6 +96,20 @@ public class Database {
             System.out.println(e);
         }
         return EmployeeFirstName;
+
+    }
+
+    public void updateOpenOrderTable() {
+        ResultSet rs = null;
+        Statement dbStatement = null;
+        try {
+            String sql = "SELECT OrderNumber from Revenue WHERE PaymentMethod = \"null\"";
+            rs = dbStatement.executeQuery(sql);
+           
+            
+        } catch (Exception e) {
+            System.out.println("updateOpenOrderTable: " + e);
+        }
 
     }
 
@@ -258,6 +275,7 @@ public class Database {
 
             System.out.println(e);
         }
+        
     }
 
     public void salesLog(String itemName, double itemPrice, int OrderNumber) {
@@ -384,6 +402,49 @@ public class Database {
 
         return NewOrderNumber;
     }
+public String getWaiterNameFromDB(int OrderNumber) {
+        ResultSet rs = null;
+        Statement dbStatement = null;
+        String waiterName = null;
+        try {
+
+            dbStatement = ConnecttoDB().createStatement();
+
+            rs = dbStatement.executeQuery("SELECT (ServerName) FROM Revenue WHERE OrderNumber=" + OrderNumber + ";");
+            while (rs.next()) {
+                waiterName = rs.getString("ServerName");
+
+            }
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+        }
+
+        return waiterName;
+    }
+
+     public int getSavedTableNumberFromDB(int OrderNumber) {
+        ResultSet rs = null;
+        Statement dbStatement = null;
+        int SavedTableNumber = 0;
+        try {
+
+            dbStatement = ConnecttoDB().createStatement();
+
+            rs = dbStatement.executeQuery("SELECT (TableNumber) FROM Revenue WHERE OrderNumber=" + OrderNumber + ";");
+            while (rs.next()) {
+                SavedTableNumber = rs.getInt("TableNumber");
+
+            }
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+        }
+
+        return SavedTableNumber;
+    }
 
     public int getSavedOrderNumberFromDB(int OrderNumber) {
         ResultSet rs = null;
@@ -393,7 +454,7 @@ public class Database {
 
             dbStatement = ConnecttoDB().createStatement();
 
-            rs = dbStatement.executeQuery("SELECT (OrderNumber) FROM SalesLog WHERE OrderNumber=" + OrderNumber + ";");
+            rs = dbStatement.executeQuery("SELECT (OrderNumber) FROM Revenue WHERE OrderNumber=" + OrderNumber + ";");
             while (rs.next()) {
                 SavedOrderNumber = rs.getInt("OrderNumber");
 
@@ -466,7 +527,7 @@ public class Database {
         }
     }
 
-    public void insertPaymentMethodtoDB(String PaymentMethod, int OrderNumber) {
+    public void updatePaymentMethodtoDB(String PaymentMethod, int OrderNumber) {
         ResultSet rs = null;
         Statement dbStatement = null;
 
@@ -474,7 +535,7 @@ public class Database {
 
             dbStatement = ConnecttoDB().createStatement();
 
-            dbStatement.executeUpdate("UPDATE Revenue SET PaymentMethod = \""+PaymentMethod+"\"  WHERE OrderNumber= "+OrderNumber+";");
+            dbStatement.executeUpdate("UPDATE Revenue SET PaymentMethod = \"" + PaymentMethod + "\"  WHERE OrderNumber= " + OrderNumber + ";");
 
         } catch (Exception e) {
 
@@ -482,13 +543,14 @@ public class Database {
         }
 
     }
-    public double getChange(String Cash, String Total){
+
+    public double getChange(String Cash, String Total) {
         BigDecimal BDCash = BigDecimal.valueOf(Double.parseDouble(Cash));
         BigDecimal BDTotal = BigDecimal.valueOf(Double.parseDouble(Total));
-        
+
         Double change = Double.parseDouble(BDCash.subtract(BDTotal).toString());
-        
-        
+
         return change;
     }
+
 }
