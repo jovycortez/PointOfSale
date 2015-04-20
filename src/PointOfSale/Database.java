@@ -63,7 +63,14 @@ public class Database {
         } catch (Exception e) {
 
             System.out.println(e);
-        }
+        }finally{
+                try{
+                    rs.close();
+                  
+                }catch(Exception e){
+                    
+                }
+            }
 
         return loadedMenu;
     }
@@ -94,7 +101,14 @@ public class Database {
         } catch (Exception e) {
 
             System.out.println(e);
-        }
+        }finally{
+                try{
+                    rs.close();
+                  
+                }catch(Exception e){
+                    
+                }
+            }
         return EmployeeFirstName;
 
     }
@@ -105,11 +119,17 @@ public class Database {
         try {
             String sql = "SELECT OrderNumber from Revenue WHERE PaymentMethod = \"null\"";
             rs = dbStatement.executeQuery(sql);
-           
-            
+
         } catch (Exception e) {
             System.out.println("updateOpenOrderTable: " + e);
-        }
+        }finally{
+                try{
+                    rs.close();
+                  
+                }catch(Exception e){
+                    
+                }
+            }
 
     }
 
@@ -132,7 +152,14 @@ public class Database {
         } catch (Exception e) {
 
             System.out.println(e);
-        }
+        }finally{
+                try{
+                    rs.close();
+                  
+                }catch(Exception e){
+                    
+                }
+            }
         return employeeExists;
 
     }
@@ -170,7 +197,14 @@ public class Database {
         } catch (Exception e) {
 
             System.out.println(e);
-        }
+        }finally{
+                try{
+                    rs.close();
+                  
+                }catch(Exception e){
+                    
+                }
+            }
 
 //Select empID from TimeCard where empID =variablename
         //if empID= variable is null, insert empId, clockin = date/time
@@ -195,7 +229,14 @@ public class Database {
         } catch (Exception e) {
 
             System.out.println(e);
-        }
+        }finally{
+                try{
+                    rs.close();
+                  
+                }catch(Exception e){
+                    
+                }
+            }
         return employeeExists;
 
     }
@@ -220,7 +261,14 @@ public class Database {
         } catch (Exception e) {
 
             System.out.println(e);
-        }
+        }finally{
+                try{
+                    rs.close();
+                  
+                }catch(Exception e){
+                    
+                }
+            }
     }
 
     public Object[][] ViewAllOrders() {
@@ -255,12 +303,19 @@ public class Database {
         } catch (Exception e) {
 
             System.out.println(e);
-        }
+        }finally{
+                try{
+                    rs.close();
+                  
+                }catch(Exception e){
+                    
+                }
+            }
 
         return AllOrders;
     }
 
-    public void saveRevenue(double Subtotal, double TaxAmount, double Total, String PaymentMethod, int OrderNumber, int TableNumber,String ServerName ) {
+    public void saveRevenue(double Subtotal, double TaxAmount, double Total, String PaymentMethod, int OrderNumber, int TableNumber, String ServerName) {
         ResultSet rs = null;
         Statement dbStatement = null;
 
@@ -269,13 +324,20 @@ public class Database {
             dbStatement = ConnecttoDB().createStatement();
 
             dbStatement.executeUpdate("INSERT INTO Revenue (Subtotal, TaxAmount, Total, PaymentMethod,  OrderNumber, TableNumber, ServerName)\n"
-                    + "VALUES (" + Subtotal + "," + TaxAmount + "," + Total + ",\"" + PaymentMethod + "\"," + OrderNumber + "),"+ TableNumber +",\""+ServerName+"\";");
+                    + "VALUES (" + Subtotal + "," + TaxAmount + "," + Total + ",\"" + PaymentMethod + "\"," + OrderNumber + ")," + TableNumber + ",\"" + ServerName + "\";");
 
         } catch (Exception e) {
 
             System.out.println(e);
-        }
-        
+        }finally{
+                try{
+                    rs.close();
+                  
+                }catch(Exception e){
+                    
+                }
+            }
+
     }
 
     public void salesLog(String itemName, double itemPrice, int OrderNumber) {
@@ -297,7 +359,14 @@ public class Database {
         } catch (Exception e) {
 
             System.out.println(e);
-        }
+        }finally{
+                try{
+                    rs.close();
+                  
+                }catch(Exception e){
+                    
+                }
+            }
     }
 
     /* METHOD NAME: retrieveOrderFromSalesLog()
@@ -335,7 +404,14 @@ public class Database {
         } catch (Exception e) {
 
             System.out.println(e);
-        }
+        }finally{
+                try{
+                    rs.close();
+                  
+                }catch(Exception e){
+                    
+                }
+            }
 
         return savedOrders;
 
@@ -369,7 +445,14 @@ public class Database {
         } catch (Exception e) {
 
             System.out.println(e);
-        }
+        }finally{
+                try{
+                    rs.close();
+                  
+                }catch(Exception e){
+                    
+                }
+            }
 
         return savedOrders;
 
@@ -398,11 +481,19 @@ public class Database {
         } catch (Exception e) {
 
             System.out.println(e);
+        } finally {
+            try {
+                rs.close();
+
+            } catch (Exception e) {
+
+            }
         }
 
         return NewOrderNumber;
     }
-public String getWaiterNameFromDB(int OrderNumber) {
+
+    public String getWaiterNameFromDB(int OrderNumber) {
         ResultSet rs = null;
         Statement dbStatement = null;
         String waiterName = null;
@@ -419,12 +510,19 @@ public String getWaiterNameFromDB(int OrderNumber) {
         } catch (Exception e) {
 
             System.out.println(e);
+        } finally {
+            try {
+                rs.close();
+
+            } catch (Exception e) {
+
+            }
         }
 
         return waiterName;
     }
 
-     public int getSavedTableNumberFromDB(int OrderNumber) {
+    public int getSavedTableNumberFromDB(int OrderNumber) {
         ResultSet rs = null;
         Statement dbStatement = null;
         int SavedTableNumber = 0;
@@ -441,6 +539,13 @@ public String getWaiterNameFromDB(int OrderNumber) {
         } catch (Exception e) {
 
             System.out.println(e);
+        } finally {
+            try {
+                rs.close();
+
+            } catch (Exception e) {
+
+            }
         }
 
         return SavedTableNumber;
@@ -463,6 +568,13 @@ public String getWaiterNameFromDB(int OrderNumber) {
         } catch (Exception e) {
 
             System.out.println(e);
+        } finally {
+            try {
+                rs.close();
+
+            } catch (Exception e) {
+
+            }
         }
 
         return SavedOrderNumber;
@@ -481,6 +593,13 @@ public String getWaiterNameFromDB(int OrderNumber) {
         } catch (Exception e) {
 
             System.out.println("updateRevenue" + e);
+        } finally {
+            try {
+                rs.close();
+
+            } catch (Exception e) {
+
+            }
         }
     }
 
@@ -506,6 +625,13 @@ public String getWaiterNameFromDB(int OrderNumber) {
         } catch (Exception e) {
 
             System.out.println(e);
+        } finally {
+            try {
+                rs.close();
+
+            } catch (Exception e) {
+
+            }
         }
 
         return SavedOrderNumber;
@@ -524,6 +650,13 @@ public String getWaiterNameFromDB(int OrderNumber) {
         } catch (Exception e) {
 
             System.out.println("deleteFromSalesLog " + e);
+        } finally {
+            try {
+                rs.close();
+
+            } catch (Exception e) {
+
+            }
         }
     }
 
@@ -540,6 +673,13 @@ public String getWaiterNameFromDB(int OrderNumber) {
         } catch (Exception e) {
 
             System.out.println("insertPaymentMethodtoDB " + e);
+        } finally {
+            try {
+                rs.close();
+
+            } catch (Exception e) {
+
+            }
         }
 
     }
@@ -552,7 +692,8 @@ public String getWaiterNameFromDB(int OrderNumber) {
 
         return change;
     }
-    public boolean userLogin(String userID){
+
+    public boolean userLogin(String userID) {
         ResultSet rs = null;
         Statement dbStatement = null;
         boolean isCorrectPass = false;
@@ -561,23 +702,31 @@ public String getWaiterNameFromDB(int OrderNumber) {
             dbStatement = ConnecttoDB().createStatement();
 
             rs = dbStatement.executeQuery("SELECT * FROM employeeDB WHERE empId=?;");
-            if(rs.next()) {
+            if (rs.next()) {
                 JOptionPane.showMessageDialog(null, "Correct User ID!");
                 UserInterface POS = new UserInterface();
                 POS.setVisible(true);
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Incorrect. Please enter valid ID!");
             }
 
         } catch (Exception e) {
 
-            System.out.println("login from db:"+e);
+            System.out.println("login from db:" + e);
+        } finally {
+            try {
+                rs.close();
+
+            } catch (Exception e) {
+
+            }
         }
 
         return isCorrectPass;
-   
+
     }
-     public String loginWaiter(int userPass) {
+
+    public String loginWaiter(int userPass) {
         ResultSet rs = null;
         Statement dbStatement = null;
         String waiterName = null;
@@ -585,15 +734,16 @@ public String getWaiterNameFromDB(int OrderNumber) {
 
             dbStatement = ConnecttoDB().createStatement();
 
-            rs = dbStatement.executeQuery("SELECT (ServerName) FROM employeeDB WHERE empId=" + userPass + ";");
+            rs = dbStatement.executeQuery("SELECT (firstName) FROM employeeDB WHERE empId= "+ userPass + ";");
             while (rs.next()) {
-                waiterName = rs.getString("ServerName");
-
+                waiterName = rs.getString("firstName");
+                System.out.println("Database " + waiterName);
             }
 
         } catch (Exception e) {
 
             System.out.println("waiterLogin" + e);
+        
         }
 
         return waiterName;

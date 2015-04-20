@@ -44,6 +44,18 @@ public class UserInterface extends javax.swing.JFrame {
     ResultSet rs = null;
     PreparedStatement pst = null;
     boolean isShown = true;
+    String waiter = null;
+    String userPass = null;
+
+    private boolean isFourdigits(String userPass) {
+        boolean is4digits = false;
+        if (userPass.length() == 4) {
+            is4digits = true;
+        } else {
+
+        }
+        return is4digits;
+    }
 
     public void hasWaiterName(String waiter) {
         lblWaiter.setText(waiter);
@@ -72,8 +84,10 @@ public class UserInterface extends javax.swing.JFrame {
             }
         }.start();
         txtKeypad.setVisible(false);
-
         conn = Database.ConnecttoDB();
+        PanelCardView.setVisible(false);
+        PanelTransaction.setVisible(false);
+        Panel_Navigation.setVisible(false);
 
     }
 
@@ -87,6 +101,13 @@ public class UserInterface extends javax.swing.JFrame {
 
         } catch (Exception e) {
             System.out.println("updateOpenOrderTable: " + e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (Exception e) {
+
+            }
         }
 
     }
@@ -101,6 +122,13 @@ public class UserInterface extends javax.swing.JFrame {
 
         } catch (Exception e) {
             System.out.println("updateOpenOrderTable: " + e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (Exception e) {
+
+            }
         }
 
     }
@@ -116,6 +144,23 @@ public class UserInterface extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         PanelBackground = new javax.swing.JPanel();
+        PanelLoginContainer = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        PanelKeypad3 = new javax.swing.JPanel();
+        btnOne = new javax.swing.JButton();
+        btn005 = new javax.swing.JButton();
+        btn006 = new javax.swing.JButton();
+        btn004 = new javax.swing.JButton();
+        btn008 = new javax.swing.JButton();
+        btn009 = new javax.swing.JButton();
+        btn000 = new javax.swing.JButton();
+        btn007 = new javax.swing.JButton();
+        btnClear3 = new javax.swing.JButton();
+        btn003 = new javax.swing.JButton();
+        btn002 = new javax.swing.JButton();
+        btnEnter3 = new javax.swing.JButton();
+        passLogin = new javax.swing.JPasswordField();
+        jLabel8 = new javax.swing.JLabel();
         Panel_Navigation = new javax.swing.JPanel();
         PanelHeader = new javax.swing.JPanel();
         btnTables = new javax.swing.JButton();
@@ -124,6 +169,9 @@ public class UserInterface extends javax.swing.JFrame {
         btnViewOrders = new javax.swing.JButton();
         lblSystemClock = new javax.swing.JLabel();
         lblSystemDate = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        lblWaiterHeader = new javax.swing.JLabel();
+        btnLogout = new javax.swing.JButton();
         PanelCardView = new javax.swing.JPanel();
         ViewTables = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -338,8 +386,213 @@ public class UserInterface extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        PanelBackground.setBackground(new java.awt.Color(0, 0, 0));
+        PanelBackground.setBackground(new java.awt.Color(102, 102, 102));
         PanelBackground.setMinimumSize(new java.awt.Dimension(100, 100));
+
+        PanelLoginContainer.setBackground(new java.awt.Color(204, 204, 204));
+        PanelLoginContainer.setLayout(new java.awt.GridBagLayout());
+
+        btnOne.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btnOne.setText("1");
+        btnOne.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOneActionPerformed(evt);
+            }
+        });
+
+        btn005.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btn005.setText("5");
+        btn005.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn005ActionPerformed(evt);
+            }
+        });
+
+        btn006.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btn006.setText("6");
+        btn006.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn006ActionPerformed(evt);
+            }
+        });
+
+        btn004.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btn004.setText("4");
+        btn004.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn004ActionPerformed(evt);
+            }
+        });
+
+        btn008.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        btn008.setText("8");
+        btn008.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn008ActionPerformed(evt);
+            }
+        });
+
+        btn009.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        btn009.setText("9");
+        btn009.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn009ActionPerformed(evt);
+            }
+        });
+
+        btn000.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        btn000.setText("0");
+        btn000.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn000ActionPerformed(evt);
+            }
+        });
+
+        btn007.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btn007.setText("7");
+        btn007.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn007ActionPerformed(evt);
+            }
+        });
+
+        btnClear3.setBackground(new java.awt.Color(204, 255, 255));
+        btnClear3.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        btnClear3.setText("Clear");
+        btnClear3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClear3ActionPerformed(evt);
+            }
+        });
+
+        btn003.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btn003.setText("3");
+        btn003.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn003ActionPerformed(evt);
+            }
+        });
+
+        btn002.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
+        btn002.setText("2");
+        btn002.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn002ActionPerformed(evt);
+            }
+        });
+
+        btnEnter3.setBackground(new java.awt.Color(153, 255, 255));
+        btnEnter3.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        btnEnter3.setText("Enter");
+        btnEnter3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnter3ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout PanelKeypad3Layout = new javax.swing.GroupLayout(PanelKeypad3);
+        PanelKeypad3.setLayout(PanelKeypad3Layout);
+        PanelKeypad3Layout.setHorizontalGroup(
+            PanelKeypad3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelKeypad3Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(PanelKeypad3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelKeypad3Layout.createSequentialGroup()
+                        .addComponent(btn007, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn008))
+                    .addGroup(PanelKeypad3Layout.createSequentialGroup()
+                        .addComponent(btn004, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn005))
+                    .addGroup(PanelKeypad3Layout.createSequentialGroup()
+                        .addComponent(btnOne, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn002))
+                    .addGroup(PanelKeypad3Layout.createSequentialGroup()
+                        .addComponent(btnClear3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn000)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(PanelKeypad3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn003, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btn006, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btn009, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnEnter3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21))
+        );
+
+        PanelKeypad3Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btn000, btn002, btn003, btn004, btn005, btn006, btn007, btn008, btn009, btnClear3, btnEnter3, btnOne});
+
+        PanelKeypad3Layout.setVerticalGroup(
+            PanelKeypad3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelKeypad3Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(PanelKeypad3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnOne, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn002)
+                    .addComponent(btn003))
+                .addGap(0, 0, 0)
+                .addGroup(PanelKeypad3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn005)
+                    .addComponent(btn006)
+                    .addComponent(btn004))
+                .addGap(0, 0, 0)
+                .addGroup(PanelKeypad3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn008)
+                    .addComponent(btn009)
+                    .addComponent(btn007))
+                .addGap(0, 0, 0)
+                .addGroup(PanelKeypad3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(btnClear3)
+                    .addComponent(btn000)
+                    .addComponent(btnEnter3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        PanelKeypad3Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btn000, btn002, btn003, btn004, btn005, btn006, btn007, btn008, btn009, btnClear3, btnEnter3, btnOne});
+
+        passLogin.setBackground(new java.awt.Color(206, 244, 244));
+        passLogin.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        passLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passLoginActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
+        jLabel8.setText("Enter User ID:");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(passLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PanelKeypad3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(passLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(PanelKeypad3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(45, 15, 34, 15);
+        PanelLoginContainer.add(jPanel2, gridBagConstraints);
 
         PanelHeader.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -377,6 +630,17 @@ public class UserInterface extends javax.swing.JFrame {
         lblSystemDate.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         lblSystemDate.setText("date");
 
+        jLabel9.setText("Server Name:");
+
+        lblWaiterHeader.setText("waiter");
+
+        btnLogout.setText("Logout");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout PanelHeaderLayout = new javax.swing.GroupLayout(PanelHeader);
         PanelHeader.setLayout(PanelHeaderLayout);
         PanelHeaderLayout.setHorizontalGroup(
@@ -386,7 +650,13 @@ public class UserInterface extends javax.swing.JFrame {
                 .addGroup(PanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblSystemClock)
                     .addComponent(lblSystemDate))
+                .addGap(255, 255, 255)
+                .addComponent(jLabel9)
+                .addGap(64, 64, 64)
+                .addComponent(lblWaiterHeader)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnLogout)
+                .addGap(18, 18, 18)
                 .addComponent(btnTables)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnTimeCard)
@@ -412,7 +682,10 @@ public class UserInterface extends javax.swing.JFrame {
                         .addGroup(PanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(PanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(btnTimeCard)
-                                .addComponent(btnTables))
+                                .addComponent(btnTables)
+                                .addComponent(jLabel9)
+                                .addComponent(lblWaiterHeader)
+                                .addComponent(btnLogout))
                             .addComponent(btnManager)
                             .addComponent(btnViewOrders))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -426,7 +699,7 @@ public class UserInterface extends javax.swing.JFrame {
             Panel_NavigationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Panel_NavigationLayout.createSequentialGroup()
                 .addComponent(PanelHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(0, 0, 0))
         );
         Panel_NavigationLayout.setVerticalGroup(
             Panel_NavigationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -650,7 +923,7 @@ public class UserInterface extends javax.swing.JFrame {
                     .addComponent(btnTable12)
                     .addComponent(btnTable6, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnTable18))
-                .addContainerGap(632, Short.MAX_VALUE))
+                .addContainerGap(733, Short.MAX_VALUE))
         );
 
         jPanel5Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnTable1, btnTable10, btnTable11, btnTable12, btnTable13, btnTable14, btnTable15, btnTable16, btnTable17, btnTable18, btnTable2, btnTable3, btnTable4, btnTable5, btnTable6, btnTable7, btnTable8, btnTable9});
@@ -662,7 +935,7 @@ public class UserInterface extends javax.swing.JFrame {
             .addGroup(ViewTablesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(777, Short.MAX_VALUE))
+                .addContainerGap(1151, Short.MAX_VALUE))
         );
         ViewTablesLayout.setVerticalGroup(
             ViewTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -741,7 +1014,7 @@ public class UserInterface extends javax.swing.JFrame {
                         .addComponent(btnFourWay)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCalamari)))
-                .addContainerGap(248, Short.MAX_VALUE))
+                .addContainerGap(622, Short.MAX_VALUE))
         );
 
         PanelAppetizersLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCalamari, btnChipsSalsa, btnFourWay, btnMozarellaSticks, btnSantaFeChicQue, btnSpinachArtiDip});
@@ -785,7 +1058,7 @@ public class UserInterface extends javax.swing.JFrame {
                 .addComponent(lblAppetizers)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PanelAppetizers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(737, Short.MAX_VALUE))
+                .addContainerGap(838, Short.MAX_VALUE))
         );
 
         PanelMenu.add(CardAppetizers, "card3");
@@ -892,7 +1165,7 @@ public class UserInterface extends javax.swing.JFrame {
                 .addGroup(CardBurgersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(CardBurgersLayout.createSequentialGroup()
                         .addComponent(lblBurgers)
-                        .addContainerGap(588, Short.MAX_VALUE))
+                        .addContainerGap(962, Short.MAX_VALUE))
                     .addComponent(PanelBurgers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         CardBurgersLayout.setVerticalGroup(
@@ -2198,7 +2471,7 @@ public class UserInterface extends javax.swing.JFrame {
                     .addComponent(txtCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbState, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtZipCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(PhoneNumber)
                     .addComponent(Employee_SNN))
@@ -2240,7 +2513,7 @@ public class UserInterface extends javax.swing.JFrame {
             .addGroup(Employee_ScheduleLayout.createSequentialGroup()
                 .addGap(47, 47, 47)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 877, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(193, Short.MAX_VALUE))
+                .addContainerGap(130, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Employee_ScheduleLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton4)
@@ -2260,7 +2533,7 @@ public class UserInterface extends javax.swing.JFrame {
                     .addComponent(jButton4)
                     .addComponent(jButton5)
                     .addComponent(jButton6))
-                .addContainerGap(336, Short.MAX_VALUE))
+                .addContainerGap(307, Short.MAX_VALUE))
         );
 
         Employee_Tabs.addTab("Schedule", Employee_Schedule);
@@ -2272,24 +2545,17 @@ public class UserInterface extends javax.swing.JFrame {
             .addGroup(BackOffice_EmployeesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(Employee_List, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1192, Short.MAX_VALUE))
-            .addGroup(BackOffice_EmployeesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BackOffice_EmployeesLayout.createSequentialGroup()
-                    .addContainerGap(253, Short.MAX_VALUE)
-                    .addComponent(Employee_Tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 1122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(25, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Employee_Tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 1059, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(63, 63, 63))
         );
         BackOffice_EmployeesLayout.setVerticalGroup(
             BackOffice_EmployeesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BackOffice_EmployeesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Employee_List, javax.swing.GroupLayout.DEFAULT_SIZE, 996, Short.MAX_VALUE)
+                .addComponent(Employee_List, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(BackOffice_EmployeesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(BackOffice_EmployeesLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(Employee_Tabs)
-                    .addContainerGap()))
+            .addComponent(Employee_Tabs, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         Manager_BackOffice.addTab("Employees", BackOffice_Employees);
@@ -2319,14 +2585,14 @@ public class UserInterface extends javax.swing.JFrame {
             .addGroup(BackOffice_InventoryLayout.createSequentialGroup()
                 .addGap(65, 65, 65)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 1213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         BackOffice_InventoryLayout.setVerticalGroup(
             BackOffice_InventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BackOffice_InventoryLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 761, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(235, Short.MAX_VALUE))
+                .addContainerGap(122, Short.MAX_VALUE))
         );
 
         Manager_BackOffice.addTab("Inventory", BackOffice_Inventory);
@@ -2335,11 +2601,11 @@ public class UserInterface extends javax.swing.JFrame {
         BackOffice_CostOfSales.setLayout(BackOffice_CostOfSalesLayout);
         BackOffice_CostOfSalesLayout.setHorizontalGroup(
             BackOffice_CostOfSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1400, Short.MAX_VALUE)
+            .addGap(0, 1273, Short.MAX_VALUE)
         );
         BackOffice_CostOfSalesLayout.setVerticalGroup(
             BackOffice_CostOfSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1016, Short.MAX_VALUE)
+            .addGap(0, 903, Short.MAX_VALUE)
         );
 
         Manager_BackOffice.addTab("Cost of Sales", BackOffice_CostOfSales);
@@ -2348,11 +2614,11 @@ public class UserInterface extends javax.swing.JFrame {
         BackOffice_Reports.setLayout(BackOffice_ReportsLayout);
         BackOffice_ReportsLayout.setHorizontalGroup(
             BackOffice_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1400, Short.MAX_VALUE)
+            .addGap(0, 1273, Short.MAX_VALUE)
         );
         BackOffice_ReportsLayout.setVerticalGroup(
             BackOffice_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1016, Short.MAX_VALUE)
+            .addGap(0, 903, Short.MAX_VALUE)
         );
 
         Manager_BackOffice.addTab("Reports", BackOffice_Reports);
@@ -2361,13 +2627,15 @@ public class UserInterface extends javax.swing.JFrame {
         LetsGo_WIP.setLayout(LetsGo_WIPLayout);
         LetsGo_WIPLayout.setHorizontalGroup(
             LetsGo_WIPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Manager_BackOffice, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(LetsGo_WIPLayout.createSequentialGroup()
+                .addComponent(Manager_BackOffice, javax.swing.GroupLayout.PREFERRED_SIZE, 1278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         LetsGo_WIPLayout.setVerticalGroup(
             LetsGo_WIPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(LetsGo_WIPLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Manager_BackOffice))
+                .addComponent(Manager_BackOffice, javax.swing.GroupLayout.PREFERRED_SIZE, 937, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout ViewManagerLayout = new javax.swing.GroupLayout(ViewManager);
@@ -2384,7 +2652,7 @@ public class UserInterface extends javax.swing.JFrame {
             .addGroup(ViewManagerLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(LetsGo_WIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(234, Short.MAX_VALUE))
         );
 
         PanelCardView.add(ViewManager, "card4");
@@ -2507,7 +2775,7 @@ public class UserInterface extends javax.swing.JFrame {
             .addGroup(ViewOrdersLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(PanelOrders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(654, Short.MAX_VALUE))
+                .addContainerGap(1028, Short.MAX_VALUE))
         );
         ViewOrdersLayout.setVerticalGroup(
             ViewOrdersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2794,6 +3062,11 @@ public class UserInterface extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(PanelTransaction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addGroup(PanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(PanelBackgroundLayout.createSequentialGroup()
+                    .addGap(701, 701, 701)
+                    .addComponent(PanelLoginContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(702, 702, 702)))
         );
         PanelBackgroundLayout.setVerticalGroup(
             PanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2805,6 +3078,11 @@ public class UserInterface extends javax.swing.JFrame {
                     .addComponent(PanelCardView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(PanelTransaction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(PanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(PanelBackgroundLayout.createSequentialGroup()
+                    .addGap(302, 302, 302)
+                    .addComponent(PanelLoginContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(302, 302, 302)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -3512,7 +3790,7 @@ public class UserInterface extends javax.swing.JFrame {
         }
         if (model.getRowCount() != 0) {
             receipt.setOrderList(orderLst);
-                // txtAmount.setText(receipt.getReceipt());
+            // txtAmount.setText(receipt.getReceipt());
             //@params: Subtotal, tax, total, PaymentMethod,OrderNumber, tablenumber, servername 
 //                dbconn.saveRevenue(Double.parseDouble(receipt.getSubtotal().toString()),
 //                        Double.parseDouble(receipt.getTaxAmount().toString()),
@@ -3527,7 +3805,7 @@ public class UserInterface extends javax.swing.JFrame {
                     Integer.parseInt(lblOrderNumberObtained.getText()));
         }
 
-            //end of if for new orders
+        //end of if for new orders
         //DELeted the previous print check at 11:50 PM 4/19/15
         //cbOpenOrder.addItem(receipt.getOrderNumber());
         //cbOpenOrder.setVisible(true);
@@ -3650,11 +3928,7 @@ public class UserInterface extends javax.swing.JFrame {
 
         //cbOpenOrder.addItem(receipt.getOrderNumber());
         //cbOpenOrder.setVisible(true);
-        try {
-            conn.close();
-        } catch (Exception e) {
-            System.out.println("SQLite Connection NOT CLOSED!" + e);
-        }
+       
     }//GEN-LAST:event_btnSendActionPerformed
 
     private void btnTable4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTable4ActionPerformed
@@ -3811,14 +4085,6 @@ public class UserInterface extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnViewOrdersActionPerformed
 
-    private void txtAddress1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAddress1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtAddress1ActionPerformed
-
-    private void txtZipCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtZipCodeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtZipCodeActionPerformed
-
     private void btnViewOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrderActionPerformed
         // TODO add your handling code here:
 
@@ -3867,6 +4133,169 @@ public class UserInterface extends javax.swing.JFrame {
         model.removeRow(tblOrder.getSelectedRow());
         runningTotal();
     }//GEN-LAST:event_btnDeleteOrderActionPerformed
+
+    private void btnOneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOneActionPerformed
+        // TODO add your handling code here:
+
+        passLogin.setText(keypadLogin.append("1").toString());
+    }//GEN-LAST:event_btnOneActionPerformed
+
+    private void btn005ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn005ActionPerformed
+        // TODO add your handling code here:
+
+        passLogin.setText(keypadLogin.append("5").toString());
+    }//GEN-LAST:event_btn005ActionPerformed
+
+    private void btn006ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn006ActionPerformed
+        // TODO add your handling code here:
+
+        passLogin.setText(keypadLogin.append("6").toString());
+    }//GEN-LAST:event_btn006ActionPerformed
+
+    private void btn004ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn004ActionPerformed
+        // TODO add your handling code here:
+
+        passLogin.setText(keypadLogin.append("4").toString());
+    }//GEN-LAST:event_btn004ActionPerformed
+
+    private void btn008ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn008ActionPerformed
+        // TODO add your handling code here:
+        passLogin.setText(keypadLogin.append("8").toString());
+    }//GEN-LAST:event_btn008ActionPerformed
+
+    private void btn009ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn009ActionPerformed
+        // TODO add your handling code here:
+        passLogin.setText(keypadLogin.append("9").toString());
+    }//GEN-LAST:event_btn009ActionPerformed
+
+    private void btn000ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn000ActionPerformed
+        // TODO add your handling code here:
+
+        passLogin.setText(keypadLogin.append("0").toString());
+    }//GEN-LAST:event_btn000ActionPerformed
+
+    private void btn007ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn007ActionPerformed
+        // TODO add your handling code here:
+        passLogin.setText(keypadLogin.append("7").toString());
+    }//GEN-LAST:event_btn007ActionPerformed
+
+    private void btnClear3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClear3ActionPerformed
+        // TODO add your handling code here:
+
+        passLogin.setText(null);
+        keypadLogin.delete(0, keypadLogin.length());
+    }//GEN-LAST:event_btnClear3ActionPerformed
+
+    private void btn003ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn003ActionPerformed
+        // TODO add your handling code here:
+        passLogin.setText(keypadLogin.append("3").toString());
+    }//GEN-LAST:event_btn003ActionPerformed
+
+    private void btn002ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn002ActionPerformed
+        // TODO add your handling code here:
+        passLogin.setText(keypadLogin.append("2").toString());
+    }//GEN-LAST:event_btn002ActionPerformed
+
+    private void btnEnter3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnter3ActionPerformed
+        // TODO add your handling code here:
+        userPass = passLogin.getText();
+        if (keypadLogin.length() != 4) {
+            JOptionPane.showMessageDialog(rootPane, "Please enter 4 digits only!");
+            passLogin.setText(null);
+            keypadLogin.delete(0, keypadLogin.length());
+        } else {
+            waiter = dbconn.loginWaiter(Integer.parseInt(userPass));
+
+            System.out.println("What is this " + waiter.toString());
+
+                    // conn.close();
+            PanelLoginContainer.setVisible(false);
+            PanelTransaction.setVisible(true);
+            Panel_Navigation.setVisible(true);
+            PanelCardView.setVisible(true);
+            lblWaiter.setText(waiter);
+            lblWaiterHeader.setText(waiter);
+            viewTables();
+
+
+            /* System.out.println("Correct User ID!");
+
+             String sql = "SELECT * FROM employeeDB WHERE empId=?;";
+             ResultSet rs = null;
+             PreparedStatement pst = null;
+           
+             try {
+             pst = conn.prepareStatement(sql);
+             pst.setString(1, userPass);
+             rs = pst.executeQuery();
+             System.out.println(userPass);
+             if (rs.next()) {
+             waiter = dbconn.loginWaiter(Integer.parseInt(userPass));
+                    
+             System.out.println("What is this "+waiter);
+                    
+             // conn.close();
+                    
+             PanelLoginContainer.setVisible(false);
+             PanelTransaction.setVisible(true);
+             Panel_Navigation.setVisible(true);
+             PanelCardView.setVisible(true);
+             viewTables();
+             lblWaiter.setText(waiter);
+             lblWaiterHeader.setText(waiter);
+                    
+                   
+                    
+                   
+
+             } else {
+             JOptionPane.showMessageDialog(null, "Incorrect. Please enter valid ID!");
+             passLogin.setText(null);
+             keypadLogin.delete(0, keypadLogin.length());
+             }
+
+             } catch (Exception e) {
+
+             System.out.println("login from db:" + e);
+             }finally{
+             try{
+             rs.close();
+             pst.close();
+             }catch(Exception e){
+
+             }
+             }*/
+        }
+
+
+    }//GEN-LAST:event_btnEnter3ActionPerformed
+
+    private void passLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passLoginActionPerformed
+        // TODO add your handling code here:
+        if (keypadLogin.length() != 4) {
+            btnEnter3.setEnabled(false);
+        } else {
+            btnEnter3.setEnabled(true);
+        }
+    }//GEN-LAST:event_passLoginActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        // TODO add your handling code here:
+        PanelTransaction.setVisible(false);
+        PanelCardView.setVisible(false);
+        Panel_Navigation.setVisible(false);
+        PanelLoginContainer.setVisible(true);
+        passLogin.setText(null);
+        keypadLogin.delete(0, keypadLogin.length());
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void txtZipCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtZipCodeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtZipCodeActionPerformed
+
+    private void txtAddress1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAddress1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtAddress1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -3942,7 +4371,9 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JPanel PanelHeader;
     private javax.swing.JPanel PanelHolderForClocking;
     private javax.swing.JPanel PanelKeypad;
+    private javax.swing.JPanel PanelKeypad3;
     private javax.swing.JPanel PanelLogin;
+    private javax.swing.JPanel PanelLoginContainer;
     private javax.swing.JPanel PanelMenu;
     private javax.swing.JPanel PanelOrder;
     private javax.swing.JPanel PanelOrders;
@@ -3961,6 +4392,15 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JPanel ViewTimeCard;
     private javax.swing.JLabel Zip_Postal;
     private javax.swing.JButton btn0;
+    private javax.swing.JButton btn000;
+    private javax.swing.JButton btn002;
+    private javax.swing.JButton btn003;
+    private javax.swing.JButton btn004;
+    private javax.swing.JButton btn005;
+    private javax.swing.JButton btn006;
+    private javax.swing.JButton btn007;
+    private javax.swing.JButton btn008;
+    private javax.swing.JButton btn009;
     private javax.swing.JButton btn1;
     private javax.swing.JButton btn2;
     private javax.swing.JButton btn3;
@@ -3986,6 +4426,7 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JButton btnChipsSalsa;
     private javax.swing.JButton btnChocolateMousse;
     private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnClear3;
     private javax.swing.JButton btnClearTable;
     private javax.swing.JButton btnClockInClockOut;
     private javax.swing.JButton btnCoffee;
@@ -3998,6 +4439,7 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JButton btnDesserts;
     private javax.swing.JButton btnDietCoke;
     private javax.swing.JButton btnDrinks;
+    private javax.swing.JButton btnEnter3;
     private javax.swing.JButton btnExtras;
     private javax.swing.JButton btnFourWay;
     private javax.swing.JButton btnFries;
@@ -4008,10 +4450,12 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JButton btnLemonPepper;
     private javax.swing.JButton btnLemonade;
     private javax.swing.JButton btnLogin;
+    private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnManager;
     private javax.swing.JButton btnMashedPotatoes;
     private javax.swing.JButton btnMilkshake;
     private javax.swing.JButton btnMozarellaSticks;
+    private javax.swing.JButton btnOne;
     private javax.swing.JButton btnOriginal;
     private javax.swing.JButton btnPotatoWedges;
     private javax.swing.JButton btnPrintCheck;
@@ -4070,6 +4514,9 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
@@ -4108,7 +4555,9 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JLabel lblTotal;
     private javax.swing.JLabel lblTotalAmount;
     private javax.swing.JLabel lblWaiter;
+    private javax.swing.JLabel lblWaiterHeader;
     private javax.swing.JLabel lblWings;
+    private javax.swing.JPasswordField passLogin;
     private javax.swing.JScrollPane scrollOpenOrders;
     private javax.swing.JTable tblOpenOrders;
     private javax.swing.JTable tblOrder;
