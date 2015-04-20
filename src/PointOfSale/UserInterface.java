@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
 import net.proteanit.sql.DbUtils;
+
 /**
  *
  * @author Jovy
@@ -43,12 +44,12 @@ public class UserInterface extends javax.swing.JFrame {
     ResultSet rs = null;
     PreparedStatement pst = null;
     boolean isShown = true;
-    
-    
-    
+
+    public void hasWaiterName(String waiter) {
+        lblWaiter.setText(waiter);
+    }
+
     //receipt.setOrderList(r);
-    
-    
     public UserInterface() {
         initComponents();
         //lblTempOrderNumber.setText(dbconn.getSavedOrderNumberFromDB(NORMAL));
@@ -58,7 +59,7 @@ public class UserInterface extends javax.swing.JFrame {
         int h = (int) dim.getHeight();
         int w = (int) dim.getWidth();
         setSize(w, h);
-        
+
         new Thread() {
             public void run() {
                 while (true) {
@@ -66,45 +67,41 @@ public class UserInterface extends javax.swing.JFrame {
                     String[] time = date.toString().split(" ");
                     lblSystemClock.setText(time[3]);
                     lblSystemDate.setText(time[0] + " " + time[1] + " " + time[2] + " " + time[5]);
-                    
+
                 }
             }
         }.start();
         txtKeypad.setVisible(false);
-        
-        conn= Database.ConnecttoDB();
-       
-        
-        
+
+        conn = Database.ConnecttoDB();
+
     }
-    
-private void updateOpenOrderTable(){
-        
+
+    private void updateOpenOrderTable() {
+
         try {
             String sql = "SELECT OrderNumber, TableNumber, ServerName from Revenue WHERE PaymentMethod = \"null\"";
             pst = conn.prepareStatement(sql);
             rs = pst.executeQuery();
             tblOpenOrders.setModel(DbUtils.resultSetToTableModel(rs));
-           
-            
+
         } catch (Exception e) {
             System.out.println("updateOpenOrderTable: " + e);
         }
 
     }
-private void updatePaidOrderTable(){
-        
+
+    private void updatePaidOrderTable() {
+
         try {
             String sql = "SELECT OrderNumber, TableNumber, Total, ServerName from Revenue WHERE PaymentMethod = \"DebitCard\"";
             pst = conn.prepareStatement(sql);
             rs = pst.executeQuery();
             tblPaidOrders.setModel(DbUtils.resultSetToTableModel(rs));
-           
-            
+
         } catch (Exception e) {
             System.out.println("updateOpenOrderTable: " + e);
         }
-        
 
     }
 
@@ -116,6 +113,7 @@ private void updatePaidOrderTable(){
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         PanelBackground = new javax.swing.JPanel();
         Panel_Navigation = new javax.swing.JPanel();
@@ -249,7 +247,9 @@ private void updatePaidOrderTable(){
         lblCashPaidAmount = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         lblChangeAmount = new javax.swing.JLabel();
-        btnDone = new javax.swing.JButton();
+        btnSend = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
         ViewTimeCard = new javax.swing.JPanel();
         CardLogin = new javax.swing.JPanel();
         PanelLogin = new javax.swing.JPanel();
@@ -341,7 +341,7 @@ private void updatePaidOrderTable(){
         PanelBackground.setBackground(new java.awt.Color(0, 0, 0));
         PanelBackground.setMinimumSize(new java.awt.Dimension(100, 100));
 
-        PanelHeader.setBackground(new java.awt.Color(223, 223, 246));
+        PanelHeader.setBackground(new java.awt.Color(204, 204, 204));
 
         btnTables.setText("Tables");
         btnTables.addActionListener(new java.awt.event.ActionListener() {
@@ -371,10 +371,10 @@ private void updatePaidOrderTable(){
             }
         });
 
-        lblSystemClock.setFont(new java.awt.Font("Arial Unicode MS", 1, 16)); // NOI18N
+        lblSystemClock.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         lblSystemClock.setText("time");
 
-        lblSystemDate.setFont(new java.awt.Font("Arial Unicode MS", 1, 16)); // NOI18N
+        lblSystemDate.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         lblSystemDate.setText("date");
 
         javax.swing.GroupLayout PanelHeaderLayout = new javax.swing.GroupLayout(PanelHeader);
@@ -650,7 +650,7 @@ private void updatePaidOrderTable(){
                     .addComponent(btnTable12)
                     .addComponent(btnTable6, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnTable18))
-                .addContainerGap(628, Short.MAX_VALUE))
+                .addContainerGap(632, Short.MAX_VALUE))
         );
 
         jPanel5Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnTable1, btnTable10, btnTable11, btnTable12, btnTable13, btnTable14, btnTable15, btnTable16, btnTable17, btnTable18, btnTable2, btnTable3, btnTable4, btnTable5, btnTable6, btnTable7, btnTable8, btnTable9});
@@ -671,14 +671,14 @@ private void updatePaidOrderTable(){
 
         PanelCardView.add(ViewTables, "card9");
 
-        ViewPOS.setBackground(new java.awt.Color(223, 223, 246));
+        ViewPOS.setBackground(new java.awt.Color(204, 204, 204));
 
         PanelMenu.setBackground(new java.awt.Color(223, 223, 246));
         PanelMenu.setLayout(new java.awt.CardLayout());
 
-        CardAppetizers.setBackground(new java.awt.Color(249, 249, 249));
+        CardAppetizers.setBackground(new java.awt.Color(153, 153, 153));
 
-        PanelAppetizers.setBackground(new java.awt.Color(223, 223, 246));
+        PanelAppetizers.setBackground(new java.awt.Color(153, 153, 153));
 
         btnChipsSalsa.setText("Chips and Salsa");
         btnChipsSalsa.addActionListener(new java.awt.event.ActionListener() {
@@ -741,7 +741,7 @@ private void updatePaidOrderTable(){
                         .addComponent(btnFourWay)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCalamari)))
-                .addContainerGap(250, Short.MAX_VALUE))
+                .addContainerGap(248, Short.MAX_VALUE))
         );
 
         PanelAppetizersLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCalamari, btnChipsSalsa, btnFourWay, btnMozarellaSticks, btnSantaFeChicQue, btnSpinachArtiDip});
@@ -785,7 +785,7 @@ private void updatePaidOrderTable(){
                 .addComponent(lblAppetizers)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PanelAppetizers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(733, Short.MAX_VALUE))
+                .addContainerGap(737, Short.MAX_VALUE))
         );
 
         PanelMenu.add(CardAppetizers, "card3");
@@ -892,7 +892,7 @@ private void updatePaidOrderTable(){
                 .addGroup(CardBurgersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(CardBurgersLayout.createSequentialGroup()
                         .addComponent(lblBurgers)
-                        .addContainerGap(590, Short.MAX_VALUE))
+                        .addContainerGap(588, Short.MAX_VALUE))
                     .addComponent(PanelBurgers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         CardBurgersLayout.setVerticalGroup(
@@ -1019,9 +1019,9 @@ private void updatePaidOrderTable(){
 
         PanelMenu.add(CardWings, "card5");
 
-        CardSalads.setBackground(new java.awt.Color(223, 223, 246));
+        CardSalads.setBackground(new java.awt.Color(153, 153, 153));
 
-        PanelSalads.setBackground(new java.awt.Color(223, 223, 246));
+        PanelSalads.setBackground(new java.awt.Color(153, 153, 153));
 
         btnCaesar.setText("Caesar ");
         btnCaesar.addActionListener(new java.awt.event.ActionListener() {
@@ -1472,8 +1472,9 @@ private void updatePaidOrderTable(){
 
         PanelMenu.add(CardDrinks, "card2");
 
-        PanelCategories.setBackground(new java.awt.Color(201, 201, 255));
+        PanelCategories.setBackground(new java.awt.Color(204, 204, 204));
 
+        btnDrinks.setBackground(new java.awt.Color(182, 225, 225));
         btnDrinks.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         btnDrinks.setText("Drinks");
         btnDrinks.addActionListener(new java.awt.event.ActionListener() {
@@ -1482,6 +1483,7 @@ private void updatePaidOrderTable(){
             }
         });
 
+        btnExtras.setBackground(new java.awt.Color(182, 225, 225));
         btnExtras.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         btnExtras.setText("Extras");
         btnExtras.addActionListener(new java.awt.event.ActionListener() {
@@ -1490,6 +1492,7 @@ private void updatePaidOrderTable(){
             }
         });
 
+        btnAppetizers.setBackground(new java.awt.Color(182, 225, 225));
         btnAppetizers.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         btnAppetizers.setText("Appetizers");
         btnAppetizers.addActionListener(new java.awt.event.ActionListener() {
@@ -1498,6 +1501,7 @@ private void updatePaidOrderTable(){
             }
         });
 
+        btnBurgers.setBackground(new java.awt.Color(182, 225, 225));
         btnBurgers.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         btnBurgers.setText("Burgers");
         btnBurgers.addActionListener(new java.awt.event.ActionListener() {
@@ -1506,6 +1510,7 @@ private void updatePaidOrderTable(){
             }
         });
 
+        btnWings.setBackground(new java.awt.Color(182, 225, 225));
         btnWings.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         btnWings.setText("Wings");
         btnWings.addActionListener(new java.awt.event.ActionListener() {
@@ -1514,6 +1519,7 @@ private void updatePaidOrderTable(){
             }
         });
 
+        btnSalads.setBackground(new java.awt.Color(182, 225, 225));
         btnSalads.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         btnSalads.setText("Salads");
         btnSalads.addActionListener(new java.awt.event.ActionListener() {
@@ -1522,6 +1528,7 @@ private void updatePaidOrderTable(){
             }
         });
 
+        btnDesserts.setBackground(new java.awt.Color(182, 225, 225));
         btnDesserts.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         btnDesserts.setText("Desserts");
         btnDesserts.addActionListener(new java.awt.event.ActionListener() {
@@ -1553,8 +1560,8 @@ private void updatePaidOrderTable(){
             PanelCategoriesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelCategoriesLayout.createSequentialGroup()
                 .addGap(8, 8, 8)
-                .addComponent(btnDrinks)
-                .addGap(0, 0, 0)
+                .addComponent(btnDrinks, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAppetizers)
                 .addGap(1, 1, 1)
                 .addComponent(btnBurgers)
@@ -1571,7 +1578,7 @@ private void updatePaidOrderTable(){
 
         PanelCategoriesLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnAppetizers, btnBurgers, btnDesserts, btnDrinks, btnExtras, btnSalads, btnWings});
 
-        PanelOrder.setBackground(new java.awt.Color(223, 223, 246));
+        PanelOrder.setBackground(new java.awt.Color(204, 204, 204));
 
         tblOrder.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         tblOrder.setModel(new javax.swing.table.DefaultTableModel(
@@ -1598,6 +1605,7 @@ private void updatePaidOrderTable(){
             }
         });
         tblOrder.setRowHeight(24);
+        tblOrder.setSelectionBackground(new java.awt.Color(153, 255, 255));
         jScrollPane2.setViewportView(tblOrder);
         if (tblOrder.getColumnModel().getColumnCount() > 0) {
             tblOrder.getColumnModel().getColumn(0).setResizable(false);
@@ -1654,7 +1662,7 @@ private void updatePaidOrderTable(){
                         .addComponent(lblPartyNum))
                     .addGroup(Panel_OrderLabelLayout.createSequentialGroup()
                         .addComponent(lblTable)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                         .addComponent(lblTableNum)))
                 .addGap(37, 37, 37))
         );
@@ -1739,15 +1747,22 @@ private void updatePaidOrderTable(){
         lblChangeAmount.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         lblChangeAmount.setText("0.00");
 
-        btnDone.setBackground(new java.awt.Color(255, 51, 51));
-        btnDone.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        btnDone.setText("DONE");
-        btnDone.setEnabled(false);
-        btnDone.addActionListener(new java.awt.event.ActionListener() {
+        btnSend.setBackground(new java.awt.Color(255, 51, 51));
+        btnSend.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        btnSend.setText("SEND");
+        btnSend.setEnabled(false);
+        btnSend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDoneActionPerformed(evt);
+                btnSendActionPerformed(evt);
             }
         });
+
+        jButton7.setBackground(new java.awt.Color(102, 255, 0));
+        jButton7.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        jButton7.setText("DONE");
+
+        jButton8.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        jButton8.setText("SAVE");
 
         javax.swing.GroupLayout PanelAmountLayout = new javax.swing.GroupLayout(PanelAmount);
         PanelAmount.setLayout(PanelAmountLayout);
@@ -1758,10 +1773,13 @@ private void updatePaidOrderTable(){
                     .addComponent(btnPrintCheck)
                     .addGroup(PanelAmountLayout.createSequentialGroup()
                         .addGap(1, 1, 1)
-                        .addComponent(btnClearTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnClearTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnDone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblSubtotal)
@@ -1769,7 +1787,7 @@ private void updatePaidOrderTable(){
                     .addComponent(lblTotal)
                     .addComponent(jLabel3)
                     .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
                 .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblSubtotalAmount, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblTaxAmount, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -1779,7 +1797,7 @@ private void updatePaidOrderTable(){
                 .addContainerGap())
         );
 
-        PanelAmountLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnClearTable, btnDone, btnPrintCheck, btnRemove});
+        PanelAmountLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnClearTable, btnPrintCheck, btnRemove, btnSend, jButton7});
 
         PanelAmountLayout.setVerticalGroup(
             PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1800,7 +1818,7 @@ private void updatePaidOrderTable(){
                 .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(lblCashPaidAmount))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(lblChangeAmount))
@@ -1808,15 +1826,19 @@ private void updatePaidOrderTable(){
             .addGroup(PanelAmountLayout.createSequentialGroup()
                 .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPrintCheck, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
-                    .addComponent(btnDone, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0)
                 .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnClearTable, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton7)
+                    .addComponent(jButton8))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        PanelAmountLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnClearTable, btnDone, btnPrintCheck, btnRemove});
+        PanelAmountLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnClearTable, btnPrintCheck, btnRemove, btnSend, jButton7, jButton8});
 
         javax.swing.GroupLayout PanelOrderLayout = new javax.swing.GroupLayout(PanelOrder);
         PanelOrder.setLayout(PanelOrderLayout);
@@ -1872,16 +1894,18 @@ private void updatePaidOrderTable(){
         ViewTimeCard.setBackground(new java.awt.Color(223, 223, 246));
         ViewTimeCard.setLayout(new java.awt.CardLayout());
 
-        CardLogin.setBackground(new java.awt.Color(223, 223, 246));
+        CardLogin.setBackground(new java.awt.Color(204, 204, 204));
+        CardLogin.setLayout(new java.awt.GridBagLayout());
 
         PanelLogin.setBackground(new java.awt.Color(204, 204, 204));
-        PanelLogin.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        PanelLogin.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
         lblEmpId.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         lblEmpId.setText("Employee ID:");
 
         txtEmpId.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
 
+        btnLogin.setBackground(new java.awt.Color(204, 255, 255));
         btnLogin.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         btnLogin.setText("Login");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -1890,62 +1914,60 @@ private void updatePaidOrderTable(){
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
+        jLabel6.setText("Login");
+
         javax.swing.GroupLayout PanelLoginLayout = new javax.swing.GroupLayout(PanelLogin);
         PanelLogin.setLayout(PanelLoginLayout);
         PanelLoginLayout.setHorizontalGroup(
             PanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelLoginLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jLabel6)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelLoginLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(PanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblEmpId)
-                    .addGroup(PanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(txtEmpId, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(147, 147, 147))
+                .addContainerGap(31, Short.MAX_VALUE)
+                .addGroup(PanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(PanelLoginLayout.createSequentialGroup()
+                        .addComponent(lblEmpId)
+                        .addGap(28, 28, 28)
+                        .addComponent(txtEmpId, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(126, 126, 126))
         );
         PanelLoginLayout.setVerticalGroup(
             PanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelLoginLayout.createSequentialGroup()
-                .addGap(77, 77, 77)
-                .addComponent(lblEmpId)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtEmpId, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel6.setText("Login");
-
-        javax.swing.GroupLayout CardLoginLayout = new javax.swing.GroupLayout(CardLogin);
-        CardLogin.setLayout(CardLoginLayout);
-        CardLoginLayout.setHorizontalGroup(
-            CardLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CardLoginLayout.createSequentialGroup()
-                .addGap(556, 556, 556)
-                .addGroup(CardLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(PanelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        CardLoginLayout.setVerticalGroup(
-            CardLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CardLoginLayout.createSequentialGroup()
-                .addGap(144, 144, 144)
+                .addContainerGap()
                 .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
+                .addGroup(PanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtEmpId, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEmpId))
                 .addGap(18, 18, 18)
-                .addComponent(PanelLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(90, 90, 90))
         );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 16;
+        gridBagConstraints.ipady = 87;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(228, 437, 464, 395);
+        CardLogin.add(PanelLogin, gridBagConstraints);
 
         ViewTimeCard.add(CardLogin, "card2");
 
-        CardClockInClockOut.setBackground(new java.awt.Color(223, 223, 246));
+        CardClockInClockOut.setBackground(new java.awt.Color(153, 153, 153));
+        CardClockInClockOut.setLayout(new java.awt.GridBagLayout());
 
-        PanelHolderForClocking.setBackground(new java.awt.Color(204, 204, 204));
-        PanelHolderForClocking.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        PanelHolderForClocking.setBackground(new java.awt.Color(153, 153, 153));
+        PanelHolderForClocking.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
+        btnClockInClockOut.setBackground(new java.awt.Color(204, 255, 255));
+        btnClockInClockOut.setFont(new java.awt.Font("Century Gothic", 0, 16)); // NOI18N
         btnClockInClockOut.setText("Clock In / Clock Out");
         btnClockInClockOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1953,12 +1975,12 @@ private void updatePaidOrderTable(){
             }
         });
 
-        lblLoggedInAs.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        lblLoggedInAs.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         lblLoggedInAs.setText("Logged in as:");
 
         lblEmpName.setBackground(new java.awt.Color(51, 0, 204));
-        lblEmpName.setFont(new java.awt.Font("Tahoma", 3, 36)); // NOI18N
-        lblEmpName.setForeground(new java.awt.Color(0, 204, 102));
+        lblEmpName.setFont(new java.awt.Font("Century Gothic", 2, 36)); // NOI18N
+        lblEmpName.setForeground(new java.awt.Color(0, 255, 0));
         lblEmpName.setText("name");
 
         javax.swing.GroupLayout PanelHolderForClockingLayout = new javax.swing.GroupLayout(PanelHolderForClocking);
@@ -1970,16 +1992,14 @@ private void updatePaidOrderTable(){
                 .addComponent(jLabel5)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(PanelHolderForClockingLayout.createSequentialGroup()
-                .addGroup(PanelHolderForClockingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(PanelHolderForClockingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnClockInClockOut, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(PanelHolderForClockingLayout.createSequentialGroup()
-                        .addGap(126, 126, 126)
-                        .addComponent(btnClockInClockOut, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(PanelHolderForClockingLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(lblLoggedInAs)
-                        .addGap(18, 18, 18)
+                        .addGap(63, 63, 63)
                         .addComponent(lblEmpName, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(178, Short.MAX_VALUE))
         );
         PanelHolderForClockingLayout.setVerticalGroup(
             PanelHolderForClockingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1990,34 +2010,29 @@ private void updatePaidOrderTable(){
                     .addComponent(lblEmpName))
                 .addGap(118, 118, 118)
                 .addComponent(jLabel5)
-                .addGap(28, 28, 28)
+                .addGap(18, 18, 18)
                 .addComponent(btnClockInClockOut, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(117, Short.MAX_VALUE))
         );
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 163;
+        gridBagConstraints.ipady = 101;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(9, 452, 509, 367);
+        CardClockInClockOut.add(PanelHolderForClocking, gridBagConstraints);
+
+        jLabel4.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
         jLabel4.setText("Time Card");
-
-        javax.swing.GroupLayout CardClockInClockOutLayout = new javax.swing.GroupLayout(CardClockInClockOut);
-        CardClockInClockOut.setLayout(CardClockInClockOutLayout);
-        CardClockInClockOutLayout.setHorizontalGroup(
-            CardClockInClockOutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CardClockInClockOutLayout.createSequentialGroup()
-                .addGap(550, 550, 550)
-                .addGroup(CardClockInClockOutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(PanelHolderForClocking, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        CardClockInClockOutLayout.setVerticalGroup(
-            CardClockInClockOutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(CardClockInClockOutLayout.createSequentialGroup()
-                .addGap(129, 129, 129)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(PanelHolderForClocking, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(129, 452, 0, 0);
+        CardClockInClockOut.add(jLabel4, gridBagConstraints);
 
         ViewTimeCard.add(CardClockInClockOut, "card6");
 
@@ -2499,12 +2514,12 @@ private void updatePaidOrderTable(){
             .addGroup(ViewOrdersLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(PanelOrders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(349, Short.MAX_VALUE))
+                .addContainerGap(353, Short.MAX_VALUE))
         );
 
         PanelCardView.add(ViewOrders, "card5");
 
-        PanelTransaction.setBackground(new java.awt.Color(255, 204, 204));
+        PanelTransaction.setBackground(new java.awt.Color(102, 102, 102));
 
         btn1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         btn1.setText("1");
@@ -2808,7 +2823,6 @@ private void updatePaidOrderTable(){
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     private BigDecimal runningTotal() {
         DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
         BigDecimal subtotal = BigDecimal.valueOf(0.0);
@@ -2818,29 +2832,30 @@ private void updatePaidOrderTable(){
             //BigDecimal.valueOf;
             // for (int i = 0; i < orderList.size(); i++) {
             subtotal = subtotal.add(BigDecimal.valueOf(Double.parseDouble(model.getValueAt(i, 1).toString())));
-            
+
         }
-        
+
         lblSubtotalAmount.setText(subtotal.toString());
         lblTaxAmount.setText(subtotal.multiply(BigDecimal.valueOf(0.070)).setScale(2, RoundingMode.DOWN).toString());
         lblTotalAmount.setText(subtotal.add(subtotal.multiply(BigDecimal.valueOf(0.070)).setScale(2, RoundingMode.DOWN)).toString());
         return subtotal;
     }
-    
-    private void viewOrders(){
-         PanelCardView.removeAll();
+
+    private void viewOrders() {
+        PanelCardView.removeAll();
         PanelCardView.add(ViewOrders);
         PanelCardView.repaint();
         PanelCardView.revalidate();
-        
+
     }
+
     private void viewTables() {
         PanelCardView.removeAll();
         PanelCardView.add(ViewTables);
         PanelCardView.repaint();
         PanelCardView.revalidate();
     }
-    
+
     private void viewPOS() {
         PanelCardView.removeAll();
         PanelCardView.add(ViewPOS);
@@ -2848,8 +2863,8 @@ private void updatePaidOrderTable(){
         PanelCardView.revalidate();
         btnPrintCheck.setEnabled(true);
         btnDecimalPoint.setEnabled(true);
-        btnDone.setEnabled(true);
-        
+        btnSend.setEnabled(true);
+
         btnCreditDebit.setEnabled(true);
         btnGiftCard.setEnabled(true);
         btnCash.setEnabled(true);
@@ -2858,12 +2873,12 @@ private void updatePaidOrderTable(){
         lblOrderNumberObtained.setText(String.valueOf(receipt.getOrderNumber()));
         DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
         model.setRowCount(0);
-        
+
         lblCashPaidAmount.setVisible(false);
         lblChangeAmount.setVisible(false);
-        
+
     }
-    
+
     private void getNumberOfGuests() {
         String numOfGuests = null;
         do {
@@ -2941,7 +2956,7 @@ private void updatePaidOrderTable(){
          */
         btnDecimalPoint.setEnabled(false);
         txtKeypad.setVisible(false);
-        
+
         btnCreditDebit.setVisible(false);
         btnGiftCard.setVisible(false);
         btnCash.setVisible(false);
@@ -2950,7 +2965,7 @@ private void updatePaidOrderTable(){
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
         if (dbconn.isEmployee(Integer.parseInt(txtEmpId.getText()))) {
-            
+
             lblEmpName.setText(dbconn.Login(Integer.parseInt(txtEmpId.getText())));
             PanelCardView.removeAll();
             PanelCardView.add(CardClockInClockOut);
@@ -2959,7 +2974,7 @@ private void updatePaidOrderTable(){
         } else {
             JOptionPane.showMessageDialog(null, "Login Failed");
         }
-        
+
 
     }//GEN-LAST:event_btnLoginActionPerformed
 
@@ -2976,9 +2991,9 @@ private void updatePaidOrderTable(){
          */
         btnDecimalPoint.setEnabled(true);
         txtKeypad.setEnabled(false);
-        
-        btnDone.setEnabled(false);
-        
+
+        btnSend.setEnabled(false);
+
         btnCreditDebit.setEnabled(false);
         btnGiftCard.setEnabled(false);
         btnCash.setEnabled(false);
@@ -2988,12 +3003,12 @@ private void updatePaidOrderTable(){
         // TODO add your handling code here:
 
         dbconn.Clockin(Integer.parseInt(txtEmpId.getText()));
-        
+
         viewTables();
         // Resets the Transaction Panel to normal state
         btnDecimalPoint.setEnabled(true);
         txtKeypad.setVisible(true);
-        
+
         btnCreditDebit.setVisible(true);
         btnGiftCard.setVisible(true);
         btnCash.setVisible(true);
@@ -3391,7 +3406,7 @@ private void updatePaidOrderTable(){
     private void btnClearTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearTableActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
-        
+
         model.setRowCount(0);
         lblSubtotalAmount.setText("0.00");
         lblTaxAmount.setText("0.00");
@@ -3479,77 +3494,41 @@ private void updatePaidOrderTable(){
 
     private void btnPrintCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintCheckActionPerformed
         // TODO add your handling code here:
-        if (isNewOrder) {
-            DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
-            
-            JOptionPane.showMessageDialog(null, "Bill Printed!");
-            
-            for (int i = 0; i < model.getDataVector().size(); i++) {
-                
-                orderLst.add(new Order(model.getValueAt(i, 0).toString(),
-                        BigDecimal.valueOf(Double.parseDouble(model.getValueAt(i, 1).toString()))));
-                
-            }
-            for (int i = 0; i < orderLst.size(); i++) {
-                Order order = orderLst.get(i);
-                dbconn.salesLog(orderLst.get(i).getItemName(), Double.parseDouble(orderLst.get(i).getItemPrice().toString()), Integer.parseInt(lblOrderNumberObtained.getText()));
-                System.out.println(orderLst.get(i).getItemName() + " " + Double.parseDouble(orderLst.get(i).getItemPrice().toString()));
-            }
-            if (model.getRowCount() != 0) {
-                receipt.setOrderList(orderLst);
+
+        DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
+
+        JOptionPane.showMessageDialog(null, "Bill Printed!");
+
+        for (int i = 0; i < model.getDataVector().size(); i++) {
+
+            orderLst.add(new Order(model.getValueAt(i, 0).toString(),
+                    BigDecimal.valueOf(Double.parseDouble(model.getValueAt(i, 1).toString()))));
+
+        }
+        for (int i = 0; i < orderLst.size(); i++) {
+            Order order = orderLst.get(i);
+            dbconn.salesLog(orderLst.get(i).getItemName(), Double.parseDouble(orderLst.get(i).getItemPrice().toString()), Integer.parseInt(lblOrderNumberObtained.getText()));
+            System.out.println(orderLst.get(i).getItemName() + " " + Double.parseDouble(orderLst.get(i).getItemPrice().toString()));
+        }
+        if (model.getRowCount() != 0) {
+            receipt.setOrderList(orderLst);
                 // txtAmount.setText(receipt.getReceipt());
-                dbconn.saveRevenue(Double.parseDouble(receipt.getSubtotal().toString()),
-                        Double.parseDouble(receipt.getTaxAmount().toString()),
-                        Double.parseDouble(receipt.getTotal().toString()),
-                        receipt.getPaymentMethod(),
-                        receipt.getOrderNumber());
-                dbconn.updateRevenue(Double.parseDouble(lblSubtotalAmount.getText()),
-                        Double.parseDouble(lblTaxAmount.getText()),
-                        Double.parseDouble(lblTotalAmount.getText()),
-                        Integer.parseInt(lblOrderNumberObtained.getText()));
-            }
-
-            //end of if for new orders
-        } else {
-            //this is an open order
-
+            //@params: Subtotal, tax, total, PaymentMethod,OrderNumber, tablenumber, servername 
+//                dbconn.saveRevenue(Double.parseDouble(receipt.getSubtotal().toString()),
+//                        Double.parseDouble(receipt.getTaxAmount().toString()),
+//                        Double.parseDouble(receipt.getTotal().toString()),
+//                        receipt.getPaymentMethod(),
+//                        receipt.getOrderNumber(),
+//                        Integer.parseInt(lblTableNum.getText()),
+//                        lblWaiter.getText());
             dbconn.updateRevenue(Double.parseDouble(lblSubtotalAmount.getText()),
                     Double.parseDouble(lblTaxAmount.getText()),
                     Double.parseDouble(lblTotalAmount.getText()),
                     Integer.parseInt(lblOrderNumberObtained.getText()));
-            
-            dbconn.deleteFromSalesLog(Integer.parseInt(lblOrderNumberObtained.getText()));
-            DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
-            
-            JOptionPane.showMessageDialog(null, "Bill Printed!");
-            
-            for (int i = 0; i < model.getDataVector().size(); i++) {
-                
-                orderLst.add(new Order(model.getValueAt(i, 0).toString(),
-                        BigDecimal.valueOf(Double.parseDouble(model.getValueAt(i, 1).toString()))));
-                
-            }
-            for (int i = 0; i < orderLst.size(); i++) {
-                Order order = orderLst.get(i);
-                dbconn.salesLog(orderLst.get(i).getItemName(), Double.parseDouble(orderLst.get(i).getItemPrice().toString()), Integer.parseInt(lblOrderNumberObtained.getText()));
-                System.out.println(orderLst.get(i).getItemName() + " " + Double.parseDouble(orderLst.get(i).getItemPrice().toString()));
-            }
-            if (model.getRowCount() != 0) {
-                receipt.setOrderList(orderLst);
-                // txtAmount.setText(receipt.getReceipt());
-                dbconn.saveRevenue(Double.parseDouble(receipt.getSubtotal().toString()),
-                        Double.parseDouble(receipt.getTaxAmount().toString()),
-                        Double.parseDouble(receipt.getTotal().toString()),
-                        receipt.getPaymentMethod(),
-                        receipt.getOrderNumber());
-                dbconn.updateRevenue(Double.parseDouble(lblSubtotalAmount.getText()),
-                        Double.parseDouble(lblTaxAmount.getText()),
-                        Double.parseDouble(lblTotalAmount.getText()),
-                        Integer.parseInt(lblOrderNumberObtained.getText()));
-            }
-            
         }
-        isNewOrder = true;
+
+            //end of if for new orders
+        //DELeted the previous print check at 11:50 PM 4/19/15
         //cbOpenOrder.addItem(receipt.getOrderNumber());
         //cbOpenOrder.setVisible(true);
     }//GEN-LAST:event_btnPrintCheckActionPerformed
@@ -3570,17 +3549,17 @@ private void updatePaidOrderTable(){
     }//GEN-LAST:event_btnGiftCardActionPerformed
 
     private void btnCashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCashActionPerformed
-         dbconn.updatePaymentMethodtoDB("Cash", Integer.parseInt(lblOrderNumberObtained.toString()));
+        dbconn.updatePaymentMethodtoDB("Cash", Integer.parseInt(lblOrderNumberObtained.toString()));
         lblCashPaidAmount.setVisible(true);
         lblChangeAmount.setVisible(true);
         double change = transaction.getChange(txtKeypad.getText(), lblTotalAmount.getText());
         double cashPaid = Double.parseDouble(txtKeypad.getText());
         lblChangeAmount.setText("" + change);
-        lblCashPaidAmount.setText(""+ cashPaid);
+        lblCashPaidAmount.setText("" + cashPaid);
         paymentType.append(transaction.payByCash(BigDecimal.valueOf(Double.parseDouble(txtKeypad.getText())), receipt.getTotal()));
         txtKeypad.setText(null);
         keypadTransaction.delete(0, keypadTransaction.length());
-       
+
     }//GEN-LAST:event_btnCashActionPerformed
 
     private void btnDecimalPointActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecimalPointActionPerformed
@@ -3589,19 +3568,19 @@ private void updatePaidOrderTable(){
         txtEmpId.setText(keypadLogin.append(btnDecimalPoint.getText()).toString());
     }//GEN-LAST:event_btnDecimalPointActionPerformed
 
-    private void btnDoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoneActionPerformed
+    private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
         // TODO add your handling code here:
-        
+
         if (isNewOrder) {
             DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
-            
+
             JOptionPane.showMessageDialog(null, "Bill Printed!");
-            
+
             for (int i = 0; i < model.getDataVector().size(); i++) {
-                
+
                 orderLst.add(new Order(model.getValueAt(i, 0).toString(),
                         BigDecimal.valueOf(Double.parseDouble(model.getValueAt(i, 1).toString()))));
-                
+
             }
             for (int i = 0; i < orderLst.size(); i++) {
                 Order order = orderLst.get(i);
@@ -3615,8 +3594,10 @@ private void updatePaidOrderTable(){
                         Double.parseDouble(receipt.getTaxAmount().toString()),
                         Double.parseDouble(receipt.getTotal().toString()),
                         receipt.getPaymentMethod(),
-                        receipt.getOrderNumber());
-               
+                        receipt.getOrderNumber(),
+                        Integer.parseInt(lblTableNum.getText()),
+                        lblWaiter.getText());
+
             }
 
             //end of if for new orders
@@ -3627,17 +3608,17 @@ private void updatePaidOrderTable(){
                     Double.parseDouble(lblTaxAmount.getText()),
                     Double.parseDouble(lblTotalAmount.getText()),
                     Integer.parseInt(lblOrderNumberObtained.getText()));
-            
+
             dbconn.deleteFromSalesLog(Integer.parseInt(lblOrderNumberObtained.getText()));
             DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
-            
+
             JOptionPane.showMessageDialog(null, "Bill Printed!");
-            
+
             for (int i = 0; i < model.getDataVector().size(); i++) {
-                
+
                 orderLst.add(new Order(model.getValueAt(i, 0).toString(),
                         BigDecimal.valueOf(Double.parseDouble(model.getValueAt(i, 1).toString()))));
-                
+
             }
             for (int i = 0; i < orderLst.size(); i++) {
                 Order order = orderLst.get(i);
@@ -3651,13 +3632,15 @@ private void updatePaidOrderTable(){
                         Double.parseDouble(receipt.getTaxAmount().toString()),
                         Double.parseDouble(receipt.getTotal().toString()),
                         receipt.getPaymentMethod(),
-                        receipt.getOrderNumber());
+                        receipt.getOrderNumber(),
+                        Integer.parseInt(lblTableNum.getText()),
+                        lblWaiter.getText());
                 dbconn.updateRevenue(Double.parseDouble(lblSubtotalAmount.getText()),
                         Double.parseDouble(lblTaxAmount.getText()),
                         Double.parseDouble(lblTotalAmount.getText()),
                         Integer.parseInt(lblOrderNumberObtained.getText()));
             }
-            
+
         }
         isNewOrder = true;
         PanelCardView.removeAll();
@@ -3667,13 +3650,12 @@ private void updatePaidOrderTable(){
 
         //cbOpenOrder.addItem(receipt.getOrderNumber());
         //cbOpenOrder.setVisible(true);
-        try{
+        try {
             conn.close();
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             System.out.println("SQLite Connection NOT CLOSED!" + e);
         }
-    }//GEN-LAST:event_btnDoneActionPerformed
+    }//GEN-LAST:event_btnSendActionPerformed
 
     private void btnTable4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTable4ActionPerformed
         // TODO add your handling code here:
@@ -3706,7 +3688,7 @@ private void updatePaidOrderTable(){
     private void btnTable2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTable2ActionPerformed
         // TODO add your handling code here:
         getNumberOfGuests();
-        
+
         viewPOS();
         lblTableNum.setText("2");
     }//GEN-LAST:event_btnTable2ActionPerformed
@@ -3809,8 +3791,7 @@ private void updatePaidOrderTable(){
         tblOpenOrders.setSelectionForeground(Color.lightGray);
         tblOpenOrders.setSelectionBackground(Color.blue);
         tblOpenOrders.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
-        
+
         PanelCardView.removeAll();
         PanelCardView.add(ViewOrders);
         PanelCardView.repaint();
@@ -3840,42 +3821,40 @@ private void updatePaidOrderTable(){
 
     private void btnViewOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrderActionPerformed
         // TODO add your handling code here:
-        
-        
+
         isNewOrder = false;
         PanelCardView.removeAll();
         PanelCardView.add(ViewPOS);
         PanelCardView.repaint();
         PanelCardView.revalidate();
-        btnDone.setEnabled(true);
+        btnSend.setEnabled(true);
         btnPrintCheck.setEnabled(true);
-        
-        
+
         DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
-       model.setRowCount(0);
+        model.setRowCount(0);
         int selectedData = 0;
-        int [] selectedRow = tblOpenOrders.getSelectedRows();
-        int [] selectedColumn = tblOpenOrders.getSelectedColumns();
-        for (int i = 0; i < selectedRow.length; i++){
-            for (int j = 0; j < selectedColumn.length; j++){
-                    selectedData = Integer.parseInt(tblOpenOrders.getValueAt(selectedRow[i], selectedColumn[j]).toString());
-            } 
+        int[] selectedRow = tblOpenOrders.getSelectedRows();
+        int[] selectedColumn = tblOpenOrders.getSelectedColumns();
+        for (int i = 0; i < selectedRow.length; i++) {
+            for (int j = 0; j < selectedColumn.length; j++) {
+                selectedData = Integer.parseInt(tblOpenOrders.getValueAt(selectedRow[i], selectedColumn[j]).toString());
+            }
         }
-       
+
         Object[] savedItemName = dbconn.retrieveItemNameFromSalesLog(selectedData);
         Object[] savedItemPrice = dbconn.retrieveItemPriceFromSalesLog(selectedData);
         Object mn = "dfdfsdf";
-        
+
         // Item and price
         for (int i = 0; i < savedItemPrice.length; i++) {
-            
+
             Object[] row = {savedItemName[i], savedItemPrice[i]};
             model.addRow(row);
-          
+
             runningTotal();
         }
-        lblWaiter.setText(""+dbconn.getWaiterNameFromDB(selectedData));
-        lblTableNum.setText(""+dbconn.getSavedTableNumberFromDB(selectedData));
+        lblWaiter.setText("" + dbconn.getWaiterNameFromDB(selectedData));
+        lblTableNum.setText("" + dbconn.getSavedTableNumberFromDB(selectedData));
         lblOrderNumberObtained.setText("" + dbconn.getSavedOrderNumberFromDB(selectedData));
         btnCash.setEnabled(true);
         btnCreditDebit.setEnabled(true);
@@ -4018,7 +3997,6 @@ private void updatePaidOrderTable(){
     private javax.swing.JButton btnDeleteOrder;
     private javax.swing.JButton btnDesserts;
     private javax.swing.JButton btnDietCoke;
-    private javax.swing.JButton btnDone;
     private javax.swing.JButton btnDrinks;
     private javax.swing.JButton btnExtras;
     private javax.swing.JButton btnFourWay;
@@ -4043,6 +4021,7 @@ private void updatePaidOrderTable(){
     private javax.swing.JButton btnRemove;
     private javax.swing.JButton btnSalads;
     private javax.swing.JButton btnSantaFeChicQue;
+    private javax.swing.JButton btnSend;
     private javax.swing.JButton btnSouthwest;
     private javax.swing.JButton btnSpinachArtiDip;
     private javax.swing.JButton btnSprite;
@@ -4082,6 +4061,8 @@ private void updatePaidOrderTable(){
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

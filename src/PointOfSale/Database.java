@@ -260,7 +260,7 @@ public class Database {
         return AllOrders;
     }
 
-    public void saveRevenue(double Subtotal, double TaxAmount, double Total, String PaymentMethod, int OrderNumber) {
+    public void saveRevenue(double Subtotal, double TaxAmount, double Total, String PaymentMethod, int OrderNumber, int TableNumber,String ServerName ) {
         ResultSet rs = null;
         Statement dbStatement = null;
 
@@ -268,8 +268,8 @@ public class Database {
 
             dbStatement = ConnecttoDB().createStatement();
 
-            dbStatement.executeUpdate("INSERT INTO Revenue (Subtotal, TaxAmount, Total, PaymentMethod, OrderNumber)\n"
-                    + "VALUES (" + Subtotal + "," + TaxAmount + "," + Total + ",\"" + PaymentMethod + "\"," + OrderNumber + ");");
+            dbStatement.executeUpdate("INSERT INTO Revenue (Subtotal, TaxAmount, Total, PaymentMethod,  OrderNumber, TableNumber, ServerName)\n"
+                    + "VALUES (" + Subtotal + "," + TaxAmount + "," + Total + ",\"" + PaymentMethod + "\"," + OrderNumber + "),"+ TableNumber +",\""+ServerName+"\";");
 
         } catch (Exception e) {
 
@@ -575,8 +575,28 @@ public String getWaiterNameFromDB(int OrderNumber) {
         }
 
         return isCorrectPass;
-    
+   
+    }
+     public String loginWaiter(int userPass) {
+        ResultSet rs = null;
+        Statement dbStatement = null;
+        String waiterName = null;
+        try {
 
+            dbStatement = ConnecttoDB().createStatement();
+
+            rs = dbStatement.executeQuery("SELECT (ServerName) FROM employeeDB WHERE empId=" + userPass + ";");
+            while (rs.next()) {
+                waiterName = rs.getString("ServerName");
+
+            }
+
+        } catch (Exception e) {
+
+            System.out.println("waiterLogin" + e);
+        }
+
+        return waiterName;
     }
 
 }

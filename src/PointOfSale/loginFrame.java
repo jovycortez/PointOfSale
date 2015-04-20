@@ -6,6 +6,8 @@
 package PointOfSale;
 
 import static PointOfSale.Database.ConnecttoDB;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,7 +31,13 @@ public class loginFrame extends javax.swing.JFrame {
     public loginFrame() {
         initComponents();
         conn = Database.ConnecttoDB();
-
+        Toolkit fillScreenSize = Toolkit.getDefaultToolkit();
+        Dimension dim = new Dimension(fillScreenSize.getScreenSize());
+        int h = (int) dim.getHeight();
+        int w = (int) dim.getWidth();
+        setSize(w, h);
+        
+ 
     }
 
     /**
@@ -40,10 +48,10 @@ public class loginFrame extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        passLogin = new javax.swing.JPasswordField();
+        jPanel2 = new javax.swing.JPanel();
         PanelKeypad3 = new javax.swing.JPanel();
         btnOne = new javax.swing.JButton();
         btn005 = new javax.swing.JButton();
@@ -57,21 +65,13 @@ public class loginFrame extends javax.swing.JFrame {
         btn003 = new javax.swing.JButton();
         btn002 = new javax.swing.JButton();
         btnEnter3 = new javax.swing.JButton();
+        passLogin = new javax.swing.JPasswordField();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(178, 185, 185));
-
-        jLabel1.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
-        jLabel1.setText("Enter User ID:");
-
-        passLogin.setBackground(new java.awt.Color(206, 244, 244));
-        passLogin.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        passLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passLoginActionPerformed(evt);
-            }
-        });
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setLayout(new java.awt.GridBagLayout());
 
         btnOne.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         btnOne.setText("1");
@@ -241,46 +241,62 @@ public class loginFrame extends javax.swing.JFrame {
 
         PanelKeypad3Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btn000, btn002, btn003, btn004, btn005, btn006, btn007, btn008, btn009, btnClear3, btnEnter3, btnOne});
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(232, 232, 232)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        passLogin.setBackground(new java.awt.Color(206, 244, 244));
+        passLogin.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        passLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passLoginActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
+        jLabel1.setText("Enter User ID:");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(PanelKeypad3, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(passLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(213, Short.MAX_VALUE))
+                    .addComponent(passLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PanelKeypad3, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(passLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
+                .addGap(18, 18, 18)
                 .addComponent(PanelKeypad3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap())
         );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(45, 15, 34, 15);
+        jPanel1.add(jPanel2, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 private boolean isFourdigits(String userPass) {
         boolean is4digits = false;
@@ -384,10 +400,11 @@ private boolean isFourdigits(String userPass) {
                 rs = pst.executeQuery();
 
                 if (rs.next()) {
-                    JOptionPane.showMessageDialog(null, "Correct User ID!");
+                    String waiter = dbconn.loginWaiter(Integer.parseInt(userPass));
                     conn.close();
                     this.setVisible(false);
                     UserInterface POS = new UserInterface();
+                    POS.hasWaiterName(waiter);
                     POS.setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(null, "Incorrect. Please enter valid ID!");
@@ -440,11 +457,7 @@ private boolean isFourdigits(String userPass) {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel PanelKeypad;
-    private javax.swing.JPanel PanelKeypad1;
-    private javax.swing.JPanel PanelKeypad2;
     private javax.swing.JPanel PanelKeypad3;
-    private javax.swing.JButton btn0;
     private javax.swing.JButton btn000;
     private javax.swing.JButton btn002;
     private javax.swing.JButton btn003;
@@ -454,46 +467,12 @@ private boolean isFourdigits(String userPass) {
     private javax.swing.JButton btn007;
     private javax.swing.JButton btn008;
     private javax.swing.JButton btn009;
-    private javax.swing.JButton btn1;
-    private javax.swing.JButton btn10;
-    private javax.swing.JButton btn11;
-    private javax.swing.JButton btn12;
-    private javax.swing.JButton btn13;
-    private javax.swing.JButton btn14;
-    private javax.swing.JButton btn15;
-    private javax.swing.JButton btn16;
-    private javax.swing.JButton btn17;
-    private javax.swing.JButton btn18;
-    private javax.swing.JButton btn19;
-    private javax.swing.JButton btn2;
-    private javax.swing.JButton btn20;
-    private javax.swing.JButton btn21;
-    private javax.swing.JButton btn22;
-    private javax.swing.JButton btn23;
-    private javax.swing.JButton btn24;
-    private javax.swing.JButton btn25;
-    private javax.swing.JButton btn26;
-    private javax.swing.JButton btn27;
-    private javax.swing.JButton btn28;
-    private javax.swing.JButton btn29;
-    private javax.swing.JButton btn3;
-    private javax.swing.JButton btn4;
-    private javax.swing.JButton btn5;
-    private javax.swing.JButton btn6;
-    private javax.swing.JButton btn7;
-    private javax.swing.JButton btn8;
-    private javax.swing.JButton btn9;
-    private javax.swing.JButton btnClear;
-    private javax.swing.JButton btnClear1;
-    private javax.swing.JButton btnClear2;
     private javax.swing.JButton btnClear3;
-    private javax.swing.JButton btnDecimalPoint;
-    private javax.swing.JButton btnDecimalPoint1;
-    private javax.swing.JButton btnDecimalPoint2;
     private javax.swing.JButton btnEnter3;
     private javax.swing.JButton btnOne;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPasswordField passLogin;
     // End of variables declaration//GEN-END:variables
 }
