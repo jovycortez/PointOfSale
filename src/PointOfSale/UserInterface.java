@@ -73,8 +73,8 @@ public class UserInterface extends javax.swing.JFrame {
         txtKeypad.setVisible(false);
         
         conn= Database.ConnecttoDB();
-        updateOpenOrderTable();
-        updatePaidOrderTable();
+       
+        
         
     }
     

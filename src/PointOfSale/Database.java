@@ -552,5 +552,31 @@ public String getWaiterNameFromDB(int OrderNumber) {
 
         return change;
     }
+    public boolean userLogin(String userID){
+        ResultSet rs = null;
+        Statement dbStatement = null;
+        boolean isCorrectPass = false;
+        try {
+
+            dbStatement = ConnecttoDB().createStatement();
+
+            rs = dbStatement.executeQuery("SELECT * FROM employeeDB WHERE empId=?;");
+            if(rs.next()) {
+                JOptionPane.showMessageDialog(null, "Correct User ID!");
+                UserInterface POS = new UserInterface();
+                POS.setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(null, "Incorrect. Please enter valid ID!");
+            }
+
+        } catch (Exception e) {
+
+            System.out.println("login from db:"+e);
+        }
+
+        return isCorrectPass;
+    
+
+    }
 
 }
