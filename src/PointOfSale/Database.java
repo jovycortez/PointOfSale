@@ -63,14 +63,7 @@ public class Database {
         } catch (Exception e) {
 
             System.out.println(e);
-        }finally{
-                try{
-                    rs.close();
-                  
-                }catch(Exception e){
-                    
-                }
-            }
+        }
 
         return loadedMenu;
     }
@@ -101,14 +94,14 @@ public class Database {
         } catch (Exception e) {
 
             System.out.println(e);
-        }finally{
-                try{
-                    rs.close();
-                  
-                }catch(Exception e){
-                    
-                }
+        } finally {
+            try {
+                rs.close();
+
+            } catch (Exception e) {
+
             }
+        }
         return EmployeeFirstName;
 
     }
@@ -122,14 +115,14 @@ public class Database {
 
         } catch (Exception e) {
             System.out.println("updateOpenOrderTable: " + e);
-        }finally{
-                try{
-                    rs.close();
-                  
-                }catch(Exception e){
-                    
-                }
+        } finally {
+            try {
+                rs.close();
+
+            } catch (Exception e) {
+
             }
+        }
 
     }
 
@@ -152,14 +145,14 @@ public class Database {
         } catch (Exception e) {
 
             System.out.println(e);
-        }finally{
-                try{
-                    rs.close();
-                  
-                }catch(Exception e){
-                    
-                }
+        } finally {
+            try {
+                rs.close();
+
+            } catch (Exception e) {
+
             }
+        }
         return employeeExists;
 
     }
@@ -173,38 +166,52 @@ public class Database {
     public void Clockin(int empId) {
         ResultSet rs = null;
         Statement dbStatement = null;
-
+        String intime = null, outtime = null, change = null;
+        int timein, timeout, hours, timeid=1;
+        double hourpercent;
         try {
 
             dbStatement = ConnecttoDB().createStatement();
             if (!isClockedIn(empId)) {
+                date = new java.util.Date();
+                time = date.toString().split(" ");
                 dbStatement.executeUpdate("INSERT INTO TimeCard (empId, ClockIn)\n"
                         + "VALUES (" + empId + ",\"" + time[3] + "\");");
 
             } else {
-
+                rs = dbStatement.executeQuery("SELECT * FROM TimeCard;");            
+                while(rs.next()){
+                    if(rs.getInt("empId")==empId && rs.getString("ClockOut")== null){
+                        timeid= rs.getInt("timeCardId");
+                        intime = rs.getString("ClockIn");
+                        outtime = rs.getString("ClockOut");
+                    }
+                }
+                System.out.println(timeid+""+empId);
+                System.out.println("??");
+                date = new java.util.Date();
+                time = date.toString().split(" ");
                 dbStatement.executeUpdate("UPDATE TimeCard "
-                        + "SET ClockOut =\"" + time[3] + "\" WHERE empId in (" + empId + ")");
+                        + "SET ClockOut =\"" + time[3] + "\" WHERE timeCardId in (" + timeid + ")");
+                //change = intime.substring(0,2);
+                //hours = Integer.parseInt(change);
+                change = outtime.substring(0,2);
+                hours = Integer.parseInt(change);
+                hourpercent = hours;
+                dbStatement.executeUpdate("UPDATE TimeCard "
+                        + "SET HoursOfWork =\"" + hourpercent + "\" WHERE timeCardId in (" + timeid + ")");
             }
-
-
-            /* while (rs.next()) {
-
-             int empIdInput = rs.getInt("empId");
-             employeeExists = true;
-             }
-             */
         } catch (Exception e) {
 
             System.out.println(e);
-        }finally{
-                try{
-                    rs.close();
-                  
-                }catch(Exception e){
-                    
-                }
+        } finally {
+            try {
+                rs.close();
+
+            } catch (Exception e) {
+
             }
+        }
 
 //Select empID from TimeCard where empID =variablename
         //if empID= variable is null, insert empId, clockin = date/time
@@ -218,25 +225,27 @@ public class Database {
 
             dbStatement = ConnecttoDB().createStatement();
 
-            rs = dbStatement.executeQuery("SELECT empId FROM TimeCard WHERE empId = " + empId + ";");
+            rs = dbStatement.executeQuery("SELECT * FROM TimeCard;");
 
             while (rs.next()) {
-
-                int empIdInput = rs.getInt("empId");
-                employeeExists = true;
+                if(rs.getInt("empId")==empId){
+                    if(rs.getString("ClockOut")==null){
+                        employeeExists = true;
+                    }
+                }
             }
 
         } catch (Exception e) {
 
-            System.out.println(e);
-        }finally{
-                try{
-                    rs.close();
-                  
-                }catch(Exception e){
-                    
-                }
+            System.out.println("isClockedIn(int empId) "+ e);
+        } finally {
+            try {
+                rs.close();
+
+            } catch (Exception e) {
+
             }
+        }
         return employeeExists;
 
     }
@@ -261,14 +270,14 @@ public class Database {
         } catch (Exception e) {
 
             System.out.println(e);
-        }finally{
-                try{
-                    rs.close();
-                  
-                }catch(Exception e){
-                    
-                }
+        } finally {
+            try {
+                rs.close();
+
+            } catch (Exception e) {
+
             }
+        }
     }
 
     public Object[][] ViewAllOrders() {
@@ -302,15 +311,9 @@ public class Database {
             return AllOrders;
         } catch (Exception e) {
 
-            System.out.println(e);
-        }finally{
-                try{
-                    rs.close();
-                  
-                }catch(Exception e){
-                    
-                }
-            }
+            System.out.println("ViewAllOrders " + e);
+
+        }
 
         return AllOrders;
     }
@@ -324,19 +327,12 @@ public class Database {
             dbStatement = ConnecttoDB().createStatement();
 
             dbStatement.executeUpdate("INSERT INTO Revenue (Subtotal, TaxAmount, Total, PaymentMethod,  OrderNumber, TableNumber, ServerName)\n"
-                    + "VALUES (" + Subtotal + "," + TaxAmount + "," + Total + ",\"" + PaymentMethod + "\"," + OrderNumber + ")," + TableNumber + ",\"" + ServerName + "\";");
+                    + "VALUES (" + Subtotal + "," + TaxAmount + "," + Total + ",\"" + PaymentMethod + "\"," + OrderNumber + "," + TableNumber + ",\"" + ServerName + "\");");
 
         } catch (Exception e) {
 
-            System.out.println(e);
-        }finally{
-                try{
-                    rs.close();
-                  
-                }catch(Exception e){
-                    
-                }
-            }
+            System.out.println("saveRevenue " + e);
+        }
 
     }
 
@@ -358,15 +354,8 @@ public class Database {
 
         } catch (Exception e) {
 
-            System.out.println(e);
-        }finally{
-                try{
-                    rs.close();
-                  
-                }catch(Exception e){
-                    
-                }
-            }
+            System.out.println("salesLog " + e);
+        }
     }
 
     /* METHOD NAME: retrieveOrderFromSalesLog()
@@ -403,15 +392,8 @@ public class Database {
 
         } catch (Exception e) {
 
-            System.out.println(e);
-        }finally{
-                try{
-                    rs.close();
-                  
-                }catch(Exception e){
-                    
-                }
-            }
+            System.out.println("retrieveItemPriceFromSalesLog " + e);
+        }
 
         return savedOrders;
 
@@ -444,16 +426,8 @@ public class Database {
 
         } catch (Exception e) {
 
-            System.out.println(e);
-        }finally{
-                try{
-                    rs.close();
-                  
-                }catch(Exception e){
-                    
-                }
-            }
-
+            System.out.println("retrieveItemNameFromSalesLog " + e);
+        }
         return savedOrders;
 
     }
@@ -480,14 +454,8 @@ public class Database {
 
         } catch (Exception e) {
 
-            System.out.println(e);
-        } finally {
-            try {
-                rs.close();
+            System.out.println("getOrderNumberFromDB " + e);
 
-            } catch (Exception e) {
-
-            }
         }
 
         return NewOrderNumber;
@@ -509,14 +477,7 @@ public class Database {
 
         } catch (Exception e) {
 
-            System.out.println(e);
-        } finally {
-            try {
-                rs.close();
-
-            } catch (Exception e) {
-
-            }
+            System.out.println("getWaiterNameFromDB" + e);
         }
 
         return waiterName;
@@ -538,14 +499,7 @@ public class Database {
 
         } catch (Exception e) {
 
-            System.out.println(e);
-        } finally {
-            try {
-                rs.close();
-
-            } catch (Exception e) {
-
-            }
+            System.out.println("getSavedTableNumberFromDB " + e);
         }
 
         return SavedTableNumber;
@@ -567,14 +521,7 @@ public class Database {
 
         } catch (Exception e) {
 
-            System.out.println(e);
-        } finally {
-            try {
-                rs.close();
-
-            } catch (Exception e) {
-
-            }
+            System.out.println("getSavedOrderNumberFromDB " + e);
         }
 
         return SavedOrderNumber;
@@ -593,13 +540,7 @@ public class Database {
         } catch (Exception e) {
 
             System.out.println("updateRevenue" + e);
-        } finally {
-            try {
-                rs.close();
 
-            } catch (Exception e) {
-
-            }
         }
     }
 
@@ -624,14 +565,7 @@ public class Database {
 
         } catch (Exception e) {
 
-            System.out.println(e);
-        } finally {
-            try {
-                rs.close();
-
-            } catch (Exception e) {
-
-            }
+            System.out.println("viewSavedOrderNumberFromDB" + e);
         }
 
         return SavedOrderNumber;
@@ -650,17 +584,11 @@ public class Database {
         } catch (Exception e) {
 
             System.out.println("deleteFromSalesLog " + e);
-        } finally {
-            try {
-                rs.close();
 
-            } catch (Exception e) {
-
-            }
         }
     }
 
-    public void updatePaymentMethodtoDB(String PaymentMethod, int OrderNumber) {
+    public void updatePaymentMethodtoDB(String PaymentMethod, double Tendered, int OrderNumber) {
         ResultSet rs = null;
         Statement dbStatement = null;
 
@@ -668,7 +596,7 @@ public class Database {
 
             dbStatement = ConnecttoDB().createStatement();
 
-            dbStatement.executeUpdate("UPDATE Revenue SET PaymentMethod = \"" + PaymentMethod + "\"  WHERE OrderNumber= " + OrderNumber + ";");
+            dbStatement.executeUpdate("UPDATE Revenue SET PaymentMethod = \"" + PaymentMethod + "\", Tendered = " + Tendered + " WHERE OrderNumber= " + OrderNumber + ";");
 
         } catch (Exception e) {
 
@@ -734,7 +662,7 @@ public class Database {
 
             dbStatement = ConnecttoDB().createStatement();
 
-            rs = dbStatement.executeQuery("SELECT (firstName) FROM employeeDB WHERE empId= "+ userPass + ";");
+            rs = dbStatement.executeQuery("SELECT (firstName) FROM employeeDB WHERE empId= " + userPass + ";");
             while (rs.next()) {
                 waiterName = rs.getString("firstName");
                 System.out.println("Database " + waiterName);
@@ -743,10 +671,61 @@ public class Database {
         } catch (Exception e) {
 
             System.out.println("waiterLogin" + e);
-        
+
         }
 
         return waiterName;
     }
 
+    public double getGiftCardBalance(int giftCardNumberfromKeypad) {
+        ResultSet rs = null;
+        Statement dbStatement = null;
+        double giftCardAmount = 0;
+        try {
+
+            dbStatement = ConnecttoDB().createStatement();
+
+            rs = dbStatement.executeQuery("SELECT (Balance) FROM GiftCardTable WHERE CardNumber=" + giftCardNumberfromKeypad + ";");
+//            if (!rs.next()) {
+//                JOptionPane.showMessageDialog(null, "Card Not Valid! Please enter another number. ");
+//
+//            } else {
+                while (rs.next()) {
+                    giftCardAmount = rs.getDouble("Balance");
+
+                }
+            
+        } catch (Exception e) {
+
+            System.out.println("getSavedTableNumberFromDB " + e);
+        }
+
+        return giftCardAmount;
+    }
+
+    public void updategiftCardBalance(double giftCardBalance, int cardNum) {
+        ResultSet rs = null;
+        Statement dbStatement = null;
+
+        try {
+
+            dbStatement = ConnecttoDB().createStatement();
+
+            dbStatement.executeUpdate("UPDATE GiftCardTable SET Balance = " + giftCardBalance + " WHERE CardNumber = "+cardNum+" ;");
+
+        } catch (Exception e) {
+
+            System.out.println("updategiftCardBalance " + e);
+        }
+
+    }
+
+//    public double getChange(String Cash, String Total) {
+//        BigDecimal BDCash = BigDecimal.valueOf(Double.parseDouble(Cash));
+//        BigDecimal BDTotal = BigDecimal.valueOf(Double.parseDouble(Total));
+//
+//        Double change = Double.parseDouble(BDCash.subtract(BDTotal).toString());
+//
+//        return change;
+//    }
 }

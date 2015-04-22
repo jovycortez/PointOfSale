@@ -35,10 +35,9 @@ public class TestWaiter {
             System.out.println(++i + " " + get);
             --i;
         }
-        /**
-         * Maybe Storing in a database will be easier Because we can use
-         * W3School with the SELECT CREATE READ UPDATE and DELETE
-         */
+        int total = 4;
+        int GC = 1;
+        
 
     }
 

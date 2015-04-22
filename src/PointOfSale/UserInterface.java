@@ -32,8 +32,8 @@ public class UserInterface extends javax.swing.JFrame {
     TimeCard tCard = new TimeCard();
     DefaultTableModel model = new DefaultTableModel();
     Object[][] menu = dbconn.LoadMenu();
-    StringBuilder keypadTransaction = new StringBuilder(" ");
-    StringBuilder keypadLogin = new StringBuilder(" ");
+    StringBuilder keypadTransaction = new StringBuilder("");
+    StringBuilder keypadLogin = new StringBuilder("");
     ArrayList<Order> orderLst = new ArrayList<>();
     Receipt receipt = new Receipt();
     Transaction transaction = new Transaction();
@@ -46,17 +46,19 @@ public class UserInterface extends javax.swing.JFrame {
     boolean isShown = true;
     String waiter = null;
     String userPass = null;
-
+    
+    BigDecimal amountdue = null;
+    
     private boolean isFourdigits(String userPass) {
         boolean is4digits = false;
         if (userPass.length() == 4) {
             is4digits = true;
         } else {
-
+            
         }
         return is4digits;
     }
-
+    
     public void hasWaiterName(String waiter) {
         lblWaiter.setText(waiter);
     }
@@ -71,7 +73,7 @@ public class UserInterface extends javax.swing.JFrame {
         int h = (int) dim.getHeight();
         int w = (int) dim.getWidth();
         setSize(w, h);
-
+        
         new Thread() {
             public void run() {
                 while (true) {
@@ -79,7 +81,7 @@ public class UserInterface extends javax.swing.JFrame {
                     String[] time = date.toString().split(" ");
                     lblSystemClock.setText(time[3]);
                     lblSystemDate.setText(time[0] + " " + time[1] + " " + time[2] + " " + time[5]);
-
+                    
                 }
             }
         }.start();
@@ -88,17 +90,38 @@ public class UserInterface extends javax.swing.JFrame {
         PanelCardView.setVisible(false);
         PanelTransaction.setVisible(false);
         Panel_Navigation.setVisible(false);
-
+        PanelPaymentMethod.setVisible(false);
+        btnPay.setVisible(false);
+        btnConfirm.setVisible(false);
     }
-
+    private void loadEmployees() {
+        
+        try {
+            String sql = "SELECT firstName, lastName from employeeDB ";
+            pst = conn.prepareStatement(sql);
+            rs = pst.executeQuery();
+            tblEmployees.setModel(DbUtils.resultSetToTableModel(rs));
+            
+        } catch (Exception e) {
+            System.out.println("Inventory : " + e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (Exception e) {
+                
+            }
+        }
+        
+    }
     private void updateOpenOrderTable() {
-
+        
         try {
             String sql = "SELECT OrderNumber, TableNumber, ServerName from Revenue WHERE PaymentMethod = \"null\"";
             pst = conn.prepareStatement(sql);
             rs = pst.executeQuery();
             tblOpenOrders.setModel(DbUtils.resultSetToTableModel(rs));
-
+            
         } catch (Exception e) {
             System.out.println("updateOpenOrderTable: " + e);
         } finally {
@@ -106,20 +129,20 @@ public class UserInterface extends javax.swing.JFrame {
                 rs.close();
                 pst.close();
             } catch (Exception e) {
-
+                
             }
         }
-
+        
     }
-
+    
     private void updatePaidOrderTable() {
-
+        
         try {
             String sql = "SELECT OrderNumber, TableNumber, Total, ServerName from Revenue WHERE PaymentMethod = \"DebitCard\"";
             pst = conn.prepareStatement(sql);
             rs = pst.executeQuery();
             tblPaidOrders.setModel(DbUtils.resultSetToTableModel(rs));
-
+            
         } catch (Exception e) {
             System.out.println("updateOpenOrderTable: " + e);
         } finally {
@@ -127,12 +150,72 @@ public class UserInterface extends javax.swing.JFrame {
                 rs.close();
                 pst.close();
             } catch (Exception e) {
-
+                
             }
         }
-
+     
+        
     }
-
+    private void loadInventory() {
+        
+        try {
+            String sql = "SELECT itemId, itemNameDB, itemPriceDB from Menu ";
+            pst = conn.prepareStatement(sql);
+            rs = pst.executeQuery();
+            tblInventory.setModel(DbUtils.resultSetToTableModel(rs));
+            
+        } catch (Exception e) {
+            System.out.println("Inventory : " + e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (Exception e) {
+                
+            }
+        }
+        
+    }
+    private void loadRevenue() {
+        
+        try {
+            String sql = "SELECT Subtotal, TaxAmount, Total, PaymentMethod, OrderNumber, Tendered,TableNumber, ServerName from Revenue ";
+            pst = conn.prepareStatement(sql);
+            rs = pst.executeQuery();
+            tblRevenue.setModel(DbUtils.resultSetToTableModel(rs));
+            
+        } catch (Exception e) {
+            System.out.println("Inventory : " + e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (Exception e) {
+                
+            }
+        }
+        
+    }
+private void loadSales() {
+        
+        try {
+            String sql = "SELECT itemId, OrderNumber, itemNameSold, itemPriceSold from SalesLog ";
+            pst = conn.prepareStatement(sql);
+            rs = pst.executeQuery();
+            tblSales.setModel(DbUtils.resultSetToTableModel(rs));
+            
+        } catch (Exception e) {
+            System.out.println("Inventory : " + e);
+        } finally {
+            try {
+                rs.close();
+                pst.close();
+            } catch (Exception e) {
+                
+            }
+        }
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -281,7 +364,7 @@ public class UserInterface extends javax.swing.JFrame {
         lblParty = new javax.swing.JLabel();
         lblPartyNum = new javax.swing.JLabel();
         lblWaiter = new javax.swing.JLabel();
-        PanelAmount = new javax.swing.JPanel();
+        lblDiscountAmount = new javax.swing.JPanel();
         lblSubtotal = new javax.swing.JLabel();
         lblTax = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
@@ -297,7 +380,8 @@ public class UserInterface extends javax.swing.JFrame {
         lblChangeAmount = new javax.swing.JLabel();
         btnSend = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         ViewTimeCard = new javax.swing.JPanel();
         CardLogin = new javax.swing.JPanel();
         PanelLogin = new javax.swing.JPanel();
@@ -316,43 +400,17 @@ public class UserInterface extends javax.swing.JFrame {
         LetsGo_WIP = new javax.swing.JPanel();
         Manager_BackOffice = new javax.swing.JTabbedPane();
         BackOffice_Employees = new javax.swing.JPanel();
-        Employee_List = new java.awt.List();
-        Employee_Tabs = new javax.swing.JTabbedPane();
-        Employee_GeneralView = new javax.swing.JPanel();
-        NameFirst = new javax.swing.JLabel();
-        NameLast = new javax.swing.JLabel();
-        NameMiddle = new javax.swing.JLabel();
-        Address1 = new javax.swing.JLabel();
-        City = new javax.swing.JLabel();
-        Address2 = new javax.swing.JLabel();
-        State = new javax.swing.JLabel();
-        Zip_Postal = new javax.swing.JLabel();
-        PhoneNumber = new javax.swing.JLabel();
-        Employee_SNN = new javax.swing.JLabel();
-        cbState = new java.awt.Choice();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        txtFirstName = new javax.swing.JTextField();
-        txtLastName = new javax.swing.JTextField();
-        txtMiddleInitial = new javax.swing.JTextField();
-        txtAddress1 = new javax.swing.JTextField();
-        txtAddress2 = new javax.swing.JTextField();
-        txtCity = new javax.swing.JTextField();
-        txtZipCode = new javax.swing.JTextField();
-        txtPhone = new javax.swing.JTextField();
-        txtSSN = new javax.swing.JTextField();
-        Employee_Schedule = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        tblEmployees = new javax.swing.JTable();
         BackOffice_Inventory = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblInventory = new javax.swing.JTable();
         BackOffice_CostOfSales = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tblRevenue = new javax.swing.JTable();
         BackOffice_Reports = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tblSales = new javax.swing.JTable();
         ViewOrders = new javax.swing.JPanel();
         PanelOrders = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -379,10 +437,12 @@ public class UserInterface extends javax.swing.JFrame {
         btnDecimalPoint = new javax.swing.JButton();
         PanelTextEntry = new javax.swing.JPanel();
         txtKeypad = new javax.swing.JTextField();
-        jPanel3 = new javax.swing.JPanel();
+        PanelPaymentMethod = new javax.swing.JPanel();
         btnCreditDebit = new javax.swing.JButton();
         btnGiftCard = new javax.swing.JButton();
         btnCash = new javax.swing.JButton();
+        btnPay = new javax.swing.JButton();
+        btnConfirm = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -632,6 +692,7 @@ public class UserInterface extends javax.swing.JFrame {
 
         jLabel9.setText("Server Name:");
 
+        lblWaiterHeader.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblWaiterHeader.setText("waiter");
 
         btnLogout.setText("Logout");
@@ -935,7 +996,7 @@ public class UserInterface extends javax.swing.JFrame {
             .addGroup(ViewTablesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1151, Short.MAX_VALUE))
+                .addContainerGap(958, Short.MAX_VALUE))
         );
         ViewTablesLayout.setVerticalGroup(
             ViewTablesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1014,7 +1075,7 @@ public class UserInterface extends javax.swing.JFrame {
                         .addComponent(btnFourWay)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCalamari)))
-                .addContainerGap(622, Short.MAX_VALUE))
+                .addContainerGap(412, Short.MAX_VALUE))
         );
 
         PanelAppetizersLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCalamari, btnChipsSalsa, btnFourWay, btnMozarellaSticks, btnSantaFeChicQue, btnSpinachArtiDip});
@@ -1165,7 +1226,7 @@ public class UserInterface extends javax.swing.JFrame {
                 .addGroup(CardBurgersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(CardBurgersLayout.createSequentialGroup()
                         .addComponent(lblBurgers)
-                        .addContainerGap(962, Short.MAX_VALUE))
+                        .addContainerGap(752, Short.MAX_VALUE))
                     .addComponent(PanelBurgers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         CardBurgersLayout.setVerticalGroup(
@@ -1935,7 +1996,7 @@ public class UserInterface extends javax.swing.JFrame {
                         .addComponent(lblPartyNum))
                     .addGroup(Panel_OrderLabelLayout.createSequentialGroup()
                         .addComponent(lblTable)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                         .addComponent(lblTableNum)))
                 .addGap(37, 37, 37))
         );
@@ -1961,7 +2022,7 @@ public class UserInterface extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        PanelAmount.setBackground(new java.awt.Color(246, 244, 244));
+        lblDiscountAmount.setBackground(new java.awt.Color(246, 244, 244));
 
         lblSubtotal.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         lblSubtotal.setText("Subtotal:        $");
@@ -2034,84 +2095,103 @@ public class UserInterface extends javax.swing.JFrame {
         jButton7.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         jButton7.setText("DONE");
 
-        jButton8.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        jButton8.setText("SAVE");
+        jLabel10.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
+        jLabel10.setText("Discount:            $");
 
-        javax.swing.GroupLayout PanelAmountLayout = new javax.swing.GroupLayout(PanelAmount);
-        PanelAmount.setLayout(PanelAmountLayout);
-        PanelAmountLayout.setHorizontalGroup(
-            PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAmountLayout.createSequentialGroup()
-                .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnPrintCheck)
-                    .addGroup(PanelAmountLayout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnClearTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton7))
+        jLabel11.setBackground(new java.awt.Color(255, 51, 51));
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel11.setText("0.00");
+
+        javax.swing.GroupLayout lblDiscountAmountLayout = new javax.swing.GroupLayout(lblDiscountAmount);
+        lblDiscountAmount.setLayout(lblDiscountAmountLayout);
+        lblDiscountAmountLayout.setHorizontalGroup(
+            lblDiscountAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lblDiscountAmountLayout.createSequentialGroup()
+                .addGroup(lblDiscountAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(lblDiscountAmountLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(lblDiscountAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnPrintCheck)
+                            .addGroup(lblDiscountAmountLayout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addComponent(btnClearTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(lblDiscountAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(lblDiscountAmountLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblSubtotal)
-                    .addComponent(lblTax)
-                    .addComponent(lblTotal)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
-                .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblSubtotalAmount, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblTaxAmount, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblTotalAmount, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblCashPaidAmount, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblChangeAmount, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(lblDiscountAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(lblDiscountAmountLayout.createSequentialGroup()
+                        .addGroup(lblDiscountAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblSubtotal)
+                            .addComponent(lblTax)
+                            .addComponent(jLabel7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
+                        .addGroup(lblDiscountAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblSubtotalAmount, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblTaxAmount, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblChangeAmount, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(lblDiscountAmountLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblCashPaidAmount))
+                    .addGroup(lblDiscountAmountLayout.createSequentialGroup()
+                        .addComponent(lblTotal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblTotalAmount))
+                    .addGroup(lblDiscountAmountLayout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel11)))
                 .addContainerGap())
         );
 
-        PanelAmountLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnClearTable, btnPrintCheck, btnRemove, btnSend, jButton7});
+        lblDiscountAmountLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnClearTable, btnPrintCheck, btnRemove, btnSend});
 
-        PanelAmountLayout.setVerticalGroup(
-            PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelAmountLayout.createSequentialGroup()
+        lblDiscountAmountLayout.setVerticalGroup(
+            lblDiscountAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(lblDiscountAmountLayout.createSequentialGroup()
                 .addGap(7, 7, 7)
-                .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(lblDiscountAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSubtotal)
                     .addComponent(lblSubtotalAmount))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(lblDiscountAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTax)
                     .addComponent(lblTaxAmount))
-                .addGap(15, 15, 15)
-                .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(18, 18, 18)
+                .addGroup(lblDiscountAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel11))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(lblDiscountAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTotal)
                     .addComponent(lblTotalAmount))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(lblDiscountAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(lblCashPaidAmount))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(1, 1, 1)
+                .addGroup(lblDiscountAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(lblChangeAmount))
                 .addContainerGap())
-            .addGroup(PanelAmountLayout.createSequentialGroup()
-                .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+            .addGroup(lblDiscountAmountLayout.createSequentialGroup()
+                .addGroup(lblDiscountAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPrintCheck, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
                     .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0)
-                .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(lblDiscountAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnClearTable, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, 0)
-                .addGroup(PanelAmountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton7)
-                    .addComponent(jButton8))
+                .addComponent(jButton7)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        PanelAmountLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnClearTable, btnPrintCheck, btnRemove, btnSend, jButton7, jButton8});
+        lblDiscountAmountLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnClearTable, btnPrintCheck, btnRemove, btnSend, jButton7});
 
         javax.swing.GroupLayout PanelOrderLayout = new javax.swing.GroupLayout(PanelOrder);
         PanelOrder.setLayout(PanelOrderLayout);
@@ -2122,7 +2202,7 @@ public class UserInterface extends javax.swing.JFrame {
                 .addGroup(PanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(Panel_OrderLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(PanelAmount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblDiscountAmount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, 0))
         );
         PanelOrderLayout.setVerticalGroup(
@@ -2133,7 +2213,8 @@ public class UserInterface extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(PanelAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(lblDiscountAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout ViewPOSLayout = new javax.swing.GroupLayout(ViewPOS);
@@ -2313,254 +2394,7 @@ public class UserInterface extends javax.swing.JFrame {
 
         ViewManager.setBackground(new java.awt.Color(223, 223, 246));
 
-        NameFirst.setText("First Name");
-
-        NameLast.setText("Last Name");
-
-        NameMiddle.setText("Middle Initial");
-
-        Address1.setText("Address");
-
-        City.setText("City");
-
-        Address2.setText("Address 2");
-
-        State.setText("State");
-
-        Zip_Postal.setText("Zip/Postal");
-
-        PhoneNumber.setText("Phone");
-
-        Employee_SNN.setText("Social Security Number:");
-
-        jButton1.setText("Edit");
-
-        jButton2.setText("jButton2");
-
-        jButton3.setText("jButton3");
-
-        txtFirstName.setText("jTextField1");
-
-        txtLastName.setText("jTextField2");
-
-        txtMiddleInitial.setText("jTextField3");
-
-        txtAddress1.setText("jTextField4");
-        txtAddress1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtAddress1ActionPerformed(evt);
-            }
-        });
-
-        txtAddress2.setText("jTextField5");
-
-        txtCity.setText("jTextField6");
-
-        txtZipCode.setText("jTextField7");
-        txtZipCode.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtZipCodeActionPerformed(evt);
-            }
-        });
-
-        txtPhone.setText("jTextField8");
-
-        txtSSN.setText("jTextField9");
-
-        javax.swing.GroupLayout Employee_GeneralViewLayout = new javax.swing.GroupLayout(Employee_GeneralView);
-        Employee_GeneralView.setLayout(Employee_GeneralViewLayout);
-        Employee_GeneralViewLayout.setHorizontalGroup(
-            Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
-                .addGap(59, 59, 59)
-                .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(Address2)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
-                                    .addComponent(PhoneNumber)
-                                    .addGap(418, 418, 418))
-                                .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
-                                    .addComponent(txtCity, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(cbState, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(State)
-                                        .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
-                                            .addComponent(jButton1)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(jButton2)))))
-                            .addComponent(City))
-                        .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton3)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Employee_GeneralViewLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(Zip_Postal)
-                                    .addComponent(txtZipCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(652, 652, 652))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Employee_GeneralViewLayout.createSequentialGroup()
-                        .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Employee_GeneralViewLayout.createSequentialGroup()
-                                .addGap(1, 1, 1)
-                                .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
-                                        .addGap(211, 211, 211)
-                                        .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
-                                        .addComponent(NameFirst)
-                                        .addGap(160, 160, 160)
-                                        .addComponent(NameLast)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(NameMiddle, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtMiddleInitial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(txtAddress2)
-                            .addComponent(txtAddress1)
-                            .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
-                                .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(Address1, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtPhone, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(578, 578, 578))
-                    .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
-                        .addGap(279, 279, 279)
-                        .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Employee_SNN)
-                            .addComponent(txtSSN, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())))
-        );
-        Employee_GeneralViewLayout.setVerticalGroup(
-            Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Employee_GeneralViewLayout.createSequentialGroup()
-                .addGap(96, 96, 96)
-                .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(NameFirst)
-                    .addComponent(NameLast)
-                    .addComponent(NameMiddle))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtMiddleInitial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(43, 43, 43)
-                .addComponent(Address1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtAddress1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(Address2)
-                .addGap(18, 18, 18)
-                .addComponent(txtAddress2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(Zip_Postal)
-                .addGap(9, 9, 9)
-                .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(City)
-                    .addComponent(State))
-                .addGap(18, 18, 18)
-                .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbState, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtZipCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(PhoneNumber)
-                    .addComponent(Employee_SNN))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSSN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(228, 228, 228)
-                .addGroup(Employee_GeneralViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addGap(131, 131, 131))
-        );
-
-        Employee_Tabs.addTab("General", Employee_GeneralView);
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Total Hours"
-            }
-        ));
-        jScrollPane3.setViewportView(jTable1);
-
-        jButton4.setText("Edit");
-
-        jButton5.setText("Delete");
-
-        jButton6.setText("Im A Button");
-
-        javax.swing.GroupLayout Employee_ScheduleLayout = new javax.swing.GroupLayout(Employee_Schedule);
-        Employee_Schedule.setLayout(Employee_ScheduleLayout);
-        Employee_ScheduleLayout.setHorizontalGroup(
-            Employee_ScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Employee_ScheduleLayout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 877, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(130, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Employee_ScheduleLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton6)
-                .addGap(240, 240, 240))
-        );
-        Employee_ScheduleLayout.setVerticalGroup(
-            Employee_ScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Employee_ScheduleLayout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 539, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(Employee_ScheduleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6))
-                .addContainerGap(307, Short.MAX_VALUE))
-        );
-
-        Employee_Tabs.addTab("Schedule", Employee_Schedule);
-
-        javax.swing.GroupLayout BackOffice_EmployeesLayout = new javax.swing.GroupLayout(BackOffice_Employees);
-        BackOffice_Employees.setLayout(BackOffice_EmployeesLayout);
-        BackOffice_EmployeesLayout.setHorizontalGroup(
-            BackOffice_EmployeesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(BackOffice_EmployeesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Employee_List, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Employee_Tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 1059, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(63, 63, 63))
-        );
-        BackOffice_EmployeesLayout.setVerticalGroup(
-            BackOffice_EmployeesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(BackOffice_EmployeesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Employee_List, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addComponent(Employee_Tabs, javax.swing.GroupLayout.Alignment.TRAILING)
-        );
-
-        Manager_BackOffice.addTab("Employees", BackOffice_Employees);
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblEmployees.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -2576,52 +2410,137 @@ public class UserInterface extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane4.setViewportView(jTable2);
+        jScrollPane7.setViewportView(tblEmployees);
+
+        javax.swing.GroupLayout BackOffice_EmployeesLayout = new javax.swing.GroupLayout(BackOffice_Employees);
+        BackOffice_Employees.setLayout(BackOffice_EmployeesLayout);
+        BackOffice_EmployeesLayout.setHorizontalGroup(
+            BackOffice_EmployeesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BackOffice_EmployeesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 1213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(45, Short.MAX_VALUE))
+        );
+        BackOffice_EmployeesLayout.setVerticalGroup(
+            BackOffice_EmployeesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BackOffice_EmployeesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 761, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(126, Short.MAX_VALUE))
+        );
+
+        Manager_BackOffice.addTab("Employees", BackOffice_Employees);
+
+        tblInventory.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Item ID", "Item Name", "Catagory", "Unit Price", "QTY", "Title 6"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane4.setViewportView(tblInventory);
 
         javax.swing.GroupLayout BackOffice_InventoryLayout = new javax.swing.GroupLayout(BackOffice_Inventory);
         BackOffice_Inventory.setLayout(BackOffice_InventoryLayout);
         BackOffice_InventoryLayout.setHorizontalGroup(
             BackOffice_InventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BackOffice_InventoryLayout.createSequentialGroup()
-                .addGap(65, 65, 65)
+                .addContainerGap()
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 1213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         BackOffice_InventoryLayout.setVerticalGroup(
             BackOffice_InventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BackOffice_InventoryLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap()
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 761, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addContainerGap(126, Short.MAX_VALUE))
         );
 
         Manager_BackOffice.addTab("Inventory", BackOffice_Inventory);
+
+        tblRevenue.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Item ID", "Item Name", "Catagory", "Unit Price", "QTY", "Title 6"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane6.setViewportView(tblRevenue);
 
         javax.swing.GroupLayout BackOffice_CostOfSalesLayout = new javax.swing.GroupLayout(BackOffice_CostOfSales);
         BackOffice_CostOfSales.setLayout(BackOffice_CostOfSalesLayout);
         BackOffice_CostOfSalesLayout.setHorizontalGroup(
             BackOffice_CostOfSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1273, Short.MAX_VALUE)
+            .addGroup(BackOffice_CostOfSalesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 1213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         BackOffice_CostOfSalesLayout.setVerticalGroup(
             BackOffice_CostOfSalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 903, Short.MAX_VALUE)
+            .addGroup(BackOffice_CostOfSalesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 761, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(126, Short.MAX_VALUE))
         );
 
-        Manager_BackOffice.addTab("Cost of Sales", BackOffice_CostOfSales);
+        Manager_BackOffice.addTab("Revenue", BackOffice_CostOfSales);
+
+        tblSales.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Item ID", "Item Name", "Catagory", "Unit Price", "QTY", "Title 6"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(tblSales);
 
         javax.swing.GroupLayout BackOffice_ReportsLayout = new javax.swing.GroupLayout(BackOffice_Reports);
         BackOffice_Reports.setLayout(BackOffice_ReportsLayout);
         BackOffice_ReportsLayout.setHorizontalGroup(
             BackOffice_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1273, Short.MAX_VALUE)
+            .addGroup(BackOffice_ReportsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 1213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         BackOffice_ReportsLayout.setVerticalGroup(
             BackOffice_ReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 903, Short.MAX_VALUE)
+            .addGroup(BackOffice_ReportsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 761, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(126, Short.MAX_VALUE))
         );
 
-        Manager_BackOffice.addTab("Reports", BackOffice_Reports);
+        Manager_BackOffice.addTab("Sales", BackOffice_Reports);
 
         javax.swing.GroupLayout LetsGo_WIPLayout = new javax.swing.GroupLayout(LetsGo_WIP);
         LetsGo_WIP.setLayout(LetsGo_WIPLayout);
@@ -2635,7 +2554,7 @@ public class UserInterface extends javax.swing.JFrame {
             LetsGo_WIPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(LetsGo_WIPLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Manager_BackOffice, javax.swing.GroupLayout.PREFERRED_SIZE, 937, Short.MAX_VALUE))
+                .addComponent(Manager_BackOffice))
         );
 
         javax.swing.GroupLayout ViewManagerLayout = new javax.swing.GroupLayout(ViewManager);
@@ -2775,7 +2694,7 @@ public class UserInterface extends javax.swing.JFrame {
             .addGroup(ViewOrdersLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(PanelOrders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1028, Short.MAX_VALUE))
+                .addContainerGap(835, Short.MAX_VALUE))
         );
         ViewOrdersLayout.setVerticalGroup(
             ViewOrdersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2881,7 +2800,6 @@ public class UserInterface extends javax.swing.JFrame {
         btnDecimalPoint.setBackground(new java.awt.Color(204, 204, 204));
         btnDecimalPoint.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
         btnDecimalPoint.setText(".");
-        btnDecimalPoint.setEnabled(false);
         btnDecimalPoint.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDecimalPointActionPerformed(evt);
@@ -2952,6 +2870,14 @@ public class UserInterface extends javax.swing.JFrame {
 
         PanelKeypadLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btnClear, btnDecimalPoint});
 
+        txtKeypad.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
+        txtKeypad.setForeground(new java.awt.Color(0, 0, 255));
+        txtKeypad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtKeypadActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout PanelTextEntryLayout = new javax.swing.GroupLayout(PanelTextEntry);
         PanelTextEntry.setLayout(PanelTextEntryLayout);
         PanelTextEntryLayout.setHorizontalGroup(
@@ -2963,7 +2889,9 @@ public class UserInterface extends javax.swing.JFrame {
         );
         PanelTextEntryLayout.setVerticalGroup(
             PanelTextEntryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(txtKeypad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(PanelTextEntryLayout.createSequentialGroup()
+                .addComponent(txtKeypad, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+                .addGap(1, 1, 1))
         );
 
         btnCreditDebit.setBackground(new java.awt.Color(0, 255, 0));
@@ -2995,46 +2923,66 @@ public class UserInterface extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout PanelPaymentMethodLayout = new javax.swing.GroupLayout(PanelPaymentMethod);
+        PanelPaymentMethod.setLayout(PanelPaymentMethodLayout);
+        PanelPaymentMethodLayout.setHorizontalGroup(
+            PanelPaymentMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelPaymentMethodLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnGiftCard, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(PanelPaymentMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCash)
-                    .addComponent(btnCreditDebit, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, 0))
+                    .addComponent(btnGiftCard, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCreditDebit, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        jPanel3Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCash, btnCreditDebit, btnGiftCard});
+        PanelPaymentMethodLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnCash, btnCreditDebit, btnGiftCard});
 
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        PanelPaymentMethodLayout.setVerticalGroup(
+            PanelPaymentMethodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelPaymentMethodLayout.createSequentialGroup()
                 .addComponent(btnCreditDebit, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnGiftCard)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnCash))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCash, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(83, Short.MAX_VALUE))
         );
 
-        jPanel3Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnCash, btnCreditDebit, btnGiftCard});
+        PanelPaymentMethodLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnCreditDebit, btnGiftCard});
+
+        btnPay.setText("Pay");
+        btnPay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPayCashActionPerformed(evt);
+            }
+        });
+
+        btnConfirm.setText("Confirm ");
+        btnConfirm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout PanelTransactionLayout = new javax.swing.GroupLayout(PanelTransaction);
         PanelTransaction.setLayout(PanelTransactionLayout);
         PanelTransactionLayout.setHorizontalGroup(
             PanelTransactionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelTransactionLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(PanelTransactionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(PanelTransactionLayout.createSequentialGroup()
-                        .addGroup(PanelTransactionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(PanelTextEntry, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(PanelKeypad, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap()
+                        .addGroup(PanelTransactionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(PanelPaymentMethod, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(PanelTransactionLayout.createSequentialGroup()
+                                .addGroup(PanelTransactionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(PanelTextEntry, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(PanelKeypad, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(btnPay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(PanelTransactionLayout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addComponent(btnConfirm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         PanelTransactionLayout.setVerticalGroup(
@@ -3042,10 +2990,14 @@ public class UserInterface extends javax.swing.JFrame {
             .addGroup(PanelTransactionLayout.createSequentialGroup()
                 .addGap(9, 9, 9)
                 .addComponent(PanelTextEntry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PanelKeypad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(PanelPaymentMethod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnPay, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -3110,30 +3062,30 @@ public class UserInterface extends javax.swing.JFrame {
             //BigDecimal.valueOf;
             // for (int i = 0; i < orderList.size(); i++) {
             subtotal = subtotal.add(BigDecimal.valueOf(Double.parseDouble(model.getValueAt(i, 1).toString())));
-
+            
         }
-
+        
         lblSubtotalAmount.setText(subtotal.toString());
         lblTaxAmount.setText(subtotal.multiply(BigDecimal.valueOf(0.070)).setScale(2, RoundingMode.DOWN).toString());
         lblTotalAmount.setText(subtotal.add(subtotal.multiply(BigDecimal.valueOf(0.070)).setScale(2, RoundingMode.DOWN)).toString());
         return subtotal;
     }
-
+    
     private void viewOrders() {
         PanelCardView.removeAll();
         PanelCardView.add(ViewOrders);
         PanelCardView.repaint();
         PanelCardView.revalidate();
-
+        
     }
-
+    
     private void viewTables() {
         PanelCardView.removeAll();
         PanelCardView.add(ViewTables);
         PanelCardView.repaint();
         PanelCardView.revalidate();
     }
-
+    
     private void viewPOS() {
         PanelCardView.removeAll();
         PanelCardView.add(ViewPOS);
@@ -3142,7 +3094,7 @@ public class UserInterface extends javax.swing.JFrame {
         btnPrintCheck.setEnabled(true);
         btnDecimalPoint.setEnabled(true);
         btnSend.setEnabled(true);
-
+        
         btnCreditDebit.setEnabled(true);
         btnGiftCard.setEnabled(true);
         btnCash.setEnabled(true);
@@ -3151,12 +3103,12 @@ public class UserInterface extends javax.swing.JFrame {
         lblOrderNumberObtained.setText(String.valueOf(receipt.getOrderNumber()));
         DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
         model.setRowCount(0);
-
+        
         lblCashPaidAmount.setVisible(false);
         lblChangeAmount.setVisible(false);
-
+        
     }
-
+    
     private void getNumberOfGuests() {
         String numOfGuests = null;
         do {
@@ -3234,7 +3186,7 @@ public class UserInterface extends javax.swing.JFrame {
          */
         btnDecimalPoint.setEnabled(false);
         txtKeypad.setVisible(false);
-
+        
         btnCreditDebit.setVisible(false);
         btnGiftCard.setVisible(false);
         btnCash.setVisible(false);
@@ -3243,7 +3195,7 @@ public class UserInterface extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
         if (dbconn.isEmployee(Integer.parseInt(txtEmpId.getText()))) {
-
+            
             lblEmpName.setText(dbconn.Login(Integer.parseInt(txtEmpId.getText())));
             PanelCardView.removeAll();
             PanelCardView.add(CardClockInClockOut);
@@ -3252,7 +3204,7 @@ public class UserInterface extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Login Failed");
         }
-
+        
 
     }//GEN-LAST:event_btnLoginActionPerformed
 
@@ -3269,9 +3221,9 @@ public class UserInterface extends javax.swing.JFrame {
          */
         btnDecimalPoint.setEnabled(true);
         txtKeypad.setEnabled(false);
-
+        
         btnSend.setEnabled(false);
-
+        
         btnCreditDebit.setEnabled(false);
         btnGiftCard.setEnabled(false);
         btnCash.setEnabled(false);
@@ -3281,12 +3233,12 @@ public class UserInterface extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         dbconn.Clockin(Integer.parseInt(txtEmpId.getText()));
-
+        
         viewTables();
         // Resets the Transaction Panel to normal state
         btnDecimalPoint.setEnabled(true);
         txtKeypad.setVisible(true);
-
+        
         btnCreditDebit.setVisible(true);
         btnGiftCard.setVisible(true);
         btnCash.setVisible(true);
@@ -3298,6 +3250,10 @@ public class UserInterface extends javax.swing.JFrame {
         PanelCardView.add(ViewManager);
         PanelCardView.repaint();
         PanelCardView.revalidate();
+        loadInventory();
+        loadRevenue();
+        loadSales();
+       loadEmployees();
     }//GEN-LAST:event_btnManagerActionPerformed
 
     private void btnCokeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCokeActionPerformed
@@ -3684,7 +3640,7 @@ public class UserInterface extends javax.swing.JFrame {
     private void btnClearTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearTableActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
-
+        
         model.setRowCount(0);
         lblSubtotalAmount.setText("0.00");
         lblTaxAmount.setText("0.00");
@@ -3774,14 +3730,14 @@ public class UserInterface extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
-
+        
         JOptionPane.showMessageDialog(null, "Bill Printed!");
-
+        
         for (int i = 0; i < model.getDataVector().size(); i++) {
-
+            
             orderLst.add(new Order(model.getValueAt(i, 0).toString(),
                     BigDecimal.valueOf(Double.parseDouble(model.getValueAt(i, 1).toString()))));
-
+            
         }
         for (int i = 0; i < orderLst.size(); i++) {
             Order order = orderLst.get(i);
@@ -3812,22 +3768,93 @@ public class UserInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPrintCheckActionPerformed
 
     private void btnCreditDebitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreditDebitActionPerformed
-        dbconn.updatePaymentMethodtoDB("Credit/Debit", Integer.parseInt(lblOrderNumberObtained.toString()));
-        paymentType.append(transaction.payByCreditCard(BigDecimal.valueOf(Double.parseDouble(txtKeypad.getText()))));
-        txtKeypad.setText(null);
-        keypadTransaction.delete(0, keypadTransaction.length());
+        txtKeypad.setVisible(false);
+        dbconn.updatePaymentMethodtoDB("Credit/Debit", Double.parseDouble(lblTotalAmount.getText()), Integer.parseInt(lblOrderNumberObtained.getText()));
+        
+        JOptionPane.showMessageDialog(null, "Tendered: $" + lblTotalAmount.getText());
+        
+        DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
+        
+        model.setRowCount(0);
+        lblSubtotalAmount.setText("0.00");
+        lblTaxAmount.setText("0.00");
+        lblTotalAmount.setText("0.00");
+        PanelPaymentMethod.setVisible(false);
+        
+        viewTables();
+        
+
     }//GEN-LAST:event_btnCreditDebitActionPerformed
 
     private void btnGiftCardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGiftCardActionPerformed
         // TODO add your handling code here:
-        dbconn.updatePaymentMethodtoDB("Gift Card", Integer.parseInt(lblOrderNumberObtained.toString()));
-        paymentType.append(transaction.payByGiftCard(BigDecimal.valueOf(Double.parseDouble(txtKeypad.getText())), receipt.getTotal()));
-        txtKeypad.setText(null);
-        keypadTransaction.delete(0, keypadTransaction.length());
+        PanelPaymentMethod.setVisible(false);
+        btnConfirm.setVisible(true);
+        txtKeypad.setVisible(true);
+        txtKeypad.setEnabled(true);
+//        int cardNum = Integer.parseInt(txtKeypad.getText());
+//
+//        //dbconn.updatePaymentMethodtoDB("Gift Card", Double.parseDouble(lblTotalAmount.getText()), Integer.parseInt(lblOrderNumberObtained.toString()));
+//        double giftCardOrigAmount = dbconn.getGiftCardBalance(cardNum);
+//        double total = Double.parseDouble(lblTotalAmount.getText());
+//        double giftCardBalance = giftCardOrigAmount - Double.parseDouble(lblTotalAmount.getText());
+//        if (total < giftCardOrigAmount) {
+//            //
+//
+//            giftCardBalance = giftCardOrigAmount - total;
+//            dbconn.updategiftCardBalance(giftCardBalance);
+//            JOptionPane.showMessageDialog(null, "Gift Card Amount: $ " + giftCardOrigAmount + "\nPaid: $" + lblTotalAmount + "\nRemaining Balance in GiftCard: $" + giftCardBalance);
+//             dbconn.updatePaymentMethodtoDB("Gift Card", total, Integer.parseInt(lblOrderNumberObtained.getText()));
+//        } else if (total > giftCardOrigAmount) {
+//            double amountdue = total - giftCardOrigAmount;
+//            dbconn.updategiftCardBalance(0);
+//            JOptionPane.showMessageDialog(null, "Gift Card Amount: $ " + giftCardOrigAmount + "\nAmount due $" + amountdue + ".");
+//            lblTotalAmount.setText(amountdue + "");
+//             dbconn.updatePaymentMethodtoDB("Gift Card", total, Integer.parseInt(lblOrderNumberObtained.getText()));
+//            btnPay.setVisible(true);
+////
+//        } else {
+//            //
+//            dbconn.updategiftCardBalance(0);
+//            dbconn.updatePaymentMethodtoDB("Gift Card", total, Integer.parseInt(lblOrderNumberObtained.getText()));
+//
+//        }
+////not good
+////        if (giftCardBalance < 0) {
+////
+////            JOptionPane.showMessageDialog(null, "Not enough amount in the card.\nTendered: $" + giftCardOrigAmount + ""
+////                    + "\nAmount due: $" + Math.abs(giftCardBalance));
+////            giftCardBalance = 0.00;
+////            dbconn.updategiftCardBalance(giftCardBalance);
+////        } else {
+////            dbconn.updategiftCardBalance(giftCardBalance);
+////            JOptionPane.showMessageDialog(null, "Gift Card Amount: $ " + giftCardOrigAmount + "\nPaid: $" + lblTotalAmount + "\nRemaining Balance in GiftCard: $" + giftCardBalance);
+////            lblCashPaidAmount.setText("" + giftCardOrigAmount);
+////        }
+////        btnPay.setVisible(true);
+////        paymentType.append(transaction.payByGiftCard(BigDecimal.valueOf(Double.parseDouble(txtKeypad.getText())), receipt.getTotal()));
+//
+//        keypadTransaction.delete(0, keypadTransaction.length());
+//
+//        //after lunch
+//        DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
+//
+//        model.setRowCount(0);
+//        lblSubtotalAmount.setText("0.00");
+//        lblTaxAmount.setText("0.00");
+//        lblTotalAmount.setText("0.00");
+
+
     }//GEN-LAST:event_btnGiftCardActionPerformed
 
     private void btnCashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCashActionPerformed
-        dbconn.updatePaymentMethodtoDB("Cash", Integer.parseInt(lblOrderNumberObtained.toString()));
+        PanelPaymentMethod.setVisible(false);
+        btnPay.setVisible(true);
+        
+        txtKeypad.setVisible(true);
+        txtKeypad.setEnabled(true);
+
+        //dbconn.updatePaymentMethodtoDB("Cash", Integer.parseInt(lblOrderNumberObtained.toString()));
         lblCashPaidAmount.setVisible(true);
         lblChangeAmount.setVisible(true);
         double change = transaction.getChange(txtKeypad.getText(), lblTotalAmount.getText());
@@ -3851,14 +3878,14 @@ public class UserInterface extends javax.swing.JFrame {
 
         if (isNewOrder) {
             DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
-
-            JOptionPane.showMessageDialog(null, "Bill Printed!");
-
+            
+            JOptionPane.showMessageDialog(null, "Order number " + lblOrderNumberObtained.getText() + " sent!");
+            
             for (int i = 0; i < model.getDataVector().size(); i++) {
-
+                
                 orderLst.add(new Order(model.getValueAt(i, 0).toString(),
                         BigDecimal.valueOf(Double.parseDouble(model.getValueAt(i, 1).toString()))));
-
+                
             }
             for (int i = 0; i < orderLst.size(); i++) {
                 Order order = orderLst.get(i);
@@ -3867,7 +3894,7 @@ public class UserInterface extends javax.swing.JFrame {
             }
             if (model.getRowCount() != 0) {
                 receipt.setOrderList(orderLst);
-                // txtAmount.setText(receipt.getReceipt());
+                
                 dbconn.saveRevenue(Double.parseDouble(receipt.getSubtotal().toString()),
                         Double.parseDouble(receipt.getTaxAmount().toString()),
                         Double.parseDouble(receipt.getTotal().toString()),
@@ -3875,10 +3902,17 @@ public class UserInterface extends javax.swing.JFrame {
                         receipt.getOrderNumber(),
                         Integer.parseInt(lblTableNum.getText()),
                         lblWaiter.getText());
-
+                
             }
 
             //end of if for new orders
+            model = (DefaultTableModel) tblOrder.getModel();
+            
+            model.setRowCount(0);
+            lblSubtotalAmount.setText("0.00");
+            lblTaxAmount.setText("0.00");
+            lblTotalAmount.setText("0.00");
+            lblOrderNumberObtained.setText(dbconn.getOrderNumberFromDB() + "");
         } else {
             //this is an open order
 
@@ -3886,17 +3920,17 @@ public class UserInterface extends javax.swing.JFrame {
                     Double.parseDouble(lblTaxAmount.getText()),
                     Double.parseDouble(lblTotalAmount.getText()),
                     Integer.parseInt(lblOrderNumberObtained.getText()));
-
+            
             dbconn.deleteFromSalesLog(Integer.parseInt(lblOrderNumberObtained.getText()));
             DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
-
-            JOptionPane.showMessageDialog(null, "Bill Printed!");
-
+            
+            JOptionPane.showMessageDialog(null, "Order number " + lblOrderNumberObtained.getText() + " updated sent!");
+            
             for (int i = 0; i < model.getDataVector().size(); i++) {
-
+                
                 orderLst.add(new Order(model.getValueAt(i, 0).toString(),
                         BigDecimal.valueOf(Double.parseDouble(model.getValueAt(i, 1).toString()))));
-
+                
             }
             for (int i = 0; i < orderLst.size(); i++) {
                 Order order = orderLst.get(i);
@@ -3906,29 +3940,29 @@ public class UserInterface extends javax.swing.JFrame {
             if (model.getRowCount() != 0) {
                 receipt.setOrderList(orderLst);
                 // txtAmount.setText(receipt.getReceipt());
-                dbconn.saveRevenue(Double.parseDouble(receipt.getSubtotal().toString()),
-                        Double.parseDouble(receipt.getTaxAmount().toString()),
-                        Double.parseDouble(receipt.getTotal().toString()),
-                        receipt.getPaymentMethod(),
-                        receipt.getOrderNumber(),
-                        Integer.parseInt(lblTableNum.getText()),
-                        lblWaiter.getText());
+//                dbconn.saveRevenue(Double.parseDouble(receipt.getSubtotal().toString()),
+//                        Double.parseDouble(receipt.getTaxAmount().toString()),
+//                        Double.parseDouble(receipt.getTotal().toString()),
+//                        receipt.getPaymentMethod(),
+//                        receipt.getOrderNumber(),
+//                        Integer.parseInt(lblTableNum.getText()),
+//                        lblWaiter.getText());
                 dbconn.updateRevenue(Double.parseDouble(lblSubtotalAmount.getText()),
                         Double.parseDouble(lblTaxAmount.getText()),
                         Double.parseDouble(lblTotalAmount.getText()),
                         Integer.parseInt(lblOrderNumberObtained.getText()));
             }
-
+            
         }
         isNewOrder = true;
-        PanelCardView.removeAll();
-        PanelCardView.add(ViewTables);
-        PanelCardView.repaint();
-        PanelCardView.revalidate();
+        DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
+        
+        model.setRowCount(0);
+        lblSubtotalAmount.setText("0.00");
+        lblTaxAmount.setText("0.00");
+        lblTotalAmount.setText("0.00");
+        
 
-        //cbOpenOrder.addItem(receipt.getOrderNumber());
-        //cbOpenOrder.setVisible(true);
-       
     }//GEN-LAST:event_btnSendActionPerformed
 
     private void btnTable4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTable4ActionPerformed
@@ -3962,7 +3996,7 @@ public class UserInterface extends javax.swing.JFrame {
     private void btnTable2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTable2ActionPerformed
         // TODO add your handling code here:
         getNumberOfGuests();
-
+        
         viewPOS();
         lblTableNum.setText("2");
     }//GEN-LAST:event_btnTable2ActionPerformed
@@ -4061,11 +4095,12 @@ public class UserInterface extends javax.swing.JFrame {
 
 // TODO add your handling code here:
         tblOpenOrders.setColumnSelectionAllowed(false);
+        
         tblOpenOrders.setRowSelectionAllowed(isShown);
         tblOpenOrders.setSelectionForeground(Color.lightGray);
         tblOpenOrders.setSelectionBackground(Color.blue);
         tblOpenOrders.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
+        
         PanelCardView.removeAll();
         PanelCardView.add(ViewOrders);
         PanelCardView.repaint();
@@ -4073,21 +4108,13 @@ public class UserInterface extends javax.swing.JFrame {
         conn = Database.ConnecttoDB();
         updateOpenOrderTable();
         updatePaidOrderTable();
-//        int n = 0;
-//       
-//        for (int i = 0; i < numberOrder.length; i++) {
-//            n = numberOrder[i];
-//            cbOpenOrder.addItem(n);
-//        }
-//        //
-//        cbOpenOrder.setVisible(true);
-//        numberOrder = null;
+        
 
     }//GEN-LAST:event_btnViewOrdersActionPerformed
 
     private void btnViewOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrderActionPerformed
-        // TODO add your handling code here:
-
+        btnPay.setVisible(true);
+        PanelPaymentMethod.setVisible(false);
         isNewOrder = false;
         PanelCardView.removeAll();
         PanelCardView.add(ViewPOS);
@@ -4095,7 +4122,7 @@ public class UserInterface extends javax.swing.JFrame {
         PanelCardView.revalidate();
         btnSend.setEnabled(true);
         btnPrintCheck.setEnabled(true);
-
+        
         DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
         model.setRowCount(0);
         int selectedData = 0;
@@ -4106,17 +4133,16 @@ public class UserInterface extends javax.swing.JFrame {
                 selectedData = Integer.parseInt(tblOpenOrders.getValueAt(selectedRow[i], selectedColumn[j]).toString());
             }
         }
-
+        
         Object[] savedItemName = dbconn.retrieveItemNameFromSalesLog(selectedData);
         Object[] savedItemPrice = dbconn.retrieveItemPriceFromSalesLog(selectedData);
-        Object mn = "dfdfsdf";
 
         // Item and price
         for (int i = 0; i < savedItemPrice.length; i++) {
-
+            
             Object[] row = {savedItemName[i], savedItemPrice[i]};
             model.addRow(row);
-
+            
             runningTotal();
         }
         lblWaiter.setText("" + dbconn.getWaiterNameFromDB(selectedData));
@@ -4205,10 +4231,10 @@ public class UserInterface extends javax.swing.JFrame {
             keypadLogin.delete(0, keypadLogin.length());
         } else {
             waiter = dbconn.loginWaiter(Integer.parseInt(userPass));
-
+            
             System.out.println("What is this " + waiter.toString());
 
-                    // conn.close();
+            // conn.close();
             PanelLoginContainer.setVisible(false);
             PanelTransaction.setVisible(true);
             Panel_Navigation.setVisible(true);
@@ -4266,7 +4292,7 @@ public class UserInterface extends javax.swing.JFrame {
              }
              }*/
         }
-
+        
 
     }//GEN-LAST:event_btnEnter3ActionPerformed
 
@@ -4289,13 +4315,127 @@ public class UserInterface extends javax.swing.JFrame {
         keypadLogin.delete(0, keypadLogin.length());
     }//GEN-LAST:event_btnLogoutActionPerformed
 
-    private void txtZipCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtZipCodeActionPerformed
+    private void btnPayCashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayCashActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtZipCodeActionPerformed
 
-    private void txtAddress1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAddress1ActionPerformed
+        PanelPaymentMethod.setVisible(true);
+        btnPay.setVisible(false);
+       
+        
+        if (txtKeypad.getText() != null && !"".equals(txtKeypad.getText())) {
+            if (Double.parseDouble(txtKeypad.getText()) == Double.parseDouble(lblTotalAmount.getText())) {
+                double change = dbconn.getChange(txtKeypad.getText(), lblTotalAmount.getText());
+                
+                dbconn.updatePaymentMethodtoDB("Cash", Double.parseDouble(txtKeypad.getText()), Integer.parseInt(lblOrderNumberObtained.getText()));
+                
+                JOptionPane.showMessageDialog(null, "Tendered: $" + txtKeypad.getText() + "\n"
+                        + "Change: $" + change + "");
+                txtKeypad.setText(null);
+                DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
+                
+                model.setRowCount(0);
+                lblSubtotalAmount.setText("0.00");
+                lblTaxAmount.setText("0.00");
+                lblTotalAmount.setText("0.00");
+                viewTables();
+            } else {
+                if (!amountdue.equals(BigDecimal.ZERO)) {
+                  
+                   
+                    double change = dbconn.getChange(txtKeypad.getText(), lblTotalAmount.getText());
+                
+                dbconn.updatePaymentMethodtoDB("Cash", Double.parseDouble(txtKeypad.getText()), Integer.parseInt(lblOrderNumberObtained.getText()));
+                
+                JOptionPane.showMessageDialog(null, "Tendered: $" + txtKeypad.getText() + "\n"
+                        + "Change: $" + change + "");
+                txtKeypad.setText(null);
+                DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
+                
+                model.setRowCount(0);
+                lblSubtotalAmount.setText("0.00");
+                lblTaxAmount.setText("0.00");
+                lblTotalAmount.setText("0.00");
+                viewTables();
+                }else{
+                 JOptionPane.showMessageDialog(null, "Insuffficient payment. \nYou entered: $ " + txtKeypad.getText() + "");
+                }
+               
+            }
+            
+        }
+
+    }//GEN-LAST:event_btnPayCashActionPerformed
+
+    private void txtKeypadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKeypadActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtAddress1ActionPerformed
+
+    }//GEN-LAST:event_txtKeypadActionPerformed
+
+    private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
+        // TODO add your handling code here:
+        int cardNum = Integer.parseInt(txtKeypad.getText());
+        //dbconn.updatePaymentMethodtoDB("Gift Card", Double.parseDouble(lblTotalAmount.getText()), Integer.parseInt(lblOrderNumberObtained.toString()));
+        double giftCardOrigAmount = dbconn.getGiftCardBalance(cardNum);
+        double total = Double.parseDouble(lblTotalAmount.getText());
+        // double giftCardBalance = giftCardOrigAmount - Double.parseDouble(lblTotalAmount.getText());
+        if (total < giftCardOrigAmount) {
+            //
+
+            double giftCardBalance = giftCardOrigAmount - total;
+            dbconn.updategiftCardBalance(giftCardBalance, cardNum);
+            JOptionPane.showMessageDialog(null, "Gift Card Amount: $ " + giftCardOrigAmount + "\nPaid: $" + lblTotalAmount.getText() + "\nRemaining Balance in GiftCard: $" + giftCardBalance);
+            dbconn.updatePaymentMethodtoDB("Gift Card", total, Integer.parseInt(lblOrderNumberObtained.getText()));
+            txtKeypad.setText(null);
+            txtKeypad.setVisible(false);
+            btnConfirm.setVisible(false);
+            DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
+            
+            model.setRowCount(0);
+            lblSubtotalAmount.setText("0.00");
+            lblTaxAmount.setText("0.00");
+            lblTotalAmount.setText("0.00");
+            viewTables();
+        } else if (total > giftCardOrigAmount) {
+             amountdue = BigDecimal.valueOf(total).subtract(BigDecimal.valueOf(giftCardOrigAmount)).setScale(2, RoundingMode.FLOOR).stripTrailingZeros();
+            dbconn.updategiftCardBalance(0, cardNum);
+            JOptionPane.showMessageDialog(null, "Gift Card Amount: $ " + giftCardOrigAmount + "\nAmount due $" + amountdue + ".");
+            lblTotalAmount.setText(amountdue + "");
+            //  dbconn.updatePaymentMethodtoDB("Gift Card", total, Integer.parseInt(lblOrderNumberObtained.getText()));
+            btnConfirm.setVisible(false);
+            txtKeypad.setText(null);
+            btnPay.setVisible(true);
+//
+        } else {
+            //
+            dbconn.updategiftCardBalance(0, cardNum);
+            dbconn.updatePaymentMethodtoDB("Gift Card", total, Integer.parseInt(lblOrderNumberObtained.getText()));
+            DefaultTableModel model = (DefaultTableModel) tblOrder.getModel();
+            
+            model.setRowCount(0);
+            lblSubtotalAmount.setText("0.00");
+            lblTaxAmount.setText("0.00");
+            lblTotalAmount.setText("0.00");
+        }
+//not good
+//        if (giftCardBalance < 0) {
+//
+//            JOptionPane.showMessageDialog(null, "Not enough amount in the card.\nTendered: $" + giftCardOrigAmount + ""
+//                    + "\nAmount due: $" + Math.abs(giftCardBalance));
+//            giftCardBalance = 0.00;
+//            dbconn.updategiftCardBalance(giftCardBalance);
+//        } else {
+//            dbconn.updategiftCardBalance(giftCardBalance);
+//            JOptionPane.showMessageDialog(null, "Gift Card Amount: $ " + giftCardOrigAmount + "\nPaid: $" + lblTotalAmount + "\nRemaining Balance in GiftCard: $" + giftCardBalance);
+//            lblCashPaidAmount.setText("" + giftCardOrigAmount);
+//        }
+//        btnPay.setVisible(true);
+//        paymentType.append(transaction.payByGiftCard(BigDecimal.valueOf(Double.parseDouble(txtKeypad.getText())), receipt.getTotal()));
+
+        keypadTransaction.delete(0, keypadTransaction.length());
+
+        //after lunch
+
+    }//GEN-LAST:event_btnConfirmActionPerformed
 
     /**
      * @param args the command line arguments
@@ -4333,8 +4473,6 @@ public class UserInterface extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Address1;
-    private javax.swing.JLabel Address2;
     private javax.swing.JPanel BackOffice_CostOfSales;
     private javax.swing.JPanel BackOffice_Employees;
     private javax.swing.JPanel BackOffice_Inventory;
@@ -4348,18 +4486,8 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JPanel CardLogin;
     private javax.swing.JPanel CardSalads;
     private javax.swing.JPanel CardWings;
-    private javax.swing.JLabel City;
-    private javax.swing.JPanel Employee_GeneralView;
-    private java.awt.List Employee_List;
-    private javax.swing.JLabel Employee_SNN;
-    private javax.swing.JPanel Employee_Schedule;
-    private javax.swing.JTabbedPane Employee_Tabs;
     private javax.swing.JPanel LetsGo_WIP;
     private javax.swing.JTabbedPane Manager_BackOffice;
-    private javax.swing.JLabel NameFirst;
-    private javax.swing.JLabel NameLast;
-    private javax.swing.JLabel NameMiddle;
-    private javax.swing.JPanel PanelAmount;
     private javax.swing.JPanel PanelAppetizers;
     private javax.swing.JPanel PanelBackground;
     private javax.swing.JPanel PanelBurgers;
@@ -4377,20 +4505,18 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JPanel PanelMenu;
     private javax.swing.JPanel PanelOrder;
     private javax.swing.JPanel PanelOrders;
+    private javax.swing.JPanel PanelPaymentMethod;
     private javax.swing.JPanel PanelSalads;
     private javax.swing.JPanel PanelTextEntry;
     private javax.swing.JPanel PanelTransaction;
     private javax.swing.JPanel PanelWings;
     private javax.swing.JPanel Panel_Navigation;
     private javax.swing.JPanel Panel_OrderLabel;
-    private javax.swing.JLabel PhoneNumber;
-    private javax.swing.JLabel State;
     private javax.swing.JPanel ViewManager;
     private javax.swing.JPanel ViewOrders;
     private javax.swing.JPanel ViewPOS;
     private javax.swing.JPanel ViewTables;
     private javax.swing.JPanel ViewTimeCard;
-    private javax.swing.JLabel Zip_Postal;
     private javax.swing.JButton btn0;
     private javax.swing.JButton btn000;
     private javax.swing.JButton btn002;
@@ -4432,6 +4558,7 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JButton btnCoffee;
     private javax.swing.JButton btnCoke;
     private javax.swing.JButton btnColeslaw;
+    private javax.swing.JButton btnConfirm;
     private javax.swing.JButton btnCorn;
     private javax.swing.JButton btnCreditDebit;
     private javax.swing.JButton btnDecimalPoint;
@@ -4457,6 +4584,7 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JButton btnMozarellaSticks;
     private javax.swing.JButton btnOne;
     private javax.swing.JButton btnOriginal;
+    private javax.swing.JButton btnPay;
     private javax.swing.JButton btnPotatoWedges;
     private javax.swing.JButton btnPrintCheck;
     private javax.swing.JButton btnQuesoDip;
@@ -4498,16 +4626,10 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JButton btnViewOrder;
     private javax.swing.JButton btnViewOrders;
     private javax.swing.JButton btnWings;
-    private java.awt.Choice cbState;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -4517,15 +4639,14 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JLabel lblAppetizers;
     private javax.swing.JLabel lblBar;
     private javax.swing.JLabel lblBooth;
@@ -4533,6 +4654,7 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JLabel lblCashPaidAmount;
     private javax.swing.JLabel lblChangeAmount;
     private javax.swing.JLabel lblDesserts;
+    private javax.swing.JPanel lblDiscountAmount;
     private javax.swing.JLabel lblDrinks;
     private javax.swing.JLabel lblEmpId;
     private javax.swing.JLabel lblEmpName;
@@ -4559,19 +4681,14 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JLabel lblWings;
     private javax.swing.JPasswordField passLogin;
     private javax.swing.JScrollPane scrollOpenOrders;
+    private javax.swing.JTable tblEmployees;
+    private javax.swing.JTable tblInventory;
     private javax.swing.JTable tblOpenOrders;
     private javax.swing.JTable tblOrder;
     private javax.swing.JTable tblPaidOrders;
-    private javax.swing.JTextField txtAddress1;
-    private javax.swing.JTextField txtAddress2;
-    private javax.swing.JTextField txtCity;
+    private javax.swing.JTable tblRevenue;
+    private javax.swing.JTable tblSales;
     private javax.swing.JTextField txtEmpId;
-    private javax.swing.JTextField txtFirstName;
     private javax.swing.JTextField txtKeypad;
-    private javax.swing.JTextField txtLastName;
-    private javax.swing.JTextField txtMiddleInitial;
-    private javax.swing.JTextField txtPhone;
-    private javax.swing.JTextField txtSSN;
-    private javax.swing.JTextField txtZipCode;
     // End of variables declaration//GEN-END:variables
 }
