@@ -450,7 +450,6 @@ private void loadSales() {
         PanelBackground.setMinimumSize(new java.awt.Dimension(100, 100));
 
         PanelLoginContainer.setBackground(new java.awt.Color(204, 204, 204));
-        PanelLoginContainer.setLayout(new java.awt.GridBagLayout());
 
         btnOne.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
         btnOne.setText("1");
@@ -647,12 +646,20 @@ private void loadSales() {
                 .addContainerGap())
         );
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(45, 15, 34, 15);
-        PanelLoginContainer.add(jPanel2, gridBagConstraints);
+        javax.swing.GroupLayout PanelLoginContainerLayout = new javax.swing.GroupLayout(PanelLoginContainer);
+        PanelLoginContainer.setLayout(PanelLoginContainerLayout);
+        PanelLoginContainerLayout.setHorizontalGroup(
+            PanelLoginContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelLoginContainerLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        PanelLoginContainerLayout.setVerticalGroup(
+            PanelLoginContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelLoginContainerLayout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         PanelHeader.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -3017,8 +3024,8 @@ private void loadSales() {
             .addGroup(PanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(PanelBackgroundLayout.createSequentialGroup()
                     .addGap(701, 701, 701)
-                    .addComponent(PanelLoginContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(702, 702, 702)))
+                    .addComponent(PanelLoginContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(687, Short.MAX_VALUE)))
         );
         PanelBackgroundLayout.setVerticalGroup(
             PanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3033,8 +3040,8 @@ private void loadSales() {
             .addGroup(PanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(PanelBackgroundLayout.createSequentialGroup()
                     .addGap(302, 302, 302)
-                    .addComponent(PanelLoginContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(302, 302, 302)))
+                    .addComponent(PanelLoginContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(268, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
