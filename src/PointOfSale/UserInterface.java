@@ -49,19 +49,7 @@ public class UserInterface extends javax.swing.JFrame {
     
     BigDecimal amountdue = null;
     
-    private boolean isFourdigits(String userPass) {
-        boolean is4digits = false;
-        if (userPass.length() == 4) {
-            is4digits = true;
-        } else {
-            
-        }
-        return is4digits;
-    }
-    
-    public void hasWaiterName(String waiter) {
-        lblWaiter.setText(waiter);
-    }
+   
 
     //receipt.setOrderList(r);
     public UserInterface() {
@@ -85,14 +73,15 @@ public class UserInterface extends javax.swing.JFrame {
                 }
             }
         }.start();
-        txtKeypad.setVisible(false);
+       
         conn = Database.ConnecttoDB();
-        PanelCardView.setVisible(false);
-        PanelTransaction.setVisible(false);
-        Panel_Navigation.setVisible(false);
-        PanelPaymentMethod.setVisible(false);
-        btnPay.setVisible(false);
-        btnConfirm.setVisible(false);
+        
+       
+        btnLogin.setVisible(false);
+       btnLogout.setVisible(false);
+        
+       
+        
     }
     private void loadEmployees() {
         
@@ -227,23 +216,6 @@ private void loadSales() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         PanelBackground = new javax.swing.JPanel();
-        PanelLoginContainer = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        PanelKeypad3 = new javax.swing.JPanel();
-        btnOne = new javax.swing.JButton();
-        btn005 = new javax.swing.JButton();
-        btn006 = new javax.swing.JButton();
-        btn004 = new javax.swing.JButton();
-        btn008 = new javax.swing.JButton();
-        btn009 = new javax.swing.JButton();
-        btn000 = new javax.swing.JButton();
-        btn007 = new javax.swing.JButton();
-        btnClear3 = new javax.swing.JButton();
-        btn003 = new javax.swing.JButton();
-        btn002 = new javax.swing.JButton();
-        btnEnter3 = new javax.swing.JButton();
-        passLogin = new javax.swing.JPasswordField();
-        jLabel8 = new javax.swing.JLabel();
         Panel_Navigation = new javax.swing.JPanel();
         PanelHeader = new javax.swing.JPanel();
         btnTables = new javax.swing.JButton();
@@ -448,218 +420,6 @@ private void loadSales() {
 
         PanelBackground.setBackground(new java.awt.Color(102, 102, 102));
         PanelBackground.setMinimumSize(new java.awt.Dimension(100, 100));
-
-        PanelLoginContainer.setBackground(new java.awt.Color(204, 204, 204));
-
-        btnOne.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btnOne.setText("1");
-        btnOne.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOneActionPerformed(evt);
-            }
-        });
-
-        btn005.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btn005.setText("5");
-        btn005.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn005ActionPerformed(evt);
-            }
-        });
-
-        btn006.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btn006.setText("6");
-        btn006.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn006ActionPerformed(evt);
-            }
-        });
-
-        btn004.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btn004.setText("4");
-        btn004.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn004ActionPerformed(evt);
-            }
-        });
-
-        btn008.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        btn008.setText("8");
-        btn008.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn008ActionPerformed(evt);
-            }
-        });
-
-        btn009.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        btn009.setText("9");
-        btn009.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn009ActionPerformed(evt);
-            }
-        });
-
-        btn000.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        btn000.setText("0");
-        btn000.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn000ActionPerformed(evt);
-            }
-        });
-
-        btn007.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btn007.setText("7");
-        btn007.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn007ActionPerformed(evt);
-            }
-        });
-
-        btnClear3.setBackground(new java.awt.Color(204, 255, 255));
-        btnClear3.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        btnClear3.setText("Clear");
-        btnClear3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClear3ActionPerformed(evt);
-            }
-        });
-
-        btn003.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btn003.setText("3");
-        btn003.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn003ActionPerformed(evt);
-            }
-        });
-
-        btn002.setFont(new java.awt.Font("Century Gothic", 0, 24)); // NOI18N
-        btn002.setText("2");
-        btn002.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn002ActionPerformed(evt);
-            }
-        });
-
-        btnEnter3.setBackground(new java.awt.Color(153, 255, 255));
-        btnEnter3.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        btnEnter3.setText("Enter");
-        btnEnter3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEnter3ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout PanelKeypad3Layout = new javax.swing.GroupLayout(PanelKeypad3);
-        PanelKeypad3.setLayout(PanelKeypad3Layout);
-        PanelKeypad3Layout.setHorizontalGroup(
-            PanelKeypad3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelKeypad3Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addGroup(PanelKeypad3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PanelKeypad3Layout.createSequentialGroup()
-                        .addComponent(btn007, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn008))
-                    .addGroup(PanelKeypad3Layout.createSequentialGroup()
-                        .addComponent(btn004, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn005))
-                    .addGroup(PanelKeypad3Layout.createSequentialGroup()
-                        .addComponent(btnOne, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn002))
-                    .addGroup(PanelKeypad3Layout.createSequentialGroup()
-                        .addComponent(btnClear3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn000)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(PanelKeypad3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn003, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btn006, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btn009, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnEnter3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21))
-        );
-
-        PanelKeypad3Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btn000, btn002, btn003, btn004, btn005, btn006, btn007, btn008, btn009, btnClear3, btnEnter3, btnOne});
-
-        PanelKeypad3Layout.setVerticalGroup(
-            PanelKeypad3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelKeypad3Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addGroup(PanelKeypad3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnOne, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn002)
-                    .addComponent(btn003))
-                .addGap(0, 0, 0)
-                .addGroup(PanelKeypad3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn005)
-                    .addComponent(btn006)
-                    .addComponent(btn004))
-                .addGap(0, 0, 0)
-                .addGroup(PanelKeypad3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn008)
-                    .addComponent(btn009)
-                    .addComponent(btn007))
-                .addGap(0, 0, 0)
-                .addGroup(PanelKeypad3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(btnClear3)
-                    .addComponent(btn000)
-                    .addComponent(btnEnter3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        PanelKeypad3Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btn000, btn002, btn003, btn004, btn005, btn006, btn007, btn008, btn009, btnClear3, btnEnter3, btnOne});
-
-        passLogin.setBackground(new java.awt.Color(206, 244, 244));
-        passLogin.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        passLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passLoginActionPerformed(evt);
-            }
-        });
-
-        jLabel8.setFont(new java.awt.Font("Century Gothic", 0, 36)); // NOI18N
-        jLabel8.setText("Enter User ID:");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
-                    .addComponent(passLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(PanelKeypad3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(passLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(PanelKeypad3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        javax.swing.GroupLayout PanelLoginContainerLayout = new javax.swing.GroupLayout(PanelLoginContainer);
-        PanelLoginContainer.setLayout(PanelLoginContainerLayout);
-        PanelLoginContainerLayout.setHorizontalGroup(
-            PanelLoginContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelLoginContainerLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        PanelLoginContainerLayout.setVerticalGroup(
-            PanelLoginContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelLoginContainerLayout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
 
         PanelHeader.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -1422,7 +1182,7 @@ private void loadSales() {
                         .addComponent(btnAsian, javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(btnChickenAvocado, javax.swing.GroupLayout.Alignment.TRAILING))
                     .addComponent(btnRefreshingCATCH))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
 
         PanelSaladsLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAsian, btnCaesar, btnChickenAvocado, btnChipotle, btnGrilledSalmon, btnRefreshingCATCH});
@@ -1457,7 +1217,7 @@ private void loadSales() {
             .addGroup(CardSaladsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(CardSaladsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(PanelSalads, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PanelSalads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblSalads))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -3021,11 +2781,6 @@ private void loadSales() {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(PanelTransaction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(PanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(PanelBackgroundLayout.createSequentialGroup()
-                    .addGap(701, 701, 701)
-                    .addComponent(PanelLoginContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(687, Short.MAX_VALUE)))
         );
         PanelBackgroundLayout.setVerticalGroup(
             PanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3037,11 +2792,6 @@ private void loadSales() {
                     .addComponent(PanelCardView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(PanelTransaction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(PanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(PanelBackgroundLayout.createSequentialGroup()
-                    .addGap(302, 302, 302)
-                    .addComponent(PanelLoginContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(268, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -4167,158 +3917,11 @@ private void loadSales() {
         runningTotal();
     }//GEN-LAST:event_btnDeleteOrderActionPerformed
 
-    private void btnOneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOneActionPerformed
-        // TODO add your handling code here:
-
-        passLogin.setText(keypadLogin.append("1").toString());
-    }//GEN-LAST:event_btnOneActionPerformed
-
-    private void btn005ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn005ActionPerformed
-        // TODO add your handling code here:
-
-        passLogin.setText(keypadLogin.append("5").toString());
-    }//GEN-LAST:event_btn005ActionPerformed
-
-    private void btn006ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn006ActionPerformed
-        // TODO add your handling code here:
-
-        passLogin.setText(keypadLogin.append("6").toString());
-    }//GEN-LAST:event_btn006ActionPerformed
-
-    private void btn004ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn004ActionPerformed
-        // TODO add your handling code here:
-
-        passLogin.setText(keypadLogin.append("4").toString());
-    }//GEN-LAST:event_btn004ActionPerformed
-
-    private void btn008ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn008ActionPerformed
-        // TODO add your handling code here:
-        passLogin.setText(keypadLogin.append("8").toString());
-    }//GEN-LAST:event_btn008ActionPerformed
-
-    private void btn009ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn009ActionPerformed
-        // TODO add your handling code here:
-        passLogin.setText(keypadLogin.append("9").toString());
-    }//GEN-LAST:event_btn009ActionPerformed
-
-    private void btn000ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn000ActionPerformed
-        // TODO add your handling code here:
-
-        passLogin.setText(keypadLogin.append("0").toString());
-    }//GEN-LAST:event_btn000ActionPerformed
-
-    private void btn007ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn007ActionPerformed
-        // TODO add your handling code here:
-        passLogin.setText(keypadLogin.append("7").toString());
-    }//GEN-LAST:event_btn007ActionPerformed
-
-    private void btnClear3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClear3ActionPerformed
-        // TODO add your handling code here:
-
-        passLogin.setText(null);
-        keypadLogin.delete(0, keypadLogin.length());
-    }//GEN-LAST:event_btnClear3ActionPerformed
-
-    private void btn003ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn003ActionPerformed
-        // TODO add your handling code here:
-        passLogin.setText(keypadLogin.append("3").toString());
-    }//GEN-LAST:event_btn003ActionPerformed
-
-    private void btn002ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn002ActionPerformed
-        // TODO add your handling code here:
-        passLogin.setText(keypadLogin.append("2").toString());
-    }//GEN-LAST:event_btn002ActionPerformed
-
-    private void btnEnter3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnter3ActionPerformed
-        // TODO add your handling code here:
-        userPass = passLogin.getText();
-        if (keypadLogin.length() != 4) {
-            JOptionPane.showMessageDialog(rootPane, "Please enter 4 digits only!");
-            passLogin.setText(null);
-            keypadLogin.delete(0, keypadLogin.length());
-        } else {
-            waiter = dbconn.loginWaiter(Integer.parseInt(userPass));
-            
-            System.out.println("What is this " + waiter.toString());
-
-            // conn.close();
-            PanelLoginContainer.setVisible(false);
-            PanelTransaction.setVisible(true);
-            Panel_Navigation.setVisible(true);
-            PanelCardView.setVisible(true);
-            lblWaiter.setText(waiter);
-            lblWaiterHeader.setText(waiter);
-            viewTables();
-
-
-            /* System.out.println("Correct User ID!");
-
-             String sql = "SELECT * FROM employeeDB WHERE empId=?;";
-             ResultSet rs = null;
-             PreparedStatement pst = null;
-           
-             try {
-             pst = conn.prepareStatement(sql);
-             pst.setString(1, userPass);
-             rs = pst.executeQuery();
-             System.out.println(userPass);
-             if (rs.next()) {
-             waiter = dbconn.loginWaiter(Integer.parseInt(userPass));
-                    
-             System.out.println("What is this "+waiter);
-                    
-             // conn.close();
-                    
-             PanelLoginContainer.setVisible(false);
-             PanelTransaction.setVisible(true);
-             Panel_Navigation.setVisible(true);
-             PanelCardView.setVisible(true);
-             viewTables();
-             lblWaiter.setText(waiter);
-             lblWaiterHeader.setText(waiter);
-                    
-                   
-                    
-                   
-
-             } else {
-             JOptionPane.showMessageDialog(null, "Incorrect. Please enter valid ID!");
-             passLogin.setText(null);
-             keypadLogin.delete(0, keypadLogin.length());
-             }
-
-             } catch (Exception e) {
-
-             System.out.println("login from db:" + e);
-             }finally{
-             try{
-             rs.close();
-             pst.close();
-             }catch(Exception e){
-
-             }
-             }*/
-        }
-        
-
-    }//GEN-LAST:event_btnEnter3ActionPerformed
-
-    private void passLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passLoginActionPerformed
-        // TODO add your handling code here:
-        if (keypadLogin.length() != 4) {
-            btnEnter3.setEnabled(false);
-        } else {
-            btnEnter3.setEnabled(true);
-        }
-    }//GEN-LAST:event_passLoginActionPerformed
-
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // TODO add your handling code here:
         PanelTransaction.setVisible(false);
         PanelCardView.setVisible(false);
-        Panel_Navigation.setVisible(false);
-        PanelLoginContainer.setVisible(true);
-        passLogin.setText(null);
+        Panel_Navigation.setVisible(false);        
         keypadLogin.delete(0, keypadLogin.length());
     }//GEN-LAST:event_btnLogoutActionPerformed
 
@@ -4506,9 +4109,7 @@ private void loadSales() {
     private javax.swing.JPanel PanelHeader;
     private javax.swing.JPanel PanelHolderForClocking;
     private javax.swing.JPanel PanelKeypad;
-    private javax.swing.JPanel PanelKeypad3;
     private javax.swing.JPanel PanelLogin;
-    private javax.swing.JPanel PanelLoginContainer;
     private javax.swing.JPanel PanelMenu;
     private javax.swing.JPanel PanelOrder;
     private javax.swing.JPanel PanelOrders;
@@ -4525,15 +4126,6 @@ private void loadSales() {
     private javax.swing.JPanel ViewTables;
     private javax.swing.JPanel ViewTimeCard;
     private javax.swing.JButton btn0;
-    private javax.swing.JButton btn000;
-    private javax.swing.JButton btn002;
-    private javax.swing.JButton btn003;
-    private javax.swing.JButton btn004;
-    private javax.swing.JButton btn005;
-    private javax.swing.JButton btn006;
-    private javax.swing.JButton btn007;
-    private javax.swing.JButton btn008;
-    private javax.swing.JButton btn009;
     private javax.swing.JButton btn1;
     private javax.swing.JButton btn2;
     private javax.swing.JButton btn3;
@@ -4559,7 +4151,6 @@ private void loadSales() {
     private javax.swing.JButton btnChipsSalsa;
     private javax.swing.JButton btnChocolateMousse;
     private javax.swing.JButton btnClear;
-    private javax.swing.JButton btnClear3;
     private javax.swing.JButton btnClearTable;
     private javax.swing.JButton btnClockInClockOut;
     private javax.swing.JButton btnCoffee;
@@ -4573,7 +4164,6 @@ private void loadSales() {
     private javax.swing.JButton btnDesserts;
     private javax.swing.JButton btnDietCoke;
     private javax.swing.JButton btnDrinks;
-    private javax.swing.JButton btnEnter3;
     private javax.swing.JButton btnExtras;
     private javax.swing.JButton btnFourWay;
     private javax.swing.JButton btnFries;
@@ -4589,7 +4179,6 @@ private void loadSales() {
     private javax.swing.JButton btnMashedPotatoes;
     private javax.swing.JButton btnMilkshake;
     private javax.swing.JButton btnMozarellaSticks;
-    private javax.swing.JButton btnOne;
     private javax.swing.JButton btnOriginal;
     private javax.swing.JButton btnPay;
     private javax.swing.JButton btnPotatoWedges;
@@ -4643,9 +4232,7 @@ private void loadSales() {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -4686,7 +4273,6 @@ private void loadSales() {
     private javax.swing.JLabel lblWaiter;
     private javax.swing.JLabel lblWaiterHeader;
     private javax.swing.JLabel lblWings;
-    private javax.swing.JPasswordField passLogin;
     private javax.swing.JScrollPane scrollOpenOrders;
     private javax.swing.JTable tblEmployees;
     private javax.swing.JTable tblInventory;
